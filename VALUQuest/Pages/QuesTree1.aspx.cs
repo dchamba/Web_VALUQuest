@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using Microsoft.Ajax.Utilities;
+using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
@@ -129,31 +130,50 @@ namespace VALUQuest.Pages
                 List<QuestionTable> listQuestion = db.ExecuteQueryReturnListObject<QuestionTable>("SELECT * FROM tbl_questions WHERE isActive = 1");
                 List<OptionTable> listOption = db.ExecuteQueryReturnListObject<OptionTable>("SELECT * FROM tbl_options WHERE isActive = 1");
 
-                List<QuestionTreeTable> listQuestionTreeStructure = db.ExecuteQueryReturnListObject<QuestionTreeTable>("SELECT * FROM tbl_question_treeNew_OK WHERE isActive = 1 AND nodeLevel = 0");
-
                 List<QuestionTable> resultTree = new List<QuestionTable>();
 
-                foreach(QuestionTreeTable rawTreeElement in listQuestionTreeStructure)
+                int filterNodeLevel = 0;
+                
+                while(filterNodeLevel >= 0)
                 {
-                    //Creating father node
-                    QuestionTable topFather = listQuestion.Find(q => q.questionId == rawTreeElement.questionId);
-                    topFather.treeNodeElement = rawTreeElement;
+                    List<QuestionTreeTable> listQuestionTreeStructure = db.ExecuteQueryReturnListObject<QuestionTreeTable>("SELECT * FROM tbl_question_treeNew_OK WHERE isActive = 1 AND nodeLevel = " + filterNodeLevel.ToString());
 
-                    if (topFather != null)
+                    //no more child present in the lowest filtered nodeLevel
+                    if (listQuestionTreeStructure.Count == 0) break;
+
+                    foreach (QuestionTreeTable rawTreeElement in listQuestionTreeStructure)
                     {
-                        //Creating child node (option and question)
-                        List<OptionTable> listOptionForCurrentQuestion = listOption.Where(o => o.questionId == topFather.questionId).ToList();
-                        foreach (OptionTable currentOption in listOptionForCurrentQuestion)
+                        //Creating father node
+                        QuestionTable topFather = listQuestion.Find(q => q.questionId == rawTreeElement.questionId);
+                        topFather.treeNodeElement = rawTreeElement;
+
+                        if (topFather != null)
                         {
-                            listQuestionTreeStructure.Find(o => o.parentOptionId == currentOption.optionID && o.parentQuestionId == topFather.questionId);
+                            //Creating child node (option and question)
+                            List<OptionTable> listOptionForCurrentQuestion = listOption.Where(o => o.questionId == topFather.questionId).ToList();
+                            foreach (OptionTable currentOption in listOptionForCurrentQuestion)
+                            {
+                                List<QuestionTreeTable> listQuestionTreeItem = listQuestionTreeStructure.Where(o => o.parentOptionId == currentOption.optionID && o.parentQuestionId == topFather.questionId).ToList();
+                                if (listQuestionTreeItem.Count > 0)
+                                {
+                                    currentOption.treeNodeElement = listQuestionTreeItem.First();
+                                }
+                                else
+                                {
+                                    currentOption.treeNodeElement = rawTreeElement;
+                                }
 
-                            topFather.optionList.Add(currentOption);
+
+                                topFather.optionList.Add(currentOption);
+                            }
+                            //creating child node
+
+
+                            resultTree.Add(topFather);
                         }
-                        //creating child node
-
-
-                        resultTree.Add(topFather);
                     }
+
+                    filterNodeLevel += 10;
                 }
 
                 ////////////////////////////////////////
