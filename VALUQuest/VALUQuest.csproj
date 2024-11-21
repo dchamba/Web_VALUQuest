@@ -1,0 +1,733 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.2.0.0\build\net46\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props" Condition="Exists('..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.2.0.0\build\net46\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props')" />
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>
+    </ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{CF385AB5-1B0C-4EE0-B6F0-7803BD19BF86}</ProjectGuid>
+    <ProjectTypeGuids>{349c5851-65df-11da-9384-00065b846f21};{fae04ec0-301f-11d3-bf4b-00c04f79efbc}</ProjectTypeGuids>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>VALUQuest</RootNamespace>
+    <AssemblyName>VALUQuest</AssemblyName>
+    <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
+    <UseIISExpress>true</UseIISExpress>
+    <Use64BitIISExpress />
+    <IISExpressSSLPort />
+    <IISExpressAnonymousAuthentication />
+    <IISExpressWindowsAuthentication />
+    <IISExpressUseClassicPipelineMode />
+    <UseGlobalApplicationHostFile />
+    <NuGetPackageImportStamp>
+    </NuGetPackageImportStamp>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Web.Extensions" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Web.Services" />
+    <Reference Include="System.EnterpriseServices" />
+    <Reference Include="System.Web.DynamicData" />
+    <Reference Include="System.Web.Entity" />
+    <Reference Include="System.Web.ApplicationServices" />
+    <Reference Include="Microsoft.Web.Infrastructure, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.Web.Infrastructure.1.0.0.0\lib\net40\Microsoft.Web.Infrastructure.dll</HintPath>
+    </Reference>
+    <Reference Include="AspNet.ScriptManager.bootstrap">
+      <HintPath>..\packages\AspNet.ScriptManager.bootstrap.3.3.7\lib\net45\AspNet.ScriptManager.bootstrap.dll</HintPath>
+    </Reference>
+    <Reference Include="AspNet.ScriptManager.jQuery">
+      <HintPath>..\packages\AspNet.ScriptManager.jQuery.3.3.1\lib\net45\AspNet.ScriptManager.jQuery.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.ScriptManager.MSAjax">
+      <HintPath>..\packages\Microsoft.AspNet.ScriptManager.MSAjax.5.0.0\lib\net45\Microsoft.ScriptManager.MSAjax.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.ScriptManager.WebForms">
+      <HintPath>..\packages\Microsoft.AspNet.ScriptManager.WebForms.5.0.0\lib\net45\Microsoft.ScriptManager.WebForms.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Optimization, Version=1.1.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35">
+      <HintPath>..\packages\Microsoft.AspNet.Web.Optimization.1.1.3\lib\net40\System.Web.Optimization.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json">
+      <HintPath>..\packages\Newtonsoft.Json.11.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="WebGrease">
+      <Private>True</Private>
+      <HintPath>..\packages\WebGrease.1.6.0\lib\WebGrease.dll</HintPath>
+    </Reference>
+    <Reference Include="Antlr3.Runtime">
+      <Private>True</Private>
+      <HintPath>..\packages\Antlr.3.5.0.2\lib\Antlr3.Runtime.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.AspNet.Web.Optimization.WebForms">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.AspNet.Web.Optimization.WebForms.1.1.3\lib\net45\Microsoft.AspNet.Web.Optimization.WebForms.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.AspNet.FriendlyUrls">
+      <HintPath>..\packages\Microsoft.AspNet.FriendlyUrls.Core.1.0.2\lib\net45\Microsoft.AspNet.FriendlyUrls.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="Microsoft.CodeDom.Providers.DotNetCompilerPlatform">
+      <HintPath>..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.2.0.0\lib\net45\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="About.aspx" />
+    <Content Include="Contact.aspx" />
+    <Content Include="Content\bootstrap-theme.css" />
+    <Content Include="Content\bootstrap-theme.min.css" />
+    <Content Include="Content\bootstrap.css" />
+    <Content Include="Content\bootstrap.min.css" />
+    <Content Include="Content\Site.css" />
+    <Content Include="Default.aspx" />
+    <Content Include="favicon.ico" />
+    <Content Include="fonts\glyphicons-halflings-regular.svg" />
+    <Content Include="Global.asax" />
+    <Content Include="fonts\glyphicons-halflings-regular.woff2" />
+    <Content Include="fonts\glyphicons-halflings-regular.woff" />
+    <Content Include="fonts\glyphicons-halflings-regular.ttf" />
+    <Content Include="fonts\glyphicons-halflings-regular.eot" />
+    <Content Include="Content\bootstrap.min.css.map" />
+    <Content Include="Content\bootstrap.css.map" />
+    <Content Include="Content\bootstrap-theme.min.css.map" />
+    <Content Include="Content\bootstrap-theme.css.map" />
+    <Content Include="images\loading.gif" />
+    <Content Include="Pages\Block.aspx" />
+    <Content Include="Pages\Corrections.aspx" />
+    <Content Include="Pages\CorrectionsList.aspx" />
+    <Content Include="Pages\DynamicQuestion.aspx" />
+    <Content Include="Pages\FixedQuestion.aspx" />
+    <Content Include="Pages\OptionRef.aspx" />
+    <Content Include="Pages\QuesRamification.aspx" />
+    <Content Include="Pages\Questionnaire.aspx" />
+    <Content Include="Pages\QuestionsTree.aspx" />
+    <Content Include="Pages\QuestionsTreeNew.aspx" />
+    <Content Include="Pages\QuesTree1.aspx" />
+    <Content Include="Pages\QuesTree.aspx" />
+    <Content Include="Pages\SubCategory.aspx" />
+    <Content Include="Pages\Category.aspx" />
+    <Content Include="Pages\Config.aspx" />
+    <Content Include="Pages\Question.aspx" />
+    <Content Include="Pages\SurveyType.aspx" />
+    <Content Include="Pages\ViewExpectedQuesForSurvey.aspx" />
+    <Content Include="Pages\ViewSurvey.aspx" />
+    <Content Include="Scripts\Valu\alert.js" />
+    <Content Include="Scripts\Valu\default.js" />
+    <Content Include="Template\assets\js\ui\component.chat.html" />
+    <Content Include="Template\modern\assets\css\app-modern.min.css" />
+    <Content Include="Template\modern\assets\css\icons.min.css" />
+    <Content Include="Template\modern\assets\fontsunicons8adf.html" />
+    <Content Include="Template\modern\assets\fonts\Nunito-Bold.svg" />
+    <Content Include="Template\modern\assets\fonts\Nunito-Light.svg" />
+    <Content Include="Template\modern\assets\fonts\Nunito-Medium.svg" />
+    <Content Include="Template\modern\assets\fonts\Nunito-Regular.svg" />
+    <Content Include="Template\modern\assets\fonts\Nunito-SemiBold.svg" />
+    <Content Include="Template\modern\assets\fonts\remixicondf6d.svg" />
+    <Content Include="Template\modern\assets\fonts\uni030C.alt.html" />
+    <Content Include="Template\modern\assets\fonts\uni0335.html" />
+    <Content Include="Template\modern\assets\fonts\unicons8adf.svg" />
+    <Content Include="Template\modern\assets\images\barcode.png" />
+    <Content Include="Template\modern\assets\images\bg-auth.jpg" />
+    <Content Include="Template\modern\assets\images\bg-pattern.png" />
+    <Content Include="Template\modern\assets\images\brands\bitbucket.png" />
+    <Content Include="Template\modern\assets\images\brands\dribbble.png" />
+    <Content Include="Template\modern\assets\images\brands\dropbox.png" />
+    <Content Include="Template\modern\assets\images\brands\g-suite.png" />
+    <Content Include="Template\modern\assets\images\brands\github.png" />
+    <Content Include="Template\modern\assets\images\brands\slack.png" />
+    <Content Include="Template\modern\assets\images\favicon.ico" />
+    <Content Include="Template\modern\assets\images\flags\germany.jpg" />
+    <Content Include="Template\modern\assets\images\flags\italy.jpg" />
+    <Content Include="Template\modern\assets\images\flags\russia.jpg" />
+    <Content Include="Template\modern\assets\images\flags\spain.jpg" />
+    <Content Include="Template\modern\assets\images\flags\us.jpg" />
+    <Content Include="Template\modern\assets\images\layouts\layout-1.png" />
+    <Content Include="Template\modern\assets\images\layouts\layout-2.png" />
+    <Content Include="Template\modern\assets\images\layouts\layout-3.png" />
+    <Content Include="Template\modern\assets\images\layouts\layout-4.png" />
+    <Content Include="Template\modern\assets\images\layouts\layout-5.png" />
+    <Content Include="Template\modern\assets\images\layouts\layout-6.png" />
+    <Content Include="Template\modern\assets\images\logo-dark-sm.png" />
+    <Content Include="Template\modern\assets\images\logo-dark.png" />
+    <Content Include="Template\modern\assets\images\logo-dark1.png" />
+    <Content Include="Template\modern\assets\images\logo-sm.png" />
+    <Content Include="Template\modern\assets\images\logo.png" />
+    <Content Include="Template\modern\assets\images\logo1.png" />
+    <Content Include="Template\modern\assets\images\payments\cod.png" />
+    <Content Include="Template\modern\assets\images\payments\discover.png" />
+    <Content Include="Template\modern\assets\images\payments\master.png" />
+    <Content Include="Template\modern\assets\images\payments\payoneer.png" />
+    <Content Include="Template\modern\assets\images\payments\paypal.png" />
+    <Content Include="Template\modern\assets\images\payments\stripe.png" />
+    <Content Include="Template\modern\assets\images\payments\visa.png" />
+    <Content Include="Template\modern\assets\images\products\product-1.jpg" />
+    <Content Include="Template\modern\assets\images\products\product-2.jpg" />
+    <Content Include="Template\modern\assets\images\products\product-3.jpg" />
+    <Content Include="Template\modern\assets\images\products\product-4.jpg" />
+    <Content Include="Template\modern\assets\images\products\product-5.jpg" />
+    <Content Include="Template\modern\assets\images\products\product-6.jpg" />
+    <Content Include="Template\modern\assets\images\projects\project-1.jpg" />
+    <Content Include="Template\modern\assets\images\projects\project-2.jpg" />
+    <Content Include="Template\modern\assets\images\projects\project-3.jpg" />
+    <Content Include="Template\modern\assets\images\projects\project-4.jpg" />
+    <Content Include="Template\modern\assets\images\small\small-1.jpg" />
+    <Content Include="Template\modern\assets\images\small\small-2.jpg" />
+    <Content Include="Template\modern\assets\images\small\small-3.jpg" />
+    <Content Include="Template\modern\assets\images\small\small-4.jpg" />
+    <Content Include="Template\modern\assets\images\small\small-5.jpg" />
+    <Content Include="Template\modern\assets\images\small\small-6.jpg" />
+    <Content Include="Template\modern\assets\images\small\small-7.jpg" />
+    <Content Include="Template\modern\assets\images\svg\email-campaign.svg" />
+    <Content Include="Template\modern\assets\images\svg\features-1.svg" />
+    <Content Include="Template\modern\assets\images\svg\features-2.svg" />
+    <Content Include="Template\modern\assets\images\svg\file-searching.svg" />
+    <Content Include="Template\modern\assets\images\svg\help-icon.svg" />
+    <Content Include="Template\modern\assets\images\svg\mail_sent.svg" />
+    <Content Include="Template\modern\assets\images\svg\maintenance.svg" />
+    <Content Include="Template\modern\assets\images\svg\report.svg" />
+    <Content Include="Template\modern\assets\images\svg\startman.svg" />
+    <Content Include="Template\modern\assets\images\svg\startup.svg" />
+    <Content Include="Template\modern\assets\images\treeview.png" />
+    <Content Include="Template\modern\assets\images\users\avatar-1.jpg" />
+    <Content Include="Template\modern\assets\images\users\avatar-10.jpg" />
+    <Content Include="Template\modern\assets\images\users\avatar-2.jpg" />
+    <Content Include="Template\modern\assets\images\users\avatar-3.jpg" />
+    <Content Include="Template\modern\assets\images\users\avatar-4.jpg" />
+    <Content Include="Template\modern\assets\images\users\avatar-5.jpg" />
+    <Content Include="Template\modern\assets\images\users\avatar-6.jpg" />
+    <Content Include="Template\modern\assets\images\users\avatar-7.jpg" />
+    <Content Include="Template\modern\assets\images\users\avatar-8.jpg" />
+    <Content Include="Template\modern\assets\images\users\avatar-9.jpg" />
+    <Content Include="Template\modern\assets\images\waves.png" />
+    <Content Include="Template\modern\assets\js\app.min.js" />
+    <Content Include="Template\modern\assets\js\hyper-config.js" />
+    <Content Include="Template\modern\assets\js\hyper-syntax.js" />
+    <Content Include="Template\modern\assets\js\pages\demo.apex-area.js" />
+    <Content Include="Template\modern\assets\js\pages\demo.apex-bar.js" />
+    <Content Include="Template\modern\assets\js\pages\demo.apex-boxplot.js" />
+    <Content Include="Template\modern\assets\js\pages\demo.apex-bubble.js" />
+    <Content Include="Template\modern\assets\js\pages\demo.apex-candlestick.js" />
+    <Content Include="Template\modern\assets\js\pages\demo.apex-column.js" />
+    <Content Include="Template\modern\assets\js\pages\demo.apex-heatmap.js" />
+    <Content Include="Template\modern\assets\js\pages\demo.apex-line.js" />
+    <Content Include="Template\modern\assets\js\pages\demo.apex-mixed.js" />
+    <Content Include="Template\modern\assets\js\pages\demo.apex-pie.js" />
+    <Content Include="Template\modern\assets\js\pages\demo.apex-polar-area.js" />
+    <Content Include="Template\modern\assets\js\pages\demo.apex-radar.js" />
+    <Content Include="Template\modern\assets\js\pages\demo.apex-radialbar.js" />
+    <Content Include="Template\modern\assets\js\pages\demo.apex-scatter.js" />
+    <Content Include="Template\modern\assets\js\pages\demo.apex-sparklines.js" />
+    <Content Include="Template\modern\assets\js\pages\demo.apex-timeline.js" />
+    <Content Include="Template\modern\assets\js\pages\demo.apex-treemap.js" />
+    <Content Include="Template\modern\assets\js\pages\demo.britechart.js" />
+    <Content Include="Template\modern\assets\js\pages\demo.calendar.js" />
+    <Content Include="Template\modern\assets\js\pages\demo.chartjs-area.js" />
+    <Content Include="Template\modern\assets\js\pages\demo.chartjs-bar.js" />
+    <Content Include="Template\modern\assets\js\pages\demo.chartjs-line.js" />
+    <Content Include="Template\modern\assets\js\pages\demo.chartjs-other.js" />
+    <Content Include="Template\modern\assets\js\pages\demo.crm-dashboard.js" />
+    <Content Include="Template\modern\assets\js\pages\demo.crm-management.js" />
+    <Content Include="Template\modern\assets\js\pages\demo.crm-project.js" />
+    <Content Include="Template\modern\assets\js\pages\demo.customers.js" />
+    <Content Include="Template\modern\assets\js\pages\demo.dashboard-analytics.js" />
+    <Content Include="Template\modern\assets\js\pages\demo.dashboard-projects.js" />
+    <Content Include="Template\modern\assets\js\pages\demo.dashboard-wallet.js" />
+    <Content Include="Template\modern\assets\js\pages\demo.dashboard.js" />
+    <Content Include="Template\modern\assets\js\pages\demo.datatable-init.js" />
+    <Content Include="Template\modern\assets\js\pages\demo.form-wizard.js" />
+    <Content Include="Template\modern\assets\js\pages\demo.google-maps.js" />
+    <Content Include="Template\modern\assets\js\pages\demo.inbox.js" />
+    <Content Include="Template\modern\assets\js\pages\demo.jstree.js" />
+    <Content Include="Template\modern\assets\js\pages\demo.materialdesignicons.js" />
+    <Content Include="Template\modern\assets\js\pages\demo.products.js" />
+    <Content Include="Template\modern\assets\js\pages\demo.profile.js" />
+    <Content Include="Template\modern\assets\js\pages\demo.project-detail.js" />
+    <Content Include="Template\modern\assets\js\pages\demo.project-gantt.js" />
+    <Content Include="Template\modern\assets\js\pages\demo.quilljs.js" />
+    <Content Include="Template\modern\assets\js\pages\demo.remixicons.js" />
+    <Content Include="Template\modern\assets\js\pages\demo.sellers.js" />
+    <Content Include="Template\modern\assets\js\pages\demo.simplemde.js" />
+    <Content Include="Template\modern\assets\js\pages\demo.sparkline.js" />
+    <Content Include="Template\modern\assets\js\pages\demo.tasks.js" />
+    <Content Include="Template\modern\assets\js\pages\demo.timepicker.js" />
+    <Content Include="Template\modern\assets\js\pages\demo.toastr.js" />
+    <Content Include="Template\modern\assets\js\pages\demo.typehead.js" />
+    <Content Include="Template\modern\assets\js\pages\demo.vector-maps.js" />
+    <Content Include="Template\modern\assets\js\pages\demo.widgets.js" />
+    <Content Include="Template\modern\assets\js\ui\component.dragula.js" />
+    <Content Include="Template\modern\assets\js\ui\component.fileupload.js" />
+    <Content Include="Template\modern\assets\js\ui\component.range-slider.js" />
+    <Content Include="Template\modern\assets\js\ui\component.rating.js" />
+    <Content Include="Template\modern\assets\js\ui\component.todo.js" />
+    <Content Include="Template\modern\assets\js\vendor.min.js" />
+    <Content Include="Template\modern\assets\vendor\admin-resources\jquery.vectormap\jquery-jvectormap-1.2.2.css" />
+    <Content Include="Template\modern\assets\vendor\admin-resources\jquery.vectormap\jquery-jvectormap-1.2.2.min.js" />
+    <Content Include="Template\modern\assets\vendor\admin-resources\jquery.vectormap\maps\jquery-jvectormap-au-mill-en.js" />
+    <Content Include="Template\modern\assets\vendor\admin-resources\jquery.vectormap\maps\jquery-jvectormap-ca-lcc-en.js" />
+    <Content Include="Template\modern\assets\vendor\admin-resources\jquery.vectormap\maps\jquery-jvectormap-es-merc.js" />
+    <Content Include="Template\modern\assets\vendor\admin-resources\jquery.vectormap\maps\jquery-jvectormap-es-mill.js" />
+    <Content Include="Template\modern\assets\vendor\admin-resources\jquery.vectormap\maps\jquery-jvectormap-europe-mill-en.js" />
+    <Content Include="Template\modern\assets\vendor\admin-resources\jquery.vectormap\maps\jquery-jvectormap-fr-merc-en.js" />
+    <Content Include="Template\modern\assets\vendor\admin-resources\jquery.vectormap\maps\jquery-jvectormap-in-mill-en.js" />
+    <Content Include="Template\modern\assets\vendor\admin-resources\jquery.vectormap\maps\jquery-jvectormap-uk-mill-en.js" />
+    <Content Include="Template\modern\assets\vendor\admin-resources\jquery.vectormap\maps\jquery-jvectormap-us-il-chicago-mill-en.js" />
+    <Content Include="Template\modern\assets\vendor\admin-resources\jquery.vectormap\maps\jquery-jvectormap-us-merc-en.js" />
+    <Content Include="Template\modern\assets\vendor\admin-resources\jquery.vectormap\maps\jquery-jvectormap-world-mill-en.js" />
+    <Content Include="Template\modern\assets\vendor\apexcharts\apexcharts.min.js" />
+    <Content Include="Template\modern\assets\vendor\bootstrap-datepicker\css\bootstrap-datepicker.min.css" />
+    <Content Include="Template\modern\assets\vendor\bootstrap-datepicker\js\bootstrap-datepicker.min.js" />
+    <Content Include="Template\modern\assets\vendor\bootstrap-maxlength\bootstrap-maxlength.min.js" />
+    <Content Include="Template\modern\assets\vendor\bootstrap-timepicker\css\bootstrap-timepicker.min.css" />
+    <Content Include="Template\modern\assets\vendor\bootstrap-timepicker\js\bootstrap-timepicker.min.js" />
+    <Content Include="Template\modern\assets\vendor\bootstrap-touchspin\jquery.bootstrap-touchspin.min.css" />
+    <Content Include="Template\modern\assets\vendor\bootstrap-touchspin\jquery.bootstrap-touchspin.min.js" />
+    <Content Include="Template\modern\assets\vendor\britecharts\bundled\britecharts.min.js" />
+    <Content Include="Template\modern\assets\vendor\britecharts\css\britecharts.min.css" />
+    <Content Include="Template\modern\assets\vendor\chart.js\chart.min.js" />
+    <Content Include="Template\modern\assets\vendor\clipboard\clipboard.min.js" />
+    <Content Include="Template\modern\assets\vendor\d3\d3.min.js" />
+    <Content Include="Template\modern\assets\vendor\datatables.net-bs5\css\dataTables.bootstrap5.min.css" />
+    <Content Include="Template\modern\assets\vendor\datatables.net-bs5\js\dataTables.bootstrap5.min.js" />
+    <Content Include="Template\modern\assets\vendor\datatables.net-buttons-bs5\css\buttons.bootstrap5.min.css" />
+    <Content Include="Template\modern\assets\vendor\datatables.net-buttons-bs5\js\buttons.bootstrap5.min.js" />
+    <Content Include="Template\modern\assets\vendor\datatables.net-buttons\js\buttons.flash.min.js" />
+    <Content Include="Template\modern\assets\vendor\datatables.net-buttons\js\buttons.html5.min.js" />
+    <Content Include="Template\modern\assets\vendor\datatables.net-buttons\js\buttons.print.min.js" />
+    <Content Include="Template\modern\assets\vendor\datatables.net-buttons\js\dataTables.buttons.min.js" />
+    <Content Include="Template\modern\assets\vendor\datatables.net-fixedcolumns-bs5\css\fixedColumns.bootstrap5.min.css" />
+    <Content Include="Template\modern\assets\vendor\datatables.net-fixedcolumns-bs5\js\fixedColumns.bootstrap5.min.js" />
+    <Content Include="Template\modern\assets\vendor\datatables.net-fixedheader-bs5\css\fixedHeader.bootstrap5.min.css" />
+    <Content Include="Template\modern\assets\vendor\datatables.net-fixedheader\js\dataTables.fixedHeader.min.js" />
+    <Content Include="Template\modern\assets\vendor\datatables.net-keytable\js\dataTables.keyTable.min.js" />
+    <Content Include="Template\modern\assets\vendor\datatables.net-responsive-bs5\css\responsive.bootstrap5.min.css" />
+    <Content Include="Template\modern\assets\vendor\datatables.net-responsive-bs5\js\responsive.bootstrap5.min.js" />
+    <Content Include="Template\modern\assets\vendor\datatables.net-responsive\js\dataTables.responsive.min.js" />
+    <Content Include="Template\modern\assets\vendor\datatables.net-select-bs5\css\select.bootstrap5.min.css" />
+    <Content Include="Template\modern\assets\vendor\datatables.net-select\js\dataTables.select.min.js" />
+    <Content Include="Template\modern\assets\vendor\datatables.net\js\jquery.dataTables.min.js" />
+    <Content Include="Template\modern\assets\vendor\daterangepicker\daterangepicker.css" />
+    <Content Include="Template\modern\assets\vendor\daterangepicker\daterangepicker.js" />
+    <Content Include="Template\modern\assets\vendor\daterangepicker\moment.min.js" />
+    <Content Include="Template\modern\assets\vendor\dragula\dragula.min.js" />
+    <Content Include="Template\modern\assets\vendor\dropzone\min\dropzone.min.js" />
+    <Content Include="Template\modern\assets\vendor\flatpickr\flatpickr.min.css" />
+    <Content Include="Template\modern\assets\vendor\flatpickr\flatpickr.min.js" />
+    <Content Include="Template\modern\assets\vendor\frappe-gantt\frappe-gantt.min.css" />
+    <Content Include="Template\modern\assets\vendor\frappe-gantt\frappe-gantt.min.js" />
+    <Content Include="Template\modern\assets\vendor\fullcalendar\main.min.css" />
+    <Content Include="Template\modern\assets\vendor\fullcalendar\main.min.js" />
+    <Content Include="Template\modern\assets\vendor\gmaps\gmaps.min.js" />
+    <Content Include="Template\modern\assets\vendor\handlebars\handlebars.min.js" />
+    <Content Include="Template\modern\assets\vendor\highlightjs\highlight.pack.min.js" />
+    <Content Include="Template\modern\assets\vendor\ion-rangeslider\js\ion.rangeSlider.min.js" />
+    <Content Include="Template\modern\assets\vendor\jquery-datatables-checkboxes\js\dataTables.checkboxes.min.js" />
+    <Content Include="Template\modern\assets\vendor\jquery-mask-plugin\jquery.mask.min.js" />
+    <Content Include="Template\modern\assets\vendor\jquery-sparkline\jquery.sparkline.min.js" />
+    <Content Include="Template\modern\assets\vendor\jquery-toast-plugin\jquery.toast.min.css" />
+    <Content Include="Template\modern\assets\vendor\jquery-toast-plugin\jquery.toast.min.js" />
+    <Content Include="Template\modern\assets\vendor\jquery.rateit\scripts\jquery.rateit.min.js" />
+    <Content Include="Template\modern\assets\vendor\jstree\jstree.min.js" />
+    <Content Include="Template\modern\assets\vendor\jstree\themes\default\32px.png" />
+    <Content Include="Template\modern\assets\vendor\jstree\themes\default\40px.png" />
+    <Content Include="Template\modern\assets\vendor\jstree\themes\default\style.min.css" />
+    <Content Include="Template\modern\assets\vendor\jstree\themes\default\throbber.gif" />
+    <Content Include="Template\modern\assets\vendor\moment\min\moment.min.js" />
+    <Content Include="Template\modern\assets\vendor\quill\quill.bubble.css" />
+    <Content Include="Template\modern\assets\vendor\quill\quill.core.css" />
+    <Content Include="Template\modern\assets\vendor\quill\quill.min.js" />
+    <Content Include="Template\modern\assets\vendor\quill\quill.snow.css" />
+    <Content Include="Template\modern\assets\vendor\select2\css\select2.min.css" />
+    <Content Include="Template\modern\assets\vendor\select2\js\select2.min.js" />
+    <Content Include="Template\modern\assets\vendor\simplemde\simplemde.min.css" />
+    <Content Include="Template\modern\assets\vendor\simplemde\simplemde.min.js" />
+    <Content Include="Template\modern\assets\vendor\twitter-bootstrap-wizard\jquery.bootstrap.wizard.min.js" />
+    <Content Include="Template\modern\assets\vendor\typeahead.js\typeahead.bundle.min.js" />
+    <Content Include="Template\modern\index.html" />
+    <Content Include="WebForm1.aspx" />
+    <Content Include="WebForm2.aspx" />
+    <Content Include="WebForm3.aspx" />
+    <None Include="Properties\PublishProfiles\CustomProfile.pubxml" />
+    <None Include="Scripts\jquery-3.3.1.intellisense.js" />
+    <Content Include="Login.aspx" />
+    <Content Include="Scripts\bootstrap.js" />
+    <Content Include="Scripts\bootstrap.min.js" />
+    <Content Include="Scripts\jquery-3.3.1.js" />
+    <Content Include="Scripts\jquery-3.3.1.min.js" />
+    <Content Include="Scripts\jquery-3.3.1.slim.js" />
+    <Content Include="Scripts\jquery-3.3.1.slim.min.js" />
+    <Content Include="Scripts\modernizr-2.8.3.js" />
+    <Content Include="Scripts\WebForms\DetailsView.js" />
+    <Content Include="Scripts\WebForms\Focus.js" />
+    <Content Include="Scripts\WebForms\GridView.js" />
+    <Content Include="Scripts\WebForms\Menu.js" />
+    <Content Include="Scripts\WebForms\MenuStandards.js" />
+    <Content Include="Scripts\WebForms\MSAjax\MicrosoftAjax.js" />
+    <Content Include="Scripts\WebForms\MSAjax\MicrosoftAjaxApplicationServices.js" />
+    <Content Include="Scripts\WebForms\MSAjax\MicrosoftAjaxComponentModel.js" />
+    <Content Include="Scripts\WebForms\MSAjax\MicrosoftAjaxCore.js" />
+    <Content Include="Scripts\WebForms\MSAjax\MicrosoftAjaxGlobalization.js" />
+    <Content Include="Scripts\WebForms\MSAjax\MicrosoftAjaxHistory.js" />
+    <Content Include="Scripts\WebForms\MSAjax\MicrosoftAjaxNetwork.js" />
+    <Content Include="Scripts\WebForms\MSAjax\MicrosoftAjaxSerialization.js" />
+    <Content Include="Scripts\WebForms\MSAjax\MicrosoftAjaxTimer.js" />
+    <Content Include="Scripts\WebForms\MSAjax\MicrosoftAjaxWebForms.js" />
+    <Content Include="Scripts\WebForms\MSAjax\MicrosoftAjaxWebServices.js" />
+    <Content Include="Scripts\WebForms\SmartNav.js" />
+    <Content Include="Scripts\WebForms\TreeView.js" />
+    <Content Include="Scripts\WebForms\WebForms.js" />
+    <Content Include="Scripts\WebForms\WebParts.js" />
+    <Content Include="Scripts\WebForms\WebUIValidation.js" />
+    <Content Include="Site.Master" />
+    <Content Include="ViewSwitcher.ascx" />
+    <Content Include="Web.config" />
+    <Content Include="Bundle.config" />
+    <Content Include="Site.Mobile.Master" />
+    <Content Include="Template\ValuMaster.Master" />
+    <Content Include="Template\modern\assets\fonts\materialdesignicons-webfont1d2d.eot" />
+    <Content Include="Template\modern\assets\fonts\materialdesignicons-webfont1d2d.ttf" />
+    <Content Include="Template\modern\assets\fonts\materialdesignicons-webfont1d2d.woff" />
+    <Content Include="Template\modern\assets\fonts\materialdesignicons-webfont1d2d.woff2" />
+    <Content Include="Template\modern\assets\fonts\materialdesignicons-webfontd41d.eot" />
+    <Content Include="Template\modern\assets\fonts\Nunito-Bold.eot" />
+    <Content Include="Template\modern\assets\fonts\Nunito-Bold.ttf" />
+    <Content Include="Template\modern\assets\fonts\Nunito-Bold.woff" />
+    <Content Include="Template\modern\assets\fonts\Nunito-Boldd41d.eot" />
+    <Content Include="Template\modern\assets\fonts\Nunito-Light.eot" />
+    <Content Include="Template\modern\assets\fonts\Nunito-Light.ttf" />
+    <Content Include="Template\modern\assets\fonts\Nunito-Light.woff" />
+    <Content Include="Template\modern\assets\fonts\Nunito-Lightd41d.eot" />
+    <Content Include="Template\modern\assets\fonts\Nunito-Medium.eot" />
+    <Content Include="Template\modern\assets\fonts\Nunito-Medium.ttf" />
+    <Content Include="Template\modern\assets\fonts\Nunito-Medium.woff" />
+    <Content Include="Template\modern\assets\fonts\Nunito-Mediumd41d.eot" />
+    <Content Include="Template\modern\assets\fonts\Nunito-Regular.eot" />
+    <Content Include="Template\modern\assets\fonts\Nunito-Regular.ttf" />
+    <Content Include="Template\modern\assets\fonts\Nunito-Regular.woff" />
+    <Content Include="Template\modern\assets\fonts\Nunito-Regulard41d.eot" />
+    <Content Include="Template\modern\assets\fonts\Nunito-SemiBold.eot" />
+    <Content Include="Template\modern\assets\fonts\Nunito-SemiBold.ttf" />
+    <Content Include="Template\modern\assets\fonts\Nunito-SemiBold.woff" />
+    <Content Include="Template\modern\assets\fonts\Nunito-SemiBoldd41d.eot" />
+    <Content Include="Template\modern\assets\fonts\remixicondf6d.eot" />
+    <Content Include="Template\modern\assets\fonts\remixicondf6d.ttf" />
+    <Content Include="Template\modern\assets\fonts\remixicondf6d.woff" />
+    <Content Include="Template\modern\assets\fonts\remixicondf6d.woff2" />
+    <Content Include="Template\modern\assets\fonts\unicons8adf.eot" />
+    <Content Include="Template\modern\assets\fonts\unicons8adf.ttf" />
+    <Content Include="Template\modern\assets\fonts\unicons8adf.woff" />
+    <Content Include="Template\modern\assets\fonts\unicons8adf.woff2" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="App_Start\BundleConfig.cs" />
+    <Compile Include="About.aspx.cs">
+      <DependentUpon>About.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="About.aspx.designer.cs">
+      <DependentUpon>About.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="App_Start\RouteConfig.cs" />
+    <Compile Include="Contact.aspx.cs">
+      <DependentUpon>Contact.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Contact.aspx.designer.cs">
+      <DependentUpon>Contact.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Default.aspx.cs">
+      <DependentUpon>Default.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Default.aspx.designer.cs">
+      <DependentUpon>Default.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Global.asax.cs">
+      <DependentUpon>Global.asax</DependentUpon>
+    </Compile>
+    <Compile Include="Login.aspx.cs">
+      <DependentUpon>Login.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Login.aspx.designer.cs">
+      <DependentUpon>Login.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\Block.aspx.cs">
+      <DependentUpon>Block.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Pages\Block.aspx.designer.cs">
+      <DependentUpon>Block.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\Corrections.aspx.cs">
+      <DependentUpon>Corrections.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Pages\Corrections.aspx.designer.cs">
+      <DependentUpon>Corrections.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\CorrectionsList.aspx.cs">
+      <DependentUpon>CorrectionsList.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Pages\CorrectionsList.aspx.designer.cs">
+      <DependentUpon>CorrectionsList.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\DynamicQuestion.aspx.cs">
+      <DependentUpon>DynamicQuestion.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Pages\DynamicQuestion.aspx.designer.cs">
+      <DependentUpon>DynamicQuestion.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\FixedQuestion.aspx.cs">
+      <DependentUpon>FixedQuestion.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Pages\FixedQuestion.aspx.designer.cs">
+      <DependentUpon>FixedQuestion.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\OptionRef.aspx.cs">
+      <DependentUpon>OptionRef.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Pages\OptionRef.aspx.designer.cs">
+      <DependentUpon>OptionRef.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\QuesRamification.aspx.cs">
+      <DependentUpon>QuesRamification.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Pages\QuesRamification.aspx.designer.cs">
+      <DependentUpon>QuesRamification.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\Questionnaire.aspx.cs">
+      <DependentUpon>Questionnaire.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Pages\Questionnaire.aspx.designer.cs">
+      <DependentUpon>Questionnaire.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\QuestionsTree.aspx.cs">
+      <DependentUpon>QuestionsTree.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Pages\QuestionsTree.aspx.designer.cs">
+      <DependentUpon>QuestionsTree.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\QuestionsTreeNew.aspx.cs">
+      <DependentUpon>QuestionsTreeNew.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Pages\QuestionsTreeNew.aspx.designer.cs">
+      <DependentUpon>QuestionsTreeNew.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\QuesTree1.aspx.cs">
+      <DependentUpon>QuesTree1.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Pages\QuesTree1.aspx.designer.cs">
+      <DependentUpon>QuesTree1.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\QuesTree.aspx.cs">
+      <DependentUpon>QuesTree.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Pages\QuesTree.aspx.designer.cs">
+      <DependentUpon>QuesTree.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\SubCategory.aspx.cs">
+      <DependentUpon>SubCategory.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Pages\SubCategory.aspx.designer.cs">
+      <DependentUpon>SubCategory.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\Category.aspx.cs">
+      <DependentUpon>Category.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Pages\Category.aspx.designer.cs">
+      <DependentUpon>Category.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\Config.aspx.cs">
+      <DependentUpon>Config.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Pages\Config.aspx.designer.cs">
+      <DependentUpon>Config.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\Question.aspx.cs">
+      <DependentUpon>Question.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Pages\Question.aspx.designer.cs">
+      <DependentUpon>Question.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\SurveyType.aspx.cs">
+      <DependentUpon>SurveyType.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Pages\SurveyType.aspx.designer.cs">
+      <DependentUpon>SurveyType.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\ViewExpectedQuesForSurvey.aspx.cs">
+      <DependentUpon>ViewExpectedQuesForSurvey.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Pages\ViewExpectedQuesForSurvey.aspx.designer.cs">
+      <DependentUpon>ViewExpectedQuesForSurvey.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\ViewSurvey.aspx.cs">
+      <DependentUpon>ViewSurvey.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Pages\ViewSurvey.aspx.designer.cs">
+      <DependentUpon>ViewSurvey.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Site.Master.cs">
+      <DependentUpon>Site.Master</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Site.Master.designer.cs">
+      <DependentUpon>Site.Master</DependentUpon>
+    </Compile>
+    <Compile Include="Site.Mobile.Master.cs">
+      <DependentUpon>Site.Mobile.Master</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Site.Mobile.Master.designer.cs">
+      <DependentUpon>Site.Mobile.Master</DependentUpon>
+    </Compile>
+    <Compile Include="Template\ValuMasterNew.Master.cs">
+      <DependentUpon>ValuMasterNew.Master</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Template\ValuMasterNew.Master.designer.cs">
+      <DependentUpon>ValuMasterNew.Master</DependentUpon>
+    </Compile>
+    <Compile Include="Template\ValuMaster.Master.cs">
+      <DependentUpon>ValuMaster.Master</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Template\ValuMaster.Master.designer.cs">
+      <DependentUpon>ValuMaster.Master</DependentUpon>
+    </Compile>
+    <Compile Include="Utility\DatabaseHelper.cs" />
+    <Compile Include="Utility\DataTabletoJSON.cs" />
+    <Compile Include="ViewSwitcher.ascx.cs">
+      <DependentUpon>ViewSwitcher.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="ViewSwitcher.ascx.designer.cs">
+      <DependentUpon>ViewSwitcher.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="WebForm1.aspx.cs">
+      <DependentUpon>WebForm1.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="WebForm1.aspx.designer.cs">
+      <DependentUpon>WebForm1.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="WebForm2.aspx.cs">
+      <DependentUpon>WebForm2.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="WebForm2.aspx.designer.cs">
+      <DependentUpon>WebForm2.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="WebForm3.aspx.cs">
+      <DependentUpon>WebForm3.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="WebForm3.aspx.designer.cs">
+      <DependentUpon>WebForm3.aspx</DependentUpon>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="App_Data\" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
+    <Content Include="Scripts\jquery-3.3.1.slim.min.map" />
+    <Content Include="Scripts\jquery-3.3.1.min.map" />
+    <Content Include="Template\ValuMasterNew.Master" />
+    <None Include="Web.Debug.config">
+      <DependentUpon>Web.config</DependentUpon>
+    </None>
+    <None Include="Web.Release.config">
+      <DependentUpon>Web.config</DependentUpon>
+    </None>
+  </ItemGroup>
+  <PropertyGroup>
+    <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
+    <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
+  </PropertyGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <Import Project="$(VSToolsPath)\WebApplications\Microsoft.WebApplication.targets" Condition="'$(VSToolsPath)' != ''" />
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" Condition="false" />
+  <ProjectExtensions>
+    <VisualStudio>
+      <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
+        <WebProjectProperties>
+          <UseIIS>True</UseIIS>
+          <AutoAssignPort>True</AutoAssignPort>
+          <DevelopmentServerPort>52291</DevelopmentServerPort>
+          <DevelopmentServerVPath>/</DevelopmentServerVPath>
+          <IISUrl>http://localhost:52291/</IISUrl>
+          <NTLMAuthentication>False</NTLMAuthentication>
+          <UseCustomServer>False</UseCustomServer>
+          <CustomServerUrl>
+          </CustomServerUrl>
+          <SaveServerSettingsInUserFile>False</SaveServerSettingsInUserFile>
+        </WebProjectProperties>
+      </FlavorProperties>
+    </VisualStudio>
+  </ProjectExtensions>
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.2.0.0\build\net46\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.2.0.0\build\net46\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props'))" />
+  </Target>
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

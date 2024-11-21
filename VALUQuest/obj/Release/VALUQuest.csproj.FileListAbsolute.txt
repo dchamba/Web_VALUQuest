@@ -1,0 +1,142 @@
+D:\Projects\VALU Quest\VALUQuest\VALUQuest\bin\VALUQuest.dll.config
+D:\Projects\VALU Quest\VALUQuest\VALUQuest\bin\VALUQuest.dll
+D:\Projects\VALU Quest\VALUQuest\VALUQuest\bin\VALUQuest.pdb
+D:\Projects\VALU Quest\VALUQuest\VALUQuest\bin\roslyn\csc.exe
+D:\Projects\VALU Quest\VALUQuest\VALUQuest\bin\roslyn\csc.exe.config
+D:\Projects\VALU Quest\VALUQuest\VALUQuest\bin\roslyn\csc.rsp
+D:\Projects\VALU Quest\VALUQuest\VALUQuest\bin\roslyn\csi.exe
+D:\Projects\VALU Quest\VALUQuest\VALUQuest\bin\roslyn\csi.exe.config
+D:\Projects\VALU Quest\VALUQuest\VALUQuest\bin\roslyn\csi.rsp
+D:\Projects\VALU Quest\VALUQuest\VALUQuest\bin\roslyn\Microsoft.Build.Tasks.CodeAnalysis.dll
+D:\Projects\VALU Quest\VALUQuest\VALUQuest\bin\roslyn\Microsoft.CodeAnalysis.CSharp.dll
+D:\Projects\VALU Quest\VALUQuest\VALUQuest\bin\roslyn\Microsoft.CodeAnalysis.CSharp.Scripting.dll
+D:\Projects\VALU Quest\VALUQuest\VALUQuest\bin\roslyn\Microsoft.CodeAnalysis.dll
+D:\Projects\VALU Quest\VALUQuest\VALUQuest\bin\roslyn\Microsoft.CodeAnalysis.Scripting.dll
+D:\Projects\VALU Quest\VALUQuest\VALUQuest\bin\roslyn\Microsoft.CodeAnalysis.VisualBasic.dll
+D:\Projects\VALU Quest\VALUQuest\VALUQuest\bin\roslyn\Microsoft.CSharp.Core.targets
+D:\Projects\VALU Quest\VALUQuest\VALUQuest\bin\roslyn\Microsoft.DiaSymReader.Native.amd64.dll
+D:\Projects\VALU Quest\VALUQuest\VALUQuest\bin\roslyn\Microsoft.DiaSymReader.Native.x86.dll
+D:\Projects\VALU Quest\VALUQuest\VALUQuest\bin\roslyn\Microsoft.Managed.Core.targets
+D:\Projects\VALU Quest\VALUQuest\VALUQuest\bin\roslyn\Microsoft.VisualBasic.Core.targets
+D:\Projects\VALU Quest\VALUQuest\VALUQuest\bin\roslyn\System.AppContext.dll
+D:\Projects\VALU Quest\VALUQuest\VALUQuest\bin\roslyn\System.Collections.Immutable.dll
+D:\Projects\VALU Quest\VALUQuest\VALUQuest\bin\roslyn\System.Console.dll
+D:\Projects\VALU Quest\VALUQuest\VALUQuest\bin\roslyn\System.Diagnostics.FileVersionInfo.dll
+D:\Projects\VALU Quest\VALUQuest\VALUQuest\bin\roslyn\System.Diagnostics.StackTrace.dll
+D:\Projects\VALU Quest\VALUQuest\VALUQuest\bin\roslyn\System.IO.Compression.dll
+D:\Projects\VALU Quest\VALUQuest\VALUQuest\bin\roslyn\System.IO.FileSystem.dll
+D:\Projects\VALU Quest\VALUQuest\VALUQuest\bin\roslyn\System.IO.FileSystem.Primitives.dll
+D:\Projects\VALU Quest\VALUQuest\VALUQuest\bin\roslyn\System.IO.Pipes.AccessControl.dll
+D:\Projects\VALU Quest\VALUQuest\VALUQuest\bin\roslyn\System.IO.Pipes.dll
+D:\Projects\VALU Quest\VALUQuest\VALUQuest\bin\roslyn\System.Reflection.Metadata.dll
+D:\Projects\VALU Quest\VALUQuest\VALUQuest\bin\roslyn\System.Security.AccessControl.dll
+D:\Projects\VALU Quest\VALUQuest\VALUQuest\bin\roslyn\System.Security.Claims.dll
+D:\Projects\VALU Quest\VALUQuest\VALUQuest\bin\roslyn\System.Security.Cryptography.Algorithms.dll
+D:\Projects\VALU Quest\VALUQuest\VALUQuest\bin\roslyn\System.Security.Cryptography.Encoding.dll
+D:\Projects\VALU Quest\VALUQuest\VALUQuest\bin\roslyn\System.Security.Cryptography.Primitives.dll
+D:\Projects\VALU Quest\VALUQuest\VALUQuest\bin\roslyn\System.Security.Cryptography.X509Certificates.dll
+D:\Projects\VALU Quest\VALUQuest\VALUQuest\bin\roslyn\System.Security.Principal.Windows.dll
+D:\Projects\VALU Quest\VALUQuest\VALUQuest\bin\roslyn\System.Text.Encoding.CodePages.dll
+D:\Projects\VALU Quest\VALUQuest\VALUQuest\bin\roslyn\System.ValueTuple.dll
+D:\Projects\VALU Quest\VALUQuest\VALUQuest\bin\roslyn\System.Xml.ReaderWriter.dll
+D:\Projects\VALU Quest\VALUQuest\VALUQuest\bin\roslyn\System.Xml.XmlDocument.dll
+D:\Projects\VALU Quest\VALUQuest\VALUQuest\bin\roslyn\System.Xml.XPath.dll
+D:\Projects\VALU Quest\VALUQuest\VALUQuest\bin\roslyn\System.Xml.XPath.XDocument.dll
+D:\Projects\VALU Quest\VALUQuest\VALUQuest\bin\roslyn\vbc.exe
+D:\Projects\VALU Quest\VALUQuest\VALUQuest\bin\roslyn\vbc.exe.config
+D:\Projects\VALU Quest\VALUQuest\VALUQuest\bin\roslyn\vbc.rsp
+D:\Projects\VALU Quest\VALUQuest\VALUQuest\bin\roslyn\VBCSCompiler.exe
+D:\Projects\VALU Quest\VALUQuest\VALUQuest\bin\roslyn\VBCSCompiler.exe.config
+D:\Projects\VALU Quest\VALUQuest\VALUQuest\bin\Antlr3.Runtime.dll
+D:\Projects\VALU Quest\VALUQuest\VALUQuest\bin\AspNet.ScriptManager.bootstrap.dll
+D:\Projects\VALU Quest\VALUQuest\VALUQuest\bin\AspNet.ScriptManager.jQuery.dll
+D:\Projects\VALU Quest\VALUQuest\VALUQuest\bin\Microsoft.AspNet.FriendlyUrls.dll
+D:\Projects\VALU Quest\VALUQuest\VALUQuest\bin\Microsoft.AspNet.Web.Optimization.WebForms.dll
+D:\Projects\VALU Quest\VALUQuest\VALUQuest\bin\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.dll
+D:\Projects\VALU Quest\VALUQuest\VALUQuest\bin\Microsoft.ScriptManager.MSAjax.dll
+D:\Projects\VALU Quest\VALUQuest\VALUQuest\bin\Microsoft.ScriptManager.WebForms.dll
+D:\Projects\VALU Quest\VALUQuest\VALUQuest\bin\Microsoft.Web.Infrastructure.dll
+D:\Projects\VALU Quest\VALUQuest\VALUQuest\bin\Newtonsoft.Json.dll
+D:\Projects\VALU Quest\VALUQuest\VALUQuest\bin\System.Web.Optimization.dll
+D:\Projects\VALU Quest\VALUQuest\VALUQuest\bin\WebGrease.dll
+D:\Projects\VALU Quest\VALUQuest\VALUQuest\bin\System.Web.Optimization.xml
+D:\Projects\VALU Quest\VALUQuest\VALUQuest\bin\Newtonsoft.Json.xml
+D:\Projects\VALU Quest\VALUQuest\VALUQuest\bin\Antlr3.Runtime.pdb
+D:\Projects\VALU Quest\VALUQuest\VALUQuest\bin\Microsoft.AspNet.FriendlyUrls.xml
+D:\Projects\VALU Quest\VALUQuest\VALUQuest\bin\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.xml
+D:\Projects\VALU Quest\VALUQuest\VALUQuest\obj\Release\VALUQuest.csproj.CoreCompileInputs.cache
+D:\Projects\VALU Quest\VALUQuest\VALUQuest\obj\Release\VALUQuest.csproj.CopyComplete
+D:\Projects\VALU Quest\VALUQuest\VALUQuest\obj\Release\VALUQuest.dll
+D:\Projects\VALU Quest\VALUQuest\VALUQuest\obj\Release\VALUQuest.pdb
+D:\Projects\VALU Quest\VALUQuest\VALUQuest\obj\Release\VALUQuest.csprojAssemblyReference.cache
+D:\Projects\VALU Quest\New folder\VALUQuest\VALUQuest\VALUQuest\bin\VALUQuest.dll.config
+D:\Projects\VALU Quest\New folder\VALUQuest\VALUQuest\VALUQuest\bin\VALUQuest.dll
+D:\Projects\VALU Quest\New folder\VALUQuest\VALUQuest\VALUQuest\bin\VALUQuest.pdb
+D:\Projects\VALU Quest\New folder\VALUQuest\VALUQuest\VALUQuest\bin\roslyn\csc.exe
+D:\Projects\VALU Quest\New folder\VALUQuest\VALUQuest\VALUQuest\bin\roslyn\csc.exe.config
+D:\Projects\VALU Quest\New folder\VALUQuest\VALUQuest\VALUQuest\bin\roslyn\csc.rsp
+D:\Projects\VALU Quest\New folder\VALUQuest\VALUQuest\VALUQuest\bin\roslyn\csi.exe
+D:\Projects\VALU Quest\New folder\VALUQuest\VALUQuest\VALUQuest\bin\roslyn\csi.exe.config
+D:\Projects\VALU Quest\New folder\VALUQuest\VALUQuest\VALUQuest\bin\roslyn\csi.rsp
+D:\Projects\VALU Quest\New folder\VALUQuest\VALUQuest\VALUQuest\bin\roslyn\Microsoft.Build.Tasks.CodeAnalysis.dll
+D:\Projects\VALU Quest\New folder\VALUQuest\VALUQuest\VALUQuest\bin\roslyn\Microsoft.CodeAnalysis.CSharp.dll
+D:\Projects\VALU Quest\New folder\VALUQuest\VALUQuest\VALUQuest\bin\roslyn\Microsoft.CodeAnalysis.CSharp.Scripting.dll
+D:\Projects\VALU Quest\New folder\VALUQuest\VALUQuest\VALUQuest\bin\roslyn\Microsoft.CodeAnalysis.dll
+D:\Projects\VALU Quest\New folder\VALUQuest\VALUQuest\VALUQuest\bin\roslyn\Microsoft.CodeAnalysis.Scripting.dll
+D:\Projects\VALU Quest\New folder\VALUQuest\VALUQuest\VALUQuest\bin\roslyn\Microsoft.CodeAnalysis.VisualBasic.dll
+D:\Projects\VALU Quest\New folder\VALUQuest\VALUQuest\VALUQuest\bin\roslyn\Microsoft.CSharp.Core.targets
+D:\Projects\VALU Quest\New folder\VALUQuest\VALUQuest\VALUQuest\bin\roslyn\Microsoft.DiaSymReader.Native.amd64.dll
+D:\Projects\VALU Quest\New folder\VALUQuest\VALUQuest\VALUQuest\bin\roslyn\Microsoft.DiaSymReader.Native.x86.dll
+D:\Projects\VALU Quest\New folder\VALUQuest\VALUQuest\VALUQuest\bin\roslyn\Microsoft.Managed.Core.targets
+D:\Projects\VALU Quest\New folder\VALUQuest\VALUQuest\VALUQuest\bin\roslyn\Microsoft.VisualBasic.Core.targets
+D:\Projects\VALU Quest\New folder\VALUQuest\VALUQuest\VALUQuest\bin\roslyn\System.AppContext.dll
+D:\Projects\VALU Quest\New folder\VALUQuest\VALUQuest\VALUQuest\bin\roslyn\System.Collections.Immutable.dll
+D:\Projects\VALU Quest\New folder\VALUQuest\VALUQuest\VALUQuest\bin\roslyn\System.Console.dll
+D:\Projects\VALU Quest\New folder\VALUQuest\VALUQuest\VALUQuest\bin\roslyn\System.Diagnostics.FileVersionInfo.dll
+D:\Projects\VALU Quest\New folder\VALUQuest\VALUQuest\VALUQuest\bin\roslyn\System.Diagnostics.StackTrace.dll
+D:\Projects\VALU Quest\New folder\VALUQuest\VALUQuest\VALUQuest\bin\roslyn\System.IO.Compression.dll
+D:\Projects\VALU Quest\New folder\VALUQuest\VALUQuest\VALUQuest\bin\roslyn\System.IO.FileSystem.dll
+D:\Projects\VALU Quest\New folder\VALUQuest\VALUQuest\VALUQuest\bin\roslyn\System.IO.FileSystem.Primitives.dll
+D:\Projects\VALU Quest\New folder\VALUQuest\VALUQuest\VALUQuest\bin\roslyn\System.IO.Pipes.AccessControl.dll
+D:\Projects\VALU Quest\New folder\VALUQuest\VALUQuest\VALUQuest\bin\roslyn\System.IO.Pipes.dll
+D:\Projects\VALU Quest\New folder\VALUQuest\VALUQuest\VALUQuest\bin\roslyn\System.Reflection.Metadata.dll
+D:\Projects\VALU Quest\New folder\VALUQuest\VALUQuest\VALUQuest\bin\roslyn\System.Security.AccessControl.dll
+D:\Projects\VALU Quest\New folder\VALUQuest\VALUQuest\VALUQuest\bin\roslyn\System.Security.Claims.dll
+D:\Projects\VALU Quest\New folder\VALUQuest\VALUQuest\VALUQuest\bin\roslyn\System.Security.Cryptography.Algorithms.dll
+D:\Projects\VALU Quest\New folder\VALUQuest\VALUQuest\VALUQuest\bin\roslyn\System.Security.Cryptography.Encoding.dll
+D:\Projects\VALU Quest\New folder\VALUQuest\VALUQuest\VALUQuest\bin\roslyn\System.Security.Cryptography.Primitives.dll
+D:\Projects\VALU Quest\New folder\VALUQuest\VALUQuest\VALUQuest\bin\roslyn\System.Security.Cryptography.X509Certificates.dll
+D:\Projects\VALU Quest\New folder\VALUQuest\VALUQuest\VALUQuest\bin\roslyn\System.Security.Principal.Windows.dll
+D:\Projects\VALU Quest\New folder\VALUQuest\VALUQuest\VALUQuest\bin\roslyn\System.Text.Encoding.CodePages.dll
+D:\Projects\VALU Quest\New folder\VALUQuest\VALUQuest\VALUQuest\bin\roslyn\System.ValueTuple.dll
+D:\Projects\VALU Quest\New folder\VALUQuest\VALUQuest\VALUQuest\bin\roslyn\System.Xml.ReaderWriter.dll
+D:\Projects\VALU Quest\New folder\VALUQuest\VALUQuest\VALUQuest\bin\roslyn\System.Xml.XmlDocument.dll
+D:\Projects\VALU Quest\New folder\VALUQuest\VALUQuest\VALUQuest\bin\roslyn\System.Xml.XPath.dll
+D:\Projects\VALU Quest\New folder\VALUQuest\VALUQuest\VALUQuest\bin\roslyn\System.Xml.XPath.XDocument.dll
+D:\Projects\VALU Quest\New folder\VALUQuest\VALUQuest\VALUQuest\bin\roslyn\vbc.exe
+D:\Projects\VALU Quest\New folder\VALUQuest\VALUQuest\VALUQuest\bin\roslyn\vbc.exe.config
+D:\Projects\VALU Quest\New folder\VALUQuest\VALUQuest\VALUQuest\bin\roslyn\vbc.rsp
+D:\Projects\VALU Quest\New folder\VALUQuest\VALUQuest\VALUQuest\bin\roslyn\VBCSCompiler.exe
+D:\Projects\VALU Quest\New folder\VALUQuest\VALUQuest\VALUQuest\bin\roslyn\VBCSCompiler.exe.config
+D:\Projects\VALU Quest\New folder\VALUQuest\VALUQuest\VALUQuest\bin\Antlr3.Runtime.dll
+D:\Projects\VALU Quest\New folder\VALUQuest\VALUQuest\VALUQuest\bin\AspNet.ScriptManager.bootstrap.dll
+D:\Projects\VALU Quest\New folder\VALUQuest\VALUQuest\VALUQuest\bin\AspNet.ScriptManager.jQuery.dll
+D:\Projects\VALU Quest\New folder\VALUQuest\VALUQuest\VALUQuest\bin\Microsoft.AspNet.FriendlyUrls.dll
+D:\Projects\VALU Quest\New folder\VALUQuest\VALUQuest\VALUQuest\bin\Microsoft.AspNet.Web.Optimization.WebForms.dll
+D:\Projects\VALU Quest\New folder\VALUQuest\VALUQuest\VALUQuest\bin\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.dll
+D:\Projects\VALU Quest\New folder\VALUQuest\VALUQuest\VALUQuest\bin\Microsoft.ScriptManager.MSAjax.dll
+D:\Projects\VALU Quest\New folder\VALUQuest\VALUQuest\VALUQuest\bin\Microsoft.ScriptManager.WebForms.dll
+D:\Projects\VALU Quest\New folder\VALUQuest\VALUQuest\VALUQuest\bin\Microsoft.Web.Infrastructure.dll
+D:\Projects\VALU Quest\New folder\VALUQuest\VALUQuest\VALUQuest\bin\Newtonsoft.Json.dll
+D:\Projects\VALU Quest\New folder\VALUQuest\VALUQuest\VALUQuest\bin\System.Web.Optimization.dll
+D:\Projects\VALU Quest\New folder\VALUQuest\VALUQuest\VALUQuest\bin\WebGrease.dll
+D:\Projects\VALU Quest\New folder\VALUQuest\VALUQuest\VALUQuest\bin\System.Web.Optimization.xml
+D:\Projects\VALU Quest\New folder\VALUQuest\VALUQuest\VALUQuest\bin\Newtonsoft.Json.xml
+D:\Projects\VALU Quest\New folder\VALUQuest\VALUQuest\VALUQuest\bin\Antlr3.Runtime.pdb
+D:\Projects\VALU Quest\New folder\VALUQuest\VALUQuest\VALUQuest\bin\Microsoft.AspNet.FriendlyUrls.xml
+D:\Projects\VALU Quest\New folder\VALUQuest\VALUQuest\VALUQuest\bin\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.xml
+D:\Projects\VALU Quest\New folder\VALUQuest\VALUQuest\VALUQuest\obj\Release\VALUQuest.csprojAssemblyReference.cache
+D:\Projects\VALU Quest\New folder\VALUQuest\VALUQuest\VALUQuest\obj\Release\VALUQuest.csproj.CoreCompileInputs.cache
+D:\Projects\VALU Quest\New folder\VALUQuest\VALUQuest\VALUQuest\obj\Release\VALUQuest.csproj.CopyComplete
+D:\Projects\VALU Quest\New folder\VALUQuest\VALUQuest\VALUQuest\obj\Release\VALUQuest.dll
+D:\Projects\VALU Quest\New folder\VALUQuest\VALUQuest\VALUQuest\obj\Release\VALUQuest.pdb

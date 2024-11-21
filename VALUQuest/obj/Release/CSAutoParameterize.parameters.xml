@@ -1,0 +1,6 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<parameters>
+  <parameter name="valu-Web.config Connection String" description="valu Connection String used in web.config by the application to access the database." defaultValue="Server=203.124.44.149;User ID=tcp_org_pk_questionnaire;Database=tcp_org_pk_questionnaire;Password=Password###222;Connect Timeout=2000;Trusted_Connection=False" tags="SqlConnectionString">
+    <parameterEntry kind="XmlFile" scope="D:\\Projects\\VALU\ Quest\\New\ folder\\VALUQuest\\VALUQuest\\VALUQuest\\obj\\Release\\Package\\PackageTmp\\Web\.config$" match="/configuration/connectionStrings/add[@name='valu']/@connectionString" />
+  </parameter>
+</parameters>
