@@ -1,8 +1,15 @@
-﻿<%@ Page Title="Question Tree" Language="C#" MasterPageFile="~/Template/ValuMaster.Master" AutoEventWireup="true" CodeBehind="QuesTree1.aspx.cs" Inherits="VALUQuest.Pages.QuesTree1" %>
+﻿<%@ Page Title="Question Tree" Language="C#" MasterPageFile="~/Template/ValuMaster.Master" AutoEventWireup="true" CodeBehind="QuesTree2.aspx.cs" Inherits="VALUQuest.Pages.QuesTree2" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
 
     <style>
+        .highlight-node {
+            background-color: #fffae6; /* Light yellow */
+            border: 2px solid #ffd700; /* Gold border */
+            transition: background-color 0.5s ease-out;
+        }
+
+
         .add-node-btn {
             background-color: transparent;
             border: none;
@@ -48,23 +55,26 @@
             padding: 10px; /* Optional: Adds spacing inside the container */
         }
 
-        .custom-category-label {
-            padding: 5px 10px;
-            background-color: #f9f9f9;
-            border-bottom: 1px solid #ddd;
-            font-size: 14px;
-        }
+.custom-category-label {
+    padding: 5px 10px;
+    background-color: #f9f9f9;
+    border-bottom: 1px solid #ddd;
+    font-size: 14px;
+}
 
-        .add-button {
-            color: #007bff;
-            cursor: pointer;
-            font-size: 12px;
-            text-decoration: underline;
-        }
+.add-button {
+    color: #007bff;
+    cursor: pointer;
+    font-size: 12px;
+    text-decoration: underline;
+}
 
-            .add-button:hover {
-                color: #0056b3;
-            }
+.add-button:hover {
+    color: #0056b3;
+}
+
+
+
     </style>
 
 
@@ -85,25 +95,27 @@
 
 
 
-                    <div class="row mb-3 align-items-center">
-                        <!-- Left Button -->
-                        <div class="col-md-6 d-flex justify-content-start">
-                            <button id="btnAddMasterQuestion" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#masterModal">
-                                <i class="fa fa-plus"></i>Aggiungi nuova ramificazione
-                            </button>
-                        </div>
-                        <!-- Right Button -->
-                        <div class="col-md-6 d-flex justify-content-end">
-                            <div class="tree-controls">
-                                <button id="toggleExpandCollapseBtn" class="btn btn-primary">
-                                    Expand Nodes
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-
                     <div class="row">
                         <div class="col-md-12">
+                            <div class="tree-controls mb-3">
+                                <button id="toggleExpandCollapseBtn" class="btn btn-primary">
+                                    <i class="fa fa-plus"></i>Expand All
+                               
+                                </button>
+                            </div>
+
+                            <div class="mb-3">
+                                <button id="btnAddMasterQuestion" class="btn btn-success" data-bs-toggle="modal"
+                                    data-bs-target="#masterModal">
+                                    <i class="fa fa-plus"></i>Aggiungi nuova ramificazione
+                               
+                                </button>
+
+                                <button id="debugTreeState" class="btn btn-warning">Debug Tree State</button>
+
+                            </div>
+
+
                             <div id="treeContainer" style="width: 100%; height: 500px; overflow-y: auto; border: 1px solid #ccc; padding: 10px;">
                                 <div id="questionTree"></div>
                             </div>
@@ -126,6 +138,7 @@
     <input type="hidden" id="hiddenNodeLevel" />
     <input type="hidden" id="hiddenStartingQuestionTreeId" />
     <input type="hidden" id="hiddenHasChildNodes" />
+    <input type="hidden" id="hiddenFatherQuestionTreeId" />
 
 
 
@@ -171,42 +184,44 @@
         <div class="modal-dialog modal-full-width">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h4 class="modal-title" id="childfullWidthModalLabel">Domande figlie</h4>
+                    <h4 class="modal-title" id="childfullWidthModalLabel">Child Questions</h4>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-hidden="true"></button>
                 </div>
                 <div class="modal-body">
-
+                
 
                     <div class="row">
-                        <!-- New Category Dropdown -->
-                        <div class="col-md-12">
-                            <label class="form-label">Seleziona Categorie</label>
-                            <select id="ddlCategorySelect" class="select2 form-control select2-multiple" multiple="multiple" data-placeholder="Seleziona Categorie">
-                            </select>
-                        </div>
-                    </div>
-                    <div class="row mt-3">
-                        <div class="col-md-12">
-                            <button type="button" class="btn btn-primary" onclick="fetchQuestionsByCategories()">Carica Domande</button>
-                        </div>
-                    </div>
+    <!-- New Category Dropdown -->
+    <div class="col-md-12">
+        <label class="form-label">Select Categories</label>
+        <select id="ddlCategorySelect" class="select2 form-control select2-multiple" multiple="multiple" data-placeholder="Select Categories">
+        </select>
+    </div>
+</div>
+<div class="row mt-3">
+    <div class="col-md-12">
+<button type="button" class="btn btn-primary" onclick="fetchQuestionsByCategories()">Fetch Questions</button>
+
+    </div>
+</div>
 
                     <div class="row mt-3">
                         <div class="col-md-12">
-                            <label class="form-label">Seleziona Domande</label>
-                            <select id="ddlMultiQuestions" class="select2 form-control select2-multiple" data-toggle="select2" multiple="multiple" data-placeholder="Cerca ..."></select>
+                            <label class="form-label">Select Questions</label>
+                            <select id="ddlMultiQuestions" class="select2 form-control select2-multiple" data-toggle="select2" multiple="multiple" data-placeholder="Choose ..."></select>
                         </div>
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-light" data-bs-dismiss="modal">Chiudi</button>
-                    <button type="button" class="btn btn-primary" onclick="addChildQuestions()">Salva</button>
+                    <button type="button" class="btn btn-light" data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary" onclick="addChildQuestions()">Save changes</button>
                 </div>
             </div>
             <!-- /.modal-content -->
         </div>
         <!-- /.modal-dialog -->
     </div>
+
 
 
     <!-- jQuery Library -->
@@ -224,6 +239,28 @@
 </script>
 
     <script>
+
+        // Debug button click event
+        $("#debugTreeState").click(function () {
+            let tree = $fancy("#questionTree").fancytree("getTree");
+
+            // Capture expanded nodes
+            let expandedKeys = [];
+            tree.visit(function (node) {
+                if (node.expanded) {
+                    expandedKeys.push(node.key);
+                }
+            });
+
+            // Capture the currently active (selected) node
+            let selectedNodeKey = tree.getActiveNode() ? tree.getActiveNode().key : null;
+
+            //console.log("Current Tree State:");
+            //console.log("Expanded Nodes:", expandedKeys);
+            //console.log("Selected Node:", selectedNodeKey);
+        });
+
+
 
         $(document).ready(function () {
 
@@ -248,7 +285,6 @@
 
             loadMultiSelectQuestions();
 
-
             loadCategories();
 
              $('#ddlCategorySelect').select2({
@@ -260,6 +296,7 @@
     $('#childModal').on('hidden.bs.modal', function () {
         $('#ddlCategorySelect').val(null).trigger('change'); // Clear selected values
     });
+
         });
 
 
@@ -267,7 +304,7 @@
         function loadFancyTree() {
             $.ajax({
                 type: "POST",
-                url: "/Pages/QuesTree1.aspx/GetQuestionTreeData",
+                url: "/Pages/QuesTree2.aspx/GetQuestionTreeData",
                 contentType: "application/json; charset=utf-8",
                 dataType: "json",
                 success: function (response) {
@@ -308,7 +345,7 @@
                 renderNode: function (event, data) {
                     var node = data.node;
 
-                    //console.log("Node data:", node.data);
+                  //   console.log("Node data:", node.data);
 
 
                     var $span = $(node.span);
@@ -319,7 +356,13 @@
                             html: '<i class="fa fa-plus"></i>',
                             class: "add-node-btn custom-add-btn ms-2",
                             click: function (e) {
+
+
+
                                 e.stopPropagation(); // Prevent default node click behavior
+
+
+                               
                                 if (node.key === "root_0") {
                                     $('#masterModal').modal('show'); // Show the master modal for the root node
                                 } else {
@@ -337,9 +380,12 @@
 
                                     const startingQuestionTreeId = node.data.treeNodeElement.startingQuestionTreeId || null;
 
+                                    const fatherQuestionTreeId = node.data.treeNodeElement.fatherQuestionTreeId || null;
+
+                                    // Use the updated method to get the FancyTree instance
 
 
-                                    openChildModal(optionId, questionId, questionTreeId, nodeLevel, startingQuestionTreeId, hasChildNodes);
+                                    openChildModal(optionId, questionId, questionTreeId, nodeLevel, startingQuestionTreeId, hasChildNodes, fatherQuestionTreeId);
                                 }
                             }
                         }).appendTo($span);
@@ -362,6 +408,7 @@
 
 
             });
+
 
             let tree = $fancy("#questionTree").fancytree("getTree");
             let expandQueue = []; // Queue to hold only nodes with children
@@ -390,7 +437,7 @@
                 let node = expandQueue.shift(); // Get the next node from the queue
                 if (node) {
                     node.setExpanded(true).done(function () {
-                        console.log(`Node with key ${node.key} expanded.`);
+                       // console.log(`Node with key ${node.key} expanded.`);
 
                         // Reinitialize the queue to ensure the next click processes correctly
                         initializeExpandQueue();
@@ -399,6 +446,11 @@
                     console.warn("Next node in the queue is invalid or already expanded.");
                 }
             });
+
+
+
+
+
 
 
             // Helper function to collect questionTreeIds of the clicked node and all its child nodes recursively
@@ -440,7 +492,7 @@
 
         function confirmDeleteNode(questionTreeIds) {
             if (questionTreeIds.length > 0) {
-                const userConfirmed = confirm(`Confermi di voler cancellare?`);
+                const userConfirmed = confirm(`Are you sure you want to delete the following ramification?`);
                 if (userConfirmed) {
                     // Track how many deletions have been processed
                     let processedCount = 0;
@@ -452,14 +504,14 @@
 
                             // Check if all nodes have been processed
                             if (processedCount === questionTreeIds.length) {
-                                alert('Ramificazione inserita correttamente');
+                                alert('Node(s) have been successfully deleted');
                                 reloadTree(); // Reload the tree once after all deletions
                             }
                         });
                     });
                 }
             } else {
-                console.error("Nessuna domanda da cancellare.");
+                console.error("No valid QuestionTreeIds found to delete.");
             }
         }
 
@@ -468,7 +520,7 @@
 
             $.ajax({
                 type: "POST",
-                url: "/Pages/QuesTree1.aspx/DeleteQuestionNode", // Ensure this matches your WebMethod URL
+                url: "/Pages/QuesTree2.aspx/DeleteQuestionNode", // Ensure this matches your WebMethod URL
                 contentType: "application/json; charset=utf-8",
                 data: JSON.stringify({
                     questionTreeId: questionTreeId
@@ -476,7 +528,7 @@
                 dataType: "json",
                 success: function (response) {
                     if (response.d === "success") {
-                        console.log(`Il nodo(i) è stato eliminato con successo`);
+                       // console.log(`Node with QuestionTreeId ${questionTreeId} has been successfully deleted`);
                     } else {
                         console.error(`Failed to delete node with QuestionTreeId ${questionTreeId}: ${response.d}`);
                     }
@@ -492,14 +544,13 @@
                 }
             });
         }
-
-
+        
 
         function addMasterQuestion() {
             var questionId = $("#ddlQuestions").val(); // Get the selected questionId from the dropdown
 
             if (!questionId) {
-                showAlert('Seleziona una domanda da aggiungere', 'danger');
+                alert("Seleziona una domanda da aggiungere");
                 return;
             }
 
@@ -519,118 +570,226 @@
                 return; // Stop further execution to prevent adding the question
             }
 
-
-            // Proceed with AJAX call to add the question without duplication check
             $.ajax({
                 type: "POST",
-                url: "/Pages/QuesTree1.aspx/InsertHierarchicalQuestion",
+                url: "/Pages/QuesTree2.aspx/InsertHierarchicalQuestion",
                 data: JSON.stringify({ questionId: questionId, parentOptionId: null, parentQuestionId: null }),
                 contentType: "application/json; charset=utf-8",
                 dataType: "json",
                 success: function (response) {
                     if (response.d === "success") {
                         alert("Domanda padre aggiunta correttamente");
-                        $('#masterModal').modal('hide');
-
-                        // Reload the page to show the updated data
                         location.reload();
                     } else {
-                        showAlert('Impossibile aggiungere la domanda: ' + response.d, 'danger');
+                        alert("Errore nell'aggiunta della domanda: " + response.d);
                     }
                 },
                 error: function (error) {
-                    console.log("Errore nell'aggiunta della domanda:", error);
-                    showAlert('Si è verificato un errore durante l aggiunta della domanda.', 'danger');
+                    console.error("Errore nell'aggiunta della domanda:", error);
                 }
             });
+
+
         }
 
 
-        function openChildModal(optionId, questionId, questionTreeId, nodeLevel, startingQuestionTreeId, hasChildNodes) {
-            // Set the hidden fields with the provided values
-            $('#hiddenOptionId').val(optionId);
-            $('#hiddenQuestionId').val(questionId);
-            $('#hiddenQuestionTreeId').val(questionTreeId);
-            $('#hiddenNodeLevel').val(nodeLevel);
-            $('#hiddenStartingQuestionTreeId').val(startingQuestionTreeId);
-            $('#hiddenHasChildNodes').val(hasChildNodes);
+       function openChildModal(optionId, questionId, questionTreeId, nodeLevel, startingQuestionTreeId, hasChildNodes, fatherQuestionTreeId) {
+    // Set the hidden fields with the provided values
+    $('#hiddenOptionId').val(optionId);
+    $('#hiddenQuestionId').val(questionId);
+    $('#hiddenQuestionTreeId').val(questionTreeId);
+    $('#hiddenNodeLevel').val(nodeLevel);
+    $('#hiddenStartingQuestionTreeId').val(startingQuestionTreeId);
+    $('#hiddenHasChildNodes').val(hasChildNodes);
+    $('#hiddenFatherQuestionTreeId').val(fatherQuestionTreeId);
 
-            // Clear only the selected items in the multi-select, not the options
-            $('#ddlMultiQuestions').val(null).trigger('change'); // This clears the selection without emptying the options
+    // Clear only the selected items in the multi-select, not the options
+    $('#ddlMultiQuestions').val(null).trigger('change'); // This clears the selection without emptying the options
+               // Access the reloaded tree
+
+           //console.log('questionId ' + questionId);
+           //console.log('fatherQuestionTreeId ' + fatherQuestionTreeId);
+           //console.log('optionId ' + optionId);
 
 
-            // Open the child modal
-            $('#childModal').modal('show');
-        }
-
-        function addChildQuestions() {
-            var parentOptionId = $('#hiddenOptionId').val();
-            var parentQuestionId = $('#hiddenQuestionId').val();
-            var QuestionTreeId = $('#hiddenQuestionTreeId').val();
-            var NodeLevel = $('#hiddenNodeLevel').val();
-            var StartingQuestionTreeId = $('#hiddenStartingQuestionTreeId').val();
-            var HasChildNodes = $('#hiddenHasChildNodes').val();
+           let tree = $fancy("#questionTree").fancytree("getTree");
+           let targetNode = null;
 
 
 
-            var selectedQuestionIds = $('#ddlMultiQuestions').val();
 
-            if (!selectedQuestionIds || !parentOptionId || !parentQuestionId || !QuestionTreeId || !NodeLevel || !StartingQuestionTreeId || !HasChildNodes) {
-                alert("Assicurati che tutti i campi siano compilati.");
-                return;
+tree.visit(function (node) {
+    // Check if the current node matches all criteria
+    if (
+        node.data.treeNodeElement &&
+        Number(node.data.questionId) === Number(questionId) &&
+        Number(node.data.treeNodeElement.fatherQuestionTreeId) === Number(fatherQuestionTreeId) &&
+        Number(node.data.optionID) === Number(optionId) &&
+        Number(node.data.treeNodeElement.startingQuestionTreeId) === Number(startingQuestionTreeId)
+        
+    ) {
+        targetNode = node;
+        return false; // Stop further traversal once a match is found
+    }
+});
+
+// Check if a match was found and log the result
+//if (targetNode) {
+//    console.log("Yes, matches the data:", {
+//        questionId,
+//        fatherQuestionTreeId,
+//        optionId,
+//        startingQuestionTreeId,
+
+//        node: targetNode.title
+//    });
+//} else {
+//    console.log("No matching node found in the tree.");
+//}
+
+
+    // Open the child modal
+    $('#childModal').modal('show');
+}
+
+
+
+
+     function addChildQuestions() {
+    var parentOptionId = $('#hiddenOptionId').val();
+    var parentQuestionId = $('#hiddenQuestionId').val();
+    var QuestionTreeId = $('#hiddenQuestionTreeId').val();
+    var NodeLevel = $('#hiddenNodeLevel').val();
+    var StartingQuestionTreeId = $('#hiddenStartingQuestionTreeId').val();
+    var HasChildNodes = $('#hiddenHasChildNodes').val();
+         var selectedQuestionIds = $('#ddlMultiQuestions').val();
+          var hiddenFatherQuestionTreeId = $('#hiddenFatherQuestionTreeId').val();
+      
+
+         
+
+    if (!selectedQuestionIds || !parentOptionId || !parentQuestionId || !QuestionTreeId || !NodeLevel || !StartingQuestionTreeId || !HasChildNodes) {
+        alert("Assicurati che tutti i campi siano compilati.");
+        return;
+    }
+
+         
+
+    $.ajax({
+        type: "POST",
+        url: "/Pages/QuesTree2.aspx/InsertChildQuestions", // Updated URL
+        data: JSON.stringify({
+            parentOptionId: parseInt(parentOptionId),
+            parentQuestionId: parseInt(parentQuestionId),
+            QuestionTreeId: parseInt(QuestionTreeId),
+            NodeLevel: parseInt(NodeLevel),
+            StartingQuestionTreeId: parseInt(StartingQuestionTreeId),
+            HasChildNodes: parseInt(HasChildNodes),
+            questionIds: selectedQuestionIds.map(id => parseInt(id))
+        }),
+        contentType: "application/json; charset=utf-8",
+        dataType: "json",
+        success: function (response) {
+            if (response.d === "success") {
+                alert("Domande secondarie aggiunte correttamente!");
+                $('#childModal').modal('hide');
+
+               
+                // Reload the tree and expand the node where child questions were added
+                reloadTree(parentQuestionId, hiddenFatherQuestionTreeId, parentOptionId,StartingQuestionTreeId  );
+
+            } else {
+                alert("Errore nell'aggiunta delle domande secondarie: " + response.d);
             }
-
-            $.ajax({
-                type: "POST",
-                url: "/Pages/QuesTree1.aspx/InsertChildQuestions",
-                data: JSON.stringify({
-                    parentOptionId: parseInt(parentOptionId),
-                    parentQuestionId: parseInt(parentQuestionId),
-                    QuestionTreeId: parseInt(QuestionTreeId),
-                    NodeLevel: parseInt(NodeLevel),
-                    StartingQuestionTreeId: parseInt(StartingQuestionTreeId),
-                    HasChildNodes: parseInt(HasChildNodes),
-                    questionIds: selectedQuestionIds.map(id => parseInt(id))
-                }),
-                contentType: "application/json; charset=utf-8",
-                dataType: "json",
-                success: function (response) {
-                    if (response.d === "success") {
-                        alert("Domande secondarie aggiunte correttamente!");
-                        $('#childModal').modal('hide');
-                        location.reload();
-                    } else {
-                        alert("Errore nell'aggiunta delle domande secondarie: " + response.d);
-                    }
-                },
-                error: function (xhr, status, error) {
-                    console.error("Errore nell'aggiunta delle domande secondarie:", xhr.responseText);
-                }
-            });
+        },
+        error: function (xhr, status, error) {
+            console.error("Errore nell'aggiunta delle domande secondarie:", xhr.responseText);
         }
+    });
+}
 
 
 
-        function reloadTree() {
-            $.ajax({
-                type: "POST",
-                url: "/Pages/QuesTree1.aspx/GetQuestionTreeData", // Ensure this matches your WebMethod URL for fetching tree data
-                contentType: "application/json; charset=utf-8",
-                dataType: "json",
-                success: function (response) {
-                    let treeData = typeof response.d === "string" ? JSON.parse(response.d) : response.d;
 
-                    // Destroy the existing tree to avoid issues during re-initialization
-                    $fancy("#questionTree").fancytree("destroy");
+   function reloadTree(parentQuestionId, hiddenFatherQuestionTreeId, parentOptionId,startingQuestionTreeId) {
+    $.ajax({
+        type: "POST",
+        url: "/Pages/QuesTree2.aspx/GetQuestionTreeData", // Ensure this matches your WebMethod URL
+        contentType: "application/json; charset=utf-8",
+        dataType: "json",
+        success: function (response) {
+            let treeData = typeof response.d === "string" ? JSON.parse(response.d) : response.d;
 
-                    // Re-initialize the tree with the new data
-                    initializeFancyTree(treeData);
-                },
-                error: function (xhr, status, error) {
-                    console.error("Errore durante caricamento: " + xhr.responseText);
+            // Log the received tree data
+        //    console.log("Received tree data:", treeData);
+
+            // Destroy the existing tree
+            $fancy("#questionTree").fancytree("destroy");
+
+            // Re-initialize the tree with the new data
+            initializeFancyTree(treeData);
+
+
+            // Access the reloaded tree
+            let tree = $fancy("#questionTree").fancytree("getTree");
+
+            //console.log('parentQuestionId:', parentQuestionId);
+            //console.log('hiddenFatherQuestionTreeId:', hiddenFatherQuestionTreeId);
+            //console.log('parentOptionId:', parentOptionId);
+            //console.log('startingQuestionTreeId:', startingQuestionTreeId);
+
+            let normalizedFatherQuestionTreeId = hiddenFatherQuestionTreeId ? Number(hiddenFatherQuestionTreeId) : 0;
+
+           //  console.log('normalizedFatherQuestionTreeId:', normalizedFatherQuestionTreeId);
+            // Attempt to find and expand the node using parentQuestionId, fatherQuestionTreeId, and parentOptionId
+
+            if (parentQuestionId && parentOptionId) {
+             //   console.log(`Searching for node with parentQuestionId: ${parentQuestionId}, hiddenFatherQuestionTreeId: ${hiddenFatherQuestionTreeId}, and parentOptionId: ${parentOptionId}`);
+                
+                let targetNode = null;
+              tree.visit(function (node) {
+    // Check if the current node matches all criteria
+
+
+                 
+                 
+if (
+   
+    Number(node.data.questionId) === Number(parentQuestionId) &&
+    Number(node.data.treeNodeElement.startingQuestionTreeId) === Number(startingQuestionTreeId) &&
+    (
+        normalizedFatherQuestionTreeId === 0 || // Skip this comparison if normalizedFatherQuestionTreeId is 0
+        Number(node.data.treeNodeElement.fatherQuestionTreeId) === normalizedFatherQuestionTreeId
+    ) &&
+    Number(node.data.optionID) === Number(parentOptionId)
+) {
+    targetNode = node;
+    return false; // Stop further traversal once a match is found
+}
+
+});
+
+              if (targetNode) {
+                //    console.log(`Target node before expansion:`, targetNode);
+
+                    // Ensure the node and its parents are visible
+                    targetNode.makeVisible().done(function () {
+                  //      console.log(`Node made visible:`, targetNode);
+                        targetNode.setExpanded(true).done(function () {
+                    //        console.log(`Node expanded and scrolled into view:`, targetNode);
+                            targetNode.scrollIntoView(true);
+                        });
+                    });
+                } else {
+                    console.warn(`Target node not found.`);
                 }
-            });
+            }
+        },
+        error: function (xhr, status, error) {
+            console.error("Error occurred while reloading the tree: " + xhr.responseText);
         }
+    });
+}
 
 
 
@@ -700,7 +859,7 @@
             var selectedCategoryId = $('#ddlCategory').val();
             $.ajax({
                 type: "POST",
-                url: "/Pages/QuesTree1.aspx/GetQuestionsByCategory",
+                url: "/Pages/QuesTree2.aspx/GetQuestionsByCategory",
                 data: JSON.stringify({ categoryId: selectedCategoryId }),
                 contentType: "application/json; charset=utf-8",
                 dataType: "json",
@@ -726,13 +885,53 @@
 
 
 
+      var allQuestions = {}; // To store all the question data by category
+
+// Function to load all multi-select questions grouped by category
+function loadMultiSelectQuestions() {
+    $.ajax({
+        type: "POST",
+        url: "/Pages/QuesTree2.aspx/GetQuestions",
+        contentType: "application/json; charset=utf-8",
+        dataType: "json",
+        success: function (response) {
+            var data = JSON.parse(response.d);
+            allQuestions = {}; // Reset all question data
+
+            var $multiSelect = $('#ddlMultiQuestions');
+            $multiSelect.empty(); // Clear existing options
+            var $categoryLinks = $('#categoryLinks');
+            $categoryLinks.empty(); // Clear existing category links
+
+            // Group questions by category and store in allQuestions
+            $.each(data, function (index, item) {
+                if (!allQuestions[item.categoryName]) {
+                    allQuestions[item.categoryName] = [];
+                }
+                allQuestions[item.categoryName].push({
+                    questionId: item.questionId,
+                    questionName: item.questionName
+                });
+            });
+
+            populateMultiSelect(allQuestions);
+        },
+        error: function (xhr, status, error) {
+            console.error(xhr.responseText);
+        }
+    });
+}
+
+
+
+
         var allQuestions = {}; // To store all the question data by category
 
         // Function to load all multi-select questions grouped by category
         function loadMultiSelectQuestions() {
             $.ajax({
                 type: "POST",
-                url: "/Pages/QuesTree1.aspx/GetQuestions",
+                url: "/Pages/QuesTree2.aspx/GetQuestions",
                 contentType: "application/json; charset=utf-8",
                 dataType: "json",
                 success: function (response) {
@@ -761,142 +960,140 @@
             });
         }
 
+function populateMultiSelect(questionsByCategory) {
+    var $multiSelect = $('#ddlMultiQuestions');
+    $multiSelect.empty(); // Clear existing options
 
-        function populateMultiSelect(questionsByCategory) {
-            var $multiSelect = $('#ddlMultiQuestions');
-            $multiSelect.empty(); // Clear existing options
+    // Populate options in the dropdown
+    $.each(questionsByCategory, function (categoryName, questions) {
+        var optgroup = $('<optgroup>', { label: categoryName });
 
-            // Populate options in the dropdown
-            $.each(questionsByCategory, function (categoryName, questions) {
-                var optgroup = $('<optgroup>', { label: categoryName });
+        // Create "Add" anchor
+        var addAnchor = $('<a>', {
+            text: 'Add',
+            href: '#',
+            style: 'float: right; text-decoration: none; color: blue; font-size: 12px;',
+            click: function (e) {
+                e.preventDefault(); // Prevent default anchor behavior
+                alert('Add clicked for category: ' + categoryName);
 
-                // Create "Add" anchor
-                var addAnchor = $('<a>', {
-                    text: 'Add',
-                    href: '#',
-                    style: 'float: right; text-decoration: none; color: blue; font-size: 12px;',
-                    click: function (e) {
-                        e.preventDefault(); // Prevent default anchor behavior
-                        alert('Add clicked for category: ' + categoryName);
-
-                        // Automatically select all questions under this category
-                        $.each(questions, function (index, question) {
-                            $multiSelect.find('option[value="' + question.questionId + '"]').prop('selected', true);
-                        });
-
-                        $multiSelect.trigger('change'); // Trigger change event if needed
-                    }
-                });
-
-                // Add the category name and "Add" anchor
-                var categoryHeader = $('<div>', {
-                    style: 'display: flex; justify-content: space-between; align-items: center;'
-                }).append(
-                    $('<span>', { text: categoryName }), // Category name
-                    addAnchor // Add anchor
-                );
-
-                // Append category header to the dropdown (as optgroup label)
-                optgroup.append(categoryHeader);
-
-                // Add questions under the category
+                // Automatically select all questions under this category
                 $.each(questions, function (index, question) {
-                    optgroup.append($('<option>', {
-                        value: question.questionId,
-                        text: question.questionName
-                    }));
+                    $multiSelect.find('option[value="' + question.questionId + '"]').prop('selected', true);
                 });
 
-                $multiSelect.append(optgroup);
-            });
+                $multiSelect.trigger('change'); // Trigger change event if needed
+            }
+        });
 
-            $('#multiSelectRow').show();
-        }
+        // Add the category name and "Add" anchor
+        var categoryHeader = $('<div>', {
+            style: 'display: flex; justify-content: space-between; align-items: center;'
+        }).append(
+            $('<span>', { text: categoryName }), // Category name
+            addAnchor // Add anchor
+        );
+
+        // Append category header to the dropdown (as optgroup label)
+        optgroup.append(categoryHeader);
+
+        // Add questions under the category
+        $.each(questions, function (index, question) {
+            optgroup.append($('<option>', {
+                value: question.questionId,
+                text: question.questionName
+            }));
+        });
+
+        $multiSelect.append(optgroup);
+    });
+
+    $('#multiSelectRow').show();
+}
 
 
 
         function loadCategories() {
 
 
-            $.ajax({
-                type: "POST",
-                url: "/Pages/QuesTree1.aspx/GetCategories", // WebMethod to fetch categories
-                contentType: "application/json; charset=utf-8",
-                dataType: "json",
-                success: function (response) {
-                    var data = JSON.parse(response.d);
-                    var $categorySelect = $('#ddlCategorySelect');
-                    $categorySelect.empty();
+    $.ajax({
+        type: "POST",
+        url: "/Pages/QuesTree2.aspx/GetCategories", // WebMethod to fetch categories
+        contentType: "application/json; charset=utf-8",
+        dataType: "json",
+        success: function (response) {
+ var data = JSON.parse(response.d);
+                var $categorySelect = $('#ddlCategorySelect');
+            $categorySelect.empty();
 
-                    var $categorySelect = $('#ddlCategorySelect');
-                    $categorySelect.empty(); // Clear existing options
+            var $categorySelect = $('#ddlCategorySelect');
+            $categorySelect.empty(); // Clear existing options
 
-                    // Populate categories
-                    $.each(data, function (index, category) {
-                        $categorySelect.append($('<option>', {
-                            value: category.categoryId,
-                            text: category.categoryName
-                        }));
-                    });
-
-                    $categorySelect.trigger('change.select2');
-                },
-                error: function (xhr, status, error) {
-                    console.error("Error loading categories:", xhr.responseText);
-                }
+            // Populate categories
+            $.each(data, function (index, category) {
+                $categorySelect.append($('<option>', {
+                    value: category.categoryId,
+                    text: category.categoryName
+                }));
             });
+
+            $categorySelect.trigger('change.select2');
+        },
+        error: function (xhr, status, error) {
+            console.error("Error loading categories:", xhr.responseText);
         }
+    });
+}
 
 
         function fetchQuestionsByCategories() {
 
 
 
-            var selectedCategories = $('#ddlCategorySelect').val(); // Get selected categories
-            if (!selectedCategories || selectedCategories.length === 0) {
-                alert("Please select at least one category.");
-                return;
-            }
+    var selectedCategories = $('#ddlCategorySelect').val(); // Get selected categories
+    if (!selectedCategories || selectedCategories.length === 0) {
+        alert("Please select at least one category.");
+        return;
+    }
 
-            // Fetch questions for the selected categories
-            $.ajax({
-                type: "POST",
-                url: "/Pages/QuesTree1.aspx/GetQuestionsByCategories",
-                contentType: "application/json; charset=utf-8",
-                data: JSON.stringify({ categoryIds: selectedCategories }), // Send selected categories to the server
-                dataType: "json",
-                success: function (response) {
-                    var questions = JSON.parse(response.d); // Parse the JSON response
-                    var $multiSelect = $('#ddlMultiQuestions');
+    // Fetch questions for the selected categories
+    $.ajax({
+        type: "POST",
+        url: "/Pages/QuesTree2.aspx/GetQuestionsByCategories",
+        contentType: "application/json; charset=utf-8",
+        data: JSON.stringify({ categoryIds: selectedCategories }), // Send selected categories to the server
+        dataType: "json",
+        success: function (response) {
+            var questions = JSON.parse(response.d); // Parse the JSON response
+            var $multiSelect = $('#ddlMultiQuestions');
 
-                    // Add the fetched questions to the dropdown without clearing existing ones
-                    $.each(questions, function (index, question) {
-                        // Check if the question already exists in the dropdown
-                        if ($multiSelect.find('option[value="' + question.questionId + '"]').length === 0) {
-                            var option = $('<option>', {
-                                value: question.questionId,
-                                text: question.questionName,
-                                selected: true // Automatically select the new question
-                            });
-                            $multiSelect.append(option);
-                        } else {
-                            // If the question already exists, ensure it's selected
-                            $multiSelect.find('option[value="' + question.questionId + '"]').prop('selected', true);
-                        }
+            // Add the fetched questions to the dropdown without clearing existing ones
+            $.each(questions, function (index, question) {
+                // Check if the question already exists in the dropdown
+                if ($multiSelect.find('option[value="' + question.questionId + '"]').length === 0) {
+                    var option = $('<option>', {
+                        value: question.questionId,
+                        text: question.questionName,
+                        selected: true // Automatically select the new question
                     });
-
-                    // Trigger change to update the Select2 UI
-                    $multiSelect.trigger('change');
-                },
-                error: function (xhr, status, error) {
-                    console.error("Error fetching questions:", xhr.responseText);
+                    $multiSelect.append(option);
+                } else {
+                    // If the question already exists, ensure it's selected
+                    $multiSelect.find('option[value="' + question.questionId + '"]').prop('selected', true);
                 }
             });
+
+            // Trigger change to update the Select2 UI
+            $multiSelect.trigger('change');
+        },
+        error: function (xhr, status, error) {
+            console.error("Error fetching questions:", xhr.responseText);
         }
+    });
+}
 
 
-
-
+        
     </script>
 
 

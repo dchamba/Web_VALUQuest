@@ -16,7 +16,7 @@ using static VALUQuest.Pages.QuestionsTreeNew;
 
 namespace VALUQuest.Pages
 {
-    public partial class QuesTree1 : System.Web.UI.Page
+    public partial class QuesTree3 : System.Web.UI.Page
     {
         static DataTabletoJSON js = new DataTabletoJSON();
         protected void Page_Load(object sender, EventArgs e)
@@ -66,7 +66,7 @@ namespace VALUQuest.Pages
                 SqlParameter pParentOptionId = new SqlParameter("@parentOptionId", (object)parentOptionId ?? DBNull.Value);
                 SqlParameter pParentQuestionId = new SqlParameter("@parentQuestionId", (object)parentQuestionId ?? DBNull.Value);
                 SqlParameter pIsActive = new SqlParameter("@isActive", 1);
-                SqlParameter pCreatedBy = new SqlParameter("@createdBy", "system");
+                SqlParameter pCreatedBy = new SqlParameter("@createdBy", HttpContext.Current.Session["userName"]);
 
                 int rowsAffected = db.ExecuteStoredProcedure("sp_InsertQuestionTreeDataNew",
                     pQuestionId,
@@ -86,7 +86,7 @@ namespace VALUQuest.Pages
         }
 
         [WebMethod]
-        public static string InsertChildQuestions(int parentOptionId, int parentQuestionId, int QuestionTreeId, int NodeLevel, int StartingQuestionTreeId, int HasChildNodes, List<int> questionIds)
+        public static string InsertChildQuestions(int parentOptionId, int parentQuestionId, List<int> questionIds)
         {
             try
             {
@@ -98,23 +98,13 @@ namespace VALUQuest.Pages
                     SqlParameter pQuestionId = new SqlParameter("@questionId", questionId);
                     SqlParameter pParentOptionId = new SqlParameter("@parentOptionId", (object)parentOptionId ?? DBNull.Value);
                     SqlParameter pParentQuestionId = new SqlParameter("@parentQuestionId", (object)parentQuestionId ?? DBNull.Value);
-                    SqlParameter pQuestionTreeId = new SqlParameter("@fatherQuestionTreeId", (object)QuestionTreeId ?? DBNull.Value);
-                    // Adjust NodeLevel based on HasChildNodes
-                    SqlParameter pNodeLevel = new SqlParameter("@nodeLevel",
-                        HasChildNodes == 0 ? (object)(NodeLevel + 10) : (object)NodeLevel);
-
-                    SqlParameter pStartingQuestionTreeId = new SqlParameter("@startingQuestionTreeId", (object)StartingQuestionTreeId ?? DBNull.Value);
-
                     SqlParameter pIsActive = new SqlParameter("@isActive", 1);
-                    SqlParameter pCreatedBy = new SqlParameter("@createdBy", "system");
+                    SqlParameter pCreatedBy = new SqlParameter("@createdBy", HttpContext.Current.Session["userName"]);
 
                     int rowsAffected = db.ExecuteStoredProcedure("sp_InsertQuestionTreeDataNew",
                         pQuestionId,
                         pParentOptionId,
                         pParentQuestionId,
-                        pQuestionTreeId,
-                        pNodeLevel,
-                        pStartingQuestionTreeId,
                         pIsActive,
                         pCreatedBy);
 
@@ -164,84 +154,6 @@ namespace VALUQuest.Pages
         }
 
         [WebMethod]
-        public static string GetCategories()
-        {
-            // Query to fetch active categories
-            string query = @"
-        SELECT 
-            c.categoryId, 
-            c.categoryName 
-        FROM 
-            tbl_category c
-        WHERE 
-            c.isActive = 1
-        ORDER BY 
-            c.categoryId DESC;
-    ";
-
-            // Execute the query
-            Utility.DatabaseHelper db = new Utility.DatabaseHelper();
-            DataTable dt = db.ExecuteQuery(query);
-
-            // Convert the DataTable to a list of objects
-            List<object> data = new List<object>();
-            foreach (DataRow row in dt.Rows)
-            {
-                data.Add(new
-                {
-                    categoryId = Convert.ToInt32(row["categoryId"]),
-                    categoryName = row["categoryName"].ToString()
-                });
-            }
-
-            // Serialize the data to JSON and return it
-            return JsonConvert.SerializeObject(data);
-        }
-
-
-        [WebMethod]
-        public static string GetQuestionsByCategories(List<int> categoryIds)
-        {
-            if (categoryIds == null || categoryIds.Count == 0)
-            {
-                return JsonConvert.SerializeObject(new List<object>()); // Return an empty result if no categoryIds are passed
-            }
-
-            // Join the category IDs into a comma-separated string
-            string categoryIdList = string.Join(",", categoryIds);
-
-            // Use a parameterized query to prevent SQL injection
-            string query = @"
-        SELECT 
-            q.questionId, 
-            q.questionName, 
-            c.categoryName 
-        FROM 
-            tbl_questions q
-        LEFT JOIN 
-            tbl_category c ON c.categoryId = q.catId
-        WHERE 
-            q.isActive = 1 
-            AND q.catId IN (" + categoryIdList + ")";
-
-            // Execute the query
-            Utility.DatabaseHelper db = new Utility.DatabaseHelper();
-            DataTable dt = db.ExecuteQuery(query);
-
-            // Convert the result to JSON and return it
-            var result = dt.AsEnumerable().Select(row => new
-            {
-                questionId = row.Field<int>("questionId"),
-                questionName = row.Field<string>("questionName"),
-                categoryName = row.Field<string>("categoryName")
-            }).ToList();
-
-            return JsonConvert.SerializeObject(result);
-        }
-
-
-
-        [WebMethod]
         public static string GetQuestionTreeData()
         {
             Utility.DatabaseHelper db = new Utility.DatabaseHelper();
@@ -249,7 +161,7 @@ namespace VALUQuest.Pages
             // Simula il caricamento dal database
             var questions = db.ExecuteQueryReturnListObject<QuestionTable>("SELECT * FROM tbl_questions WHERE isActive = 1");
             var options = db.ExecuteQueryReturnListObject<OptionTable>("SELECT * FROM tbl_options WHERE isActive = 1");
-            var treeStructure = db.ExecuteQueryReturnListObject<QuestionTreeTable>("SELECT * FROM tbl_question_treeNew1 WHERE isActive = 1");
+            var treeStructure = db.ExecuteQueryReturnListObject<QuestionTreeTable>("SELECT * FROM tbl_question_treeNew_OK WHERE isActive = 1");
 
             // Costruisce l'albero
             var resultTree = TreeLoader.BuildTree(questions, options, treeStructure);
@@ -291,8 +203,7 @@ namespace VALUQuest.Pages
             //extra field for fancyTreeDataStructure support
             public List<QuestionTable> children { get; set; }
             public QuestionTreeTable treeNodeElement { get; set; }
-            public string title => optionName ;
-            //public string title => optionName + " (Oid " + optionID + ", Qid: " + questionId + ", Tid: " + getTreeNodeElementId() + " )";
+            public string title => optionName + " (Oid " + optionID + ", Qid: " + questionId + ", Tid: " + getTreeNodeElementId() + " )";
             public string key => Guid.NewGuid().ToString().Substring(0, 8);
 
             public bool isOption = true, folder = false;
@@ -301,8 +212,6 @@ namespace VALUQuest.Pages
                 return treeNodeElement == null ? "" : treeNodeElement.questionTreeId.ToString();
             }
         }
-
-
 
         public class QuestionTable
         {
@@ -320,10 +229,8 @@ namespace VALUQuest.Pages
             //extra field for fancyTreeDataStructure support
             public List<OptionTable> children { get; set; }
             public QuestionTreeTable treeNodeElement { get; set; }
-            public string title => questionName +"";
-           // public string title => questionName + " (Qid" + questionId + ", Tid: " + getTreeNodeElementId() + " )";
-           
-		   public string key => Guid.NewGuid().ToString().Substring(0, 8);
+            public string title => questionName + " (Qid" + questionId + ", Tid: " + getTreeNodeElementId() + " )";
+            public string key => Guid.NewGuid().ToString().Substring(0, 8);
 
             public bool isOption = false, folder = true;
 
@@ -334,25 +241,19 @@ namespace VALUQuest.Pages
         }
         public class TreeLoader
         {
-            public static List<QuestionTable> BuildTree(
-                List<QuestionTable> questions,
-                List<OptionTable> options,
-                List<QuestionTreeTable> treeStructure)
+            public static List<QuestionTable> BuildTree(List<QuestionTable> questions, List<OptionTable> options, List<QuestionTreeTable> treeStructure)
             {
-                // Find root nodes (nodeLevel == 0)
+                // Filtra i nodi al livello 0
                 var rootNodes = treeStructure.Where(t => t.nodeLevel == 0).ToList();
 
-                // Recursive function to build the tree
-                List<QuestionTable> BuildSubTree(QuestionTreeTable currentNode, int startingQuestionTreeId)
+                // Funzione ricorsiva per costruire il tree
+                List<QuestionTable> BuildSubTree(QuestionTreeTable currentNode)
                 {
-                    // Find the question associated with the current node
+                    // Trova la domanda associata al nodo corrente
                     var question = questions.FirstOrDefault(q => q.questionId == currentNode.questionId);
                     if (question == null) return new List<QuestionTable>();
 
-                    // Set the startingQuestionTreeId for the current node
-                    currentNode.startingQuestionTreeId = startingQuestionTreeId;
-
-                    // Create a new instance of the question for the current node
+                    // Crea una nuova istanza della domanda per il nodo corrente
                     var newQuestion = new QuestionTable
                     {
                         questionId = question.questionId,
@@ -365,7 +266,7 @@ namespace VALUQuest.Pages
                         children = new List<OptionTable>()
                     };
 
-                    // Find all options associated with the current question
+                    // Trova tutte le opzioni associate alla domanda corrente
                     var childOptions = options
                         .Where(o => o.questionId == currentNode.questionId)
                         .Select(o => new OptionTable
@@ -378,38 +279,37 @@ namespace VALUQuest.Pages
                         })
                         .ToList();
 
-                    // For each option, find its child nodes
+                    // Per ogni opzione, trova i nodi figlio
                     foreach (var option in childOptions)
                     {
                         var childNodes = treeStructure
                             .Where(t =>
-                                t.parentOptionId == option.optionID &&
-                                t.parentQuestionId == option.questionId &&
-                                t.fatherQuestionTreeId == currentNode.questionTreeId)
+                            t.parentOptionId == option.optionID &&
+                            t.parentQuestionId == option.questionId &&
+                            t.fatherQuestionTreeId == currentNode.questionTreeId)
                             .ToList();
 
                         foreach (var childNode in childNodes)
                         {
-                            // Recursively build the subtree for child nodes
-                            var childQuestions = BuildSubTree(childNode, startingQuestionTreeId);
+                            var childQuestions = BuildSubTree(childNode); // Ricorsione
                             foreach (var childQuestion in childQuestions)
                             {
                                 option.treeNodeElement = childNode;
                                 option.children.Add(childQuestion);
                             }
                         }
-                        newQuestion.children.Add(option); // Add the option
+                        newQuestion.children.Add(option); // Aggiunge l'opzione
                     }
 
-                    // Return the constructed question node
+                    // Ritorna la lista dei nodi costruiti
                     return new List<QuestionTable> { newQuestion };
                 }
 
-                // Build the tree starting from root nodes
+                // Costruisci il tree partendo dai nodi radice
                 var resultTree = new List<QuestionTable>();
                 foreach (var rootNode in rootNodes)
                 {
-                    resultTree.AddRange(BuildSubTree(rootNode, rootNode.questionTreeId));
+                    resultTree.AddRange(BuildSubTree(rootNode));
                 }
 
                 return resultTree;

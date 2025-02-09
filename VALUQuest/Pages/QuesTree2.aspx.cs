@@ -16,7 +16,7 @@ using static VALUQuest.Pages.QuestionsTreeNew;
 
 namespace VALUQuest.Pages
 {
-    public partial class QuesTree1 : System.Web.UI.Page
+    public partial class QuesTree2 : System.Web.UI.Page
     {
         static DataTabletoJSON js = new DataTabletoJSON();
         protected void Page_Load(object sender, EventArgs e)
@@ -68,7 +68,7 @@ namespace VALUQuest.Pages
                 SqlParameter pIsActive = new SqlParameter("@isActive", 1);
                 SqlParameter pCreatedBy = new SqlParameter("@createdBy", "system");
 
-                int rowsAffected = db.ExecuteStoredProcedure("sp_InsertQuestionTreeDataNew",
+                int rowsAffected = db.ExecuteStoredProcedure("sp_InsertQuestionTreeDataNewTest",
                     pQuestionId,
                     pParentOptionId,
                     pParentQuestionId,
@@ -108,7 +108,7 @@ namespace VALUQuest.Pages
                     SqlParameter pIsActive = new SqlParameter("@isActive", 1);
                     SqlParameter pCreatedBy = new SqlParameter("@createdBy", "system");
 
-                    int rowsAffected = db.ExecuteStoredProcedure("sp_InsertQuestionTreeDataNew",
+                    int rowsAffected = db.ExecuteStoredProcedure("sp_InsertQuestionTreeDataNewTest",
                         pQuestionId,
                         pParentOptionId,
                         pParentQuestionId,
@@ -138,11 +138,11 @@ namespace VALUQuest.Pages
 
                 // Create parameters
                 SqlParameter pQuestionTreeId = new SqlParameter("@questionTreeId", questionTreeId);
-                SqlParameter pDeletedBy = new SqlParameter("@deletedBy", HttpContext.Current.Session["userName"]);
+                SqlParameter pDeletedBy = new SqlParameter("@deletedBy", "system");
                 SqlParameter pDeletedDate = new SqlParameter("@deletedDate", DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"));
 
                 // Execute stored procedure
-                int rowsAffected = db.ExecuteStoredProcedure("sp_DeleteQuestionTreeTest",
+                int rowsAffected = db.ExecuteStoredProcedure("sp_DeleteQuestionTreeTest1",
                     pQuestionTreeId,
                     pDeletedBy,
                     pDeletedDate);
@@ -249,7 +249,7 @@ namespace VALUQuest.Pages
             // Simula il caricamento dal database
             var questions = db.ExecuteQueryReturnListObject<QuestionTable>("SELECT * FROM tbl_questions WHERE isActive = 1");
             var options = db.ExecuteQueryReturnListObject<OptionTable>("SELECT * FROM tbl_options WHERE isActive = 1");
-            var treeStructure = db.ExecuteQueryReturnListObject<QuestionTreeTable>("SELECT * FROM tbl_question_treeNew1 WHERE isActive = 1");
+            var treeStructure = db.ExecuteQueryReturnListObject<QuestionTreeTable>("SELECT * FROM tbl_question_treeNew2 WHERE isActive = 1");
 
             // Costruisce l'albero
             var resultTree = TreeLoader.BuildTree(questions, options, treeStructure);

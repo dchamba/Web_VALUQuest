@@ -56,8 +56,8 @@
                                             <th class="d-none">quesFromId</th>
                                             <th class="d-none">tableId</th>
                                             <th>N.</th>
-                                            <th>Domanda da</th>
-                                            <th>Dato</th>
+                                            <th>Blocco</th>
+                                            <th>Categoria</th>
                                             <th>Qtà domande da visualizzare</th>
                                             <th>Azione</th>
                                         </tr>

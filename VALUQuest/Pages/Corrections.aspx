@@ -2,19 +2,58 @@
 
 <asp:Content ID="Content1" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
     <style>
-        .switch { position: relative; display: inline-block; width: 40px; /* Reduced width */ height: 20px; /* Reduced height */ }
+        .switch {
+            position: relative;
+            display: inline-block;
+            width: 40px; /* Reduced width */
+            height: 20px; /* Reduced height */
+        }
 
-            .switch input { opacity: 0; width: 0; height: 0; }
+            .switch input {
+                opacity: 0;
+                width: 0;
+                height: 0;
+            }
 
-        .slider { position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: #ccc; -webkit-transition: .4s; transition: .4s; border-radius: 20px; /* To maintain rounded edges */ }
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #ccc;
+            -webkit-transition: .4s;
+            transition: .4s;
+            border-radius: 20px; /* To maintain rounded edges */
+        }
 
-            .slider:before { position: absolute; content: ""; height: 16px; /* Reduced height */ width: 16px; /* Reduced width */ left: 2px; bottom: 2px; background-color: white; -webkit-transition: .4s; transition: .4s; border-radius: 50%; }
+            .slider:before {
+                position: absolute;
+                content: "";
+                height: 16px; /* Reduced height */
+                width: 16px; /* Reduced width */
+                left: 2px;
+                bottom: 2px;
+                background-color: white;
+                -webkit-transition: .4s;
+                transition: .4s;
+                border-radius: 50%;
+            }
 
-        input:checked + .slider { background-color: #2196F3; }
+        input:checked + .slider {
+            background-color: #2196F3;
+        }
 
-        input:focus + .slider { box-shadow: 0 0 1px #2196F3; }
+        input:focus + .slider {
+            box-shadow: 0 0 1px #2196F3;
+        }
 
-        input:checked + .slider:before { -webkit-transform: translateX(20px); /* Adjust for smaller size */ -ms-transform: translateX(20px); transform: translateX(20px); }
+        input:checked + .slider:before {
+            -webkit-transform: translateX(20px); /* Adjust for smaller size */
+            -ms-transform: translateX(20px);
+            transform: translateX(20px);
+        }
     </style>
     <div class="row">
         <div class="col-12">
@@ -35,6 +74,7 @@
                         <div class="row mb-3">
                             <div class="col-md-12">
                                 <label for="correctionName">Nome Correzione:</label>
+                                 <span class="text-danger">*</span>
                                 <input type="text" id="correctionName" class="form-control" placeholder="Enter Correction Name..." />
                             </div>
                         </div>
@@ -53,20 +93,22 @@
                         <div class="row mb-3">
                             <div class="col-md-12">
                                 <label for="notes">Fattore di correzione della media globale</label>
+                                 <span class="text-danger">*</span>
                                 <input type="text" id="valueToAdd" class="form-control form-control-sm " oninput="validateNumber(this)" placeholder="Enter Value to add..." />
                             </div>
                         </div>
                     </div>
                 </div>
-				</div>
-             
+            </div>
+
             <div class="col-md-6">
                 <div class="card">
                     <div class="card-body">
                         <div class="row mb-3">
                             <div class="col-md-12">
                                 <input type="hidden" id="rowNo" />
-                                <label for="conditionType">Tipo condizione: </label><span class="text-danger"> *</span>
+                                <label for="conditionType">Tipo condizione: </label>
+                                <span class="text-danger">*</span>
                                 <select id="conditionType" class="form-select form-select-sm conditionType">
                                     <option value="-1">--- Seleziona il tipo di condizione ---</option>
                                     <option value="Block">Block</option>
@@ -90,19 +132,21 @@
                                     <option value="!=">!=</option>
                                     <option value=">">></option>
                                     <option value="<"><</option>
-                                     <option value=">=">>=</option>
+                                    <option value=">=">>=</option>
                                     <option value="<="><=</option>
                                     <option value="between">Between</option>
                                 </select>
                             </div>
                             <div class="col-md-6">
                                 <label for="conditionValue1">Parametro 1:</label>
+                                 <span class="text-danger">*</span>
                                 <input type="text" id="conditionValue1" class="form-control form-control-sm conditionValue1" oninput="validateNumber(this)" placeholder="Enter Value One..." />
                             </div>
                         </div>
                         <div class="row mb-3 conditionValue2Group" style="display: none;">
                             <div class="col-md-12">
                                 <label for="conditionValue2">Parametro 2:</label>
+                                 <span class="text-danger">*</span>
                                 <input type="text" id="conditionValue2" class="form-control conditionValue2" oninput="validateNumber(this)" placeholder="Enter Value Two..." />
                             </div>
                         </div>
@@ -111,10 +155,10 @@
                                 <label for="conjunction">And/Or/None:</label><span class="text-danger"> *</span>
                                 <select id="conjunction" class="form-select form-select-sm conjunction">
                                     <option value="-1">--- Seleziona congiunzione ---</option>
-                                   
+
                                     <option value="AND">And</option>
                                     <option value="OR">Or</option>
-                                     <option value="None">None</option>
+                                    <option value="None">None</option>
                                 </select>
                             </div>
                         </div>
@@ -157,7 +201,7 @@
         <!-- Save Button -->
         <div class="row mb-3">
             <div class="col-md-3">
-                <button type="button" id="saveCorrection" class="btn btn-primary"> Salva</button>
+                <button type="button" id="saveCorrection" class="btn btn-primary">Salva</button>
             </div>
         </div>
     </div>
@@ -185,6 +229,25 @@
 
         // The same JavaScript code you provided earlier
         $(document).ready(function () {
+
+
+
+            function getUrlParameter(name) {
+                const urlParams = new URLSearchParams(window.location.search);
+                return urlParams.has(name) ? urlParams.get(name) : null;
+            }
+
+            // Check if the 'ID' parameter exists in the URL
+            const idParam = getUrlParameter("ID");
+
+            if (idParam) {
+                // If ID exists, show the saveCorrection button
+                $('#saveCorrection').show();
+            } else {
+                // If no ID, hide the saveCorrection button initially
+                $('#saveCorrection').hide();
+            }
+
             //Edit corrrection code started...
             var correctionId = $("#txtId").val();
             if (correctionId) {
@@ -336,15 +399,15 @@
                 <td>${value1}</td>
                 <td>${operator === 'between' ? value2 : '-'}</td>
                 <td>${conjunction}</td><td class="text-center">`
-                if (rowNo) {
-                    newRowContent += `
+            if (rowNo) {
+                newRowContent += `
                 <label class="switch">
                     <input type="checkbox" class="toggle-active" data-id="${blockId}" checked>
                     <span class="slider"></span>
                 </label>
             `;
-                }
-             newRowContent += `
+            }
+            newRowContent += `
                     <button type="button" class="btn btn-info btn-sm editCondition" title="Edit"><i class="fa fa-edit" aria-hidden="true"></i></button>
                     <button type="button" class="btn btn-danger btn-sm removeCondition" title="Delete"><i class="fa fa-trash" aria-hidden="true"></i></button>
                 </td>
@@ -361,6 +424,8 @@
                 var newRow = `<tr>${newRowContent}</tr>`;
                 $('#conditionsTable tbody').append(newRow);
             }
+
+
 
             // Clear the rowNo input after adding/updating
             $('#rowNo').val('');
@@ -386,7 +451,7 @@
             if (conditionType === "Block") {
                 if (blockId === null || blockId === "-1") {
                     errors.push("Seleziona un blocco valido");
-                }                
+                }
             }
             if (operator === "-1") {
                 errors.push("Seleziona un operatore valido.");
@@ -450,6 +515,9 @@
             $('.conditionValue1').val('');
             $('.conditionValue2').val('');
             $('.conjunction').val('-1');
+
+
+            $('#saveCorrection').show();
         }
 
         function toggleConditionFields(selector) {
@@ -471,12 +539,27 @@
         }
 
         function saveCorrection() {
-            debugger;
+
+             debugger
+
             var correctionId = $('#txtId').val();
             var correctionName = $('#correctionName').val();
             var message = $('#message').val();
             var notes = $('#notes').val();
             var valueToAdd = $('#valueToAdd').val();
+
+             var errors = [];
+             if (correctionName === "") {
+                errors.push("Inserisci la correzione del nome");
+            }
+             if (valueToAdd === "") {
+                errors.push("per favore inserisci Fattore di correzione della media globale");
+            }
+             // If there are any errors, display them and return early
+            if (errors.length > 0) {
+                alert(errors.join("\n"));
+                return;
+            }
 
             var conditions = [];
             $('#conditionsTable tbody tr').each(function () {
@@ -515,7 +598,7 @@
                             'Correction saved successfully.' +
                             '<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>' +
                             '</div>');
-                        
+
                         setTimeout(function () {
                             $('#msgAlert').html('');
                             $('#conditionsTable tbody').empty();
@@ -594,6 +677,6 @@
             }
         });
 
-        
+
     </script>
 </asp:Content>

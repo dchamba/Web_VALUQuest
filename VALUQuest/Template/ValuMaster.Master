@@ -164,6 +164,7 @@
                                 <li>
                                     <a href="/Pages/ViewSurvey">Visualizza il sondaggio</a>
                                 </li>
+                                
                             </ul>
                         </div>
                     </li>
@@ -188,7 +189,7 @@
                                     <a href="/Pages/DynamicQuestion">Domande casuali</a>
                                 </li>
                                 <li>
-                                    <a href="/Pages/QuesTree">Ramificazione domande</a>
+                                    <a href="/Pages/QuesTree1">Ramificazione domande</a>
                                 </li>
                                    <li>
                                     <a href="/Pages/ViewExpectedQuesForSurvey">Anteprima questionario</a>
@@ -212,7 +213,9 @@
                                 <li>
                                     <a href="/Pages/Category">Categoria</a>
                                 </li>
-
+                                <li>
+                                    <a href="/Pages/SurveyMode">Impostazioni questionario</a>
+                                </li>
                             </ul>
                         </div>
                     </li>

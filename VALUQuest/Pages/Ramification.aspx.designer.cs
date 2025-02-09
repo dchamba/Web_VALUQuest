@@ -11,7 +11,7 @@ namespace VALUQuest.Pages
 {
 
 
-    public partial class QuestionsTreeNew
+    public partial class Ramification
     {
     }
 }

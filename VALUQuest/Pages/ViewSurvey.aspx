@@ -190,8 +190,8 @@
                                         </p>
                                         <p class="text-muted"><strong>Email :</strong><span class="ms-2"><label id="lblEmail"></label></span></p>
                                         <p class="text-muted"><strong>BMI :</strong><span class="ms-2"><label id="lblbmiValue"></label></span></p>
-                                        <p class="text-muted"><strong>Height :</strong><span class="ms-2"><label id="lblHeight"></label></span></p>
-                                        <p class="text-muted"><strong>Weight :</strong><span class="ms-2"><label id="lblWeight"></label></span></p>
+                                        <p class="text-muted"><strong>Altezza (in cm)</strong><span class="ms-2"><label id="lblHeight"></label></span></p>
+                                        <p class="text-muted"><strong>Peso (in kg):</strong><span class="ms-2"><label id="lblWeight"></label></span></p>
 
                                         <p class="text-muted"><strong>Data/Ora Compilazione :</strong><span class="ms-2"><label id="lblSurveyDateTime"></label></span></p>
 
@@ -764,7 +764,7 @@
                     success: function (response) {
                         if (response.d === "success") {
                             showAlert('Cancellazione eseguita', 'delete');
-                            loadSurveyor();
+                            loadSurveyor(null, null);
                             clearData();
 
                         } else {

@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Configuration;
 using System.Data;
-using System.Data.Common;
 using System.Data.SqlClient;
 using System.Linq;
 using System.Web;
@@ -167,7 +166,6 @@ namespace VALUQuest.Utility
                 }
             }
         }
-
         public List<T> ExecuteQueryReturnListObject<T>(string query) where T : new()
         {
 
@@ -213,6 +211,7 @@ namespace VALUQuest.Utility
             }
             return false;
         }
+
 
     }
 }

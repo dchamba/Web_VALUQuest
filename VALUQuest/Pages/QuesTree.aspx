@@ -320,7 +320,7 @@
 
         function confirmDeleteNode(questionTreeIds) {
             if (questionTreeIds.length > 0) {
-                const userConfirmed = confirm(`Are you sure you want to delete the following ramification?`);
+                const userConfirmed = confirm(`Confermi di voler cancellare?`);
                 if (userConfirmed) {
                     // Track how many deletions have been processed
                     let processedCount = 0;
@@ -332,14 +332,14 @@
 
                             // Check if all nodes have been processed
                             if (processedCount === questionTreeIds.length) {
-                                alert('Node(s) have been successfully deleted');
+                                alert('Ramificazione inserita correttamente');
                                 reloadTree(); // Reload the tree once after all deletions
                             }
                         });
                     });
                 }
             } else {
-                console.error("No valid QuestionTreeIds found to delete.");
+                console.error("Nessuna domanda da cancellare.");
             }
         }
 
@@ -355,7 +355,6 @@ function deleteNodeFromDatabase(questionTreeId, callback) {
         dataType: "json",
         success: function (response) {
             if (response.d === "success") {
-                console.log(`Node with QuestionTreeId ${questionTreeId} has been successfully deleted`);
             } else {
                 console.error(`Failed to delete node with QuestionTreeId ${questionTreeId}: ${response.d}`);
             }
@@ -364,7 +363,7 @@ function deleteNodeFromDatabase(questionTreeId, callback) {
             if (callback) callback();
         },
         error: function (xhr, status, error) {
-            console.error(`Error occurred while deleting node with QuestionTreeId ${questionTreeId}: ${xhr.responseText}`);
+            console.error(`Errore durante cancellazione`);
 
             // Call the callback function to indicate completion even if there was an error
             if (callback) callback();
@@ -388,7 +387,7 @@ function deleteNodeFromDatabase(questionTreeId, callback) {
                     initializeFancyTree(treeData);
                 },
                 error: function (xhr, status, error) {
-                    console.error("Error occurred while reloading the tree: " + xhr.responseText);
+                    console.error("Errore durante caricamento: " + xhr.responseText);
                 }
             });
         }
@@ -401,7 +400,7 @@ function deleteNodeFromDatabase(questionTreeId, callback) {
     var questionId = $("#ddlQuestions").val(); // Get the selected questionId from the dropdown
 
     if (!questionId) {
-        showAlert('Please select a question to add.', 'danger');
+        showAlert('Seleziona una domanda da aggiungere.', 'danger');
         return;
     }
 
@@ -418,7 +417,7 @@ function deleteNodeFromDatabase(questionTreeId, callback) {
 
     // Check if the selected question is already present in the ramification
     if (existingQuestionIds.includes(parseInt(questionId))) {
-        alert("This question is already added to the ramification.");
+        alert("Domanda già presente nella ramificazione");
         return; // Stop further execution to prevent adding the question
     }
 
@@ -431,7 +430,7 @@ function deleteNodeFromDatabase(questionTreeId, callback) {
         dataType: "json",
         success: function (response) {
             if (response.d === "success") {
-                alert("Master question added successfully");
+                alert("Domanda padre aggiunta correttamente");
                 $('#masterModal').modal('hide');
 
                 // Reload the page to show the updated data
@@ -441,7 +440,7 @@ function deleteNodeFromDatabase(questionTreeId, callback) {
             }
         },
         error: function (error) {
-            console.log("Error adding question:", error);
+           
             showAlert('An error occurred while adding the question.', 'danger');
         }
     });
@@ -476,7 +475,7 @@ function deleteNodeFromDatabase(questionTreeId, callback) {
         let duplicateQuestions = selectedQuestionIds.filter(id => existingQuestionIds.includes(id));
 
         if (duplicateQuestions.length > 0) {
-            alert("One or more selected questions are already added to the ramification. No questions were added.");
+            alert("Una o più domande selezionate sono già presenti nella ramificazione. Non sono state aggiunte le domande.");
             return; // Stop further execution to prevent adding any questions
         }
 
@@ -513,7 +512,7 @@ function deleteNodeFromDatabase(questionTreeId, callback) {
         function openChildModal(optionId, questionId) {
 
 
-            console.log("Opening child modal for optionId:", optionId, "questionId:", questionId);
+           // console.log("Opening child modal for optionId:", optionId, "questionId:", questionId);
 
             // Set the hidden field values
             $('#hiddenOptionId').val(optionId);

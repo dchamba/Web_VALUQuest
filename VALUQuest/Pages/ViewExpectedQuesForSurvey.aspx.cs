@@ -18,62 +18,285 @@ namespace VALUQuest.Pages
         }
 
         [WebMethod]
-        public static object GetSurveyQuestionsTree(float bmiValue)
+        public static string GetSurveyQuestionsTree(float bmiValue)
         {
-            // Initialize database helper
             Utility.DatabaseHelper db = new Utility.DatabaseHelper();
 
-            // Execute stored procedures and queries
+            // Fetch all questions from the stored procedure into a DataTable
             SqlParameter[] parameters1 = { new SqlParameter("@bmiValue", bmiValue) };
-            DataTable dtSurveyQuestions = db.ExecuteStoredProcedureDataTable("sp_get_SurveyQuestionsWithBMI", parameters1);
-            DataTable dtSurveyQuestionsTree = db.ExecuteStoredProcedureDataTable("sp_get_SurveyQuestionsTree");
-            string optionsQuery = "SELECT * FROM tbl_options WHERE isActive = 1";
-            DataTable dtOptions = db.ExecuteQuery(optionsQuery);
+            DataTable dtSurveyQuestions = db.ExecuteStoredProcedureDataTable("sp_get_SurveyQuestionsWithBMINew", parameters1);
 
-            // Structure the data for FancyTree
-            var questionsData = new List<object>();
-
-            foreach (DataRow row in dtSurveyQuestions.Rows)
+            // Convert DataTable to List<QuestionTable> in the same order as returned by the stored procedure
+            List<QuestionTable> surveyQuestions = dtSurveyQuestions.AsEnumerable().Select(row => new QuestionTable
             {
-                // Basic question structure
-                var question = new
-                {
-                    title = row["questionName"].ToString(),
-                    folder = true,
-                    children = new List<object>()
-                };
+                questionId = row.Field<int>("questionId"),
+                catId = row.Field<int>("catId"),
+                subCatId = row.Field<int?>("subCatId") ?? 0,
+                questionName = row.Field<string>("questionName"),
+                quesType = row.Field<int>("quesType"),
+                isActive = row.Field<int>("isActive"),
+            }).ToList();
 
-                // Fetch options for this question from tbl_options
-                var questionOptions = dtOptions.AsEnumerable()
-                    .Where(opt => opt.Field<int?>("questionId") == row.Field<int?>("questionId"))
-                    .Select(opt => new
-                    {
-                        title = opt["optionName"].ToString(),
-                        folder = true,
-                        children = dtSurveyQuestionsTree.AsEnumerable()
-                            .Where(q => q.Field<int?>("optionId") == opt.Field<int?>("optionId"))
-                            .Select(q => new
-                            {
-                                title = q["questionName"].ToString(),
-                                folder = true, // Set to true if child questions also have options
-                        children = dtOptions.AsEnumerable()
-                                    .Where(o => o.Field<int?>("questionId") == q.Field<int?>("questionId"))
-                                    .Select(o => new
-                                    {
-                                        title = o["optionName"].ToString(),
-                                        folder = false // Set as leaf node
-                            }).ToList()
-                            }).ToList()
-                    }).ToList();
+            // Load all questions, options, and tree structure from the database
+            var questions = db.ExecuteQueryReturnListObject<QuestionTable>("SELECT * FROM tbl_questions WHERE isActive = 1");
+            var options = db.ExecuteQueryReturnListObject<OptionTable>("SELECT * FROM tbl_options WHERE isActive = 1");
+            var treeStructure = db.ExecuteQueryReturnListObject<QuestionTreeTable>("SELECT * FROM tbl_question_treeNew1 WHERE isActive = 1");
 
-                // Add options as children to the question node
-                question.children.AddRange(questionOptions);
-                questionsData.Add(question);
+            // Add a flag to mark matched questions
+            foreach (var question in surveyQuestions)
+            {
+                question.isMatched = treeStructure.Any(t => t.questionId == question.questionId);
             }
 
-            return questionsData;
+            // Build the tree structure with matched questions
+            var resultTree = TreeLoader.BuildTree(questions, options, treeStructure);
+
+            // Maintain the order of unmatched questions as returned by the stored procedure
+            var unmatchedQuestions = surveyQuestions.Where(q => !q.isMatched).ToList();
+            foreach (var question in unmatchedQuestions)
+            {
+                // Find all options associated with the unmatched question
+                var childOptions = options
+                    .Where(o => o.questionId == question.questionId)
+                    .Select(o => new OptionTable
+                    {
+                        optionID = o.optionID,
+                        optionName = o.optionName,
+                        questionId = o.questionId,
+                        isActive = o.isActive,
+                        children = new List<QuestionTable>(), // No child questions for unmatched
+                treeNodeElement = null
+                    }).ToList();
+
+                // Add the unmatched question with its options to the tree
+                resultTree.Add(new QuestionTable
+                {
+                    questionId = question.questionId,
+                    catId = question.catId,
+                    subCatId = question.subCatId,
+                    questionName = question.questionName,
+                    quesType = question.quesType,
+                    isActive = question.isActive,
+                    isMatched = false,
+                    treeNodeElement = null,
+                    children = childOptions // Attach the options as children
+                });
+            }
+
+            // Combine matched and unmatched questions, maintaining the order from the stored procedure
+            var orderedResultTree = surveyQuestions.Select(q =>
+            {
+                var matchedNode = resultTree.FirstOrDefault(t => t.questionId == q.questionId);
+                if (matchedNode != null)
+                {
+                    return matchedNode;
+                }
+                else
+                {
+                    // Add unmatched questions
+                    return new QuestionTable
+                    {
+                        questionId = q.questionId,
+                        catId = q.catId,
+                        subCatId = q.subCatId,
+                        questionName = q.questionName,
+                        quesType = q.quesType,
+                        isActive = q.isActive,
+                        isMatched = false,
+                        treeNodeElement = null,
+                        children = options.Where(o => o.questionId == q.questionId)
+                            .Select(o => new OptionTable
+                            {
+                                optionID = o.optionID,
+                                optionName = o.optionName,
+                                questionId = o.questionId,
+                                isActive = o.isActive,
+                                treeNodeElement = null,
+                                children = new List<QuestionTable>()
+                            }).ToList()
+                    };
+                }
+            }).ToList();
+
+            // Convert the tree to JSON
+            var jsonResult = Newtonsoft.Json.JsonConvert.SerializeObject(orderedResultTree, Newtonsoft.Json.Formatting.None,
+                new Newtonsoft.Json.JsonSerializerSettings
+                {
+                    ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
+                });
+
+            return jsonResult;
         }
 
+
+
+        public class QuestionTreeTable
+        {
+            public int questionTreeId { get; set; }
+            public int nodeLevel { get; set; }                      //can be deleted, but better to keep for debugging and data analysis
+            public int? fatherQuestionTreeId { get; set; }
+            public int? optionId { get; set; }                      //can be deleted
+            public int questionId { get; set; }
+            public int? parentOptionId { get; set; }
+            public int? parentQuestionId { get; set; }
+            public int? startingQuestionTreeId { get; set; }        //can be deleted, but better to keep for debugging and data analysis
+            public int isActive { get; set; }
+        }
+
+        public class OptionTable
+        {
+            public OptionTable()
+            {
+                this.children = new List<QuestionTable>();
+            }
+            public int optionID { get; set; }
+            public string optionName { get; set; }
+            public int questionId { get; set; }
+            public int isActive { get; set; }
+
+            //extra field for fancyTreeDataStructure support
+            public List<QuestionTable> children { get; set; }
+            public QuestionTreeTable treeNodeElement { get; set; }
+            public string title => optionName;
+            //public string title => optionName + " (Oid " + optionID + ", Qid: " + questionId + ", Tid: " + getTreeNodeElementId() + " )";
+            public string key => Guid.NewGuid().ToString().Substring(0, 8);
+
+            public bool isOption = true, folder = false;
+            public string getTreeNodeElementId()
+            {
+                return treeNodeElement == null ? "" : treeNodeElement.questionTreeId.ToString();
+            }
+        }
+
+
+
+        public class QuestionTable
+        {
+            public QuestionTable()
+            {
+                this.children = new List<OptionTable>();
+            }
+            public int questionId { get; set; }
+            public int catId { get; set; }
+            public int subCatId { get; set; }
+            public string questionName { get; set; }
+            public int quesType { get; set; }
+            public int isActive { get; set; }
+
+            // Indicates if the question matches the stored procedure
+            public bool isMatched { get; set; }
+
+            // Extra field for FancyTree data structure support
+            public List<OptionTable> children { get; set; }
+            public QuestionTreeTable treeNodeElement { get; set; }
+            public string title => questionName;
+            public string key => Guid.NewGuid().ToString().Substring(0, 8);
+
+            // Add a CSS class for matched questions
+            public string cssClass => isMatched ? "highlighted-node" : "";
+
+            public bool isOption = false, folder = true;
+
+            public string getTreeNodeElementId()
+            {
+                return treeNodeElement == null ? "" : treeNodeElement.questionTreeId.ToString();
+            }
+        }
+
+
+        public class TreeLoader
+        {
+            public static List<QuestionTable> BuildTree(
+                List<QuestionTable> questions,
+                List<OptionTable> options,
+                List<QuestionTreeTable> treeStructure)
+            {
+                // Find root nodes (nodeLevel == 0)
+                var rootNodes = treeStructure.Where(t => t.nodeLevel == 0).ToList();
+
+                // Use a Dictionary to avoid re-processing nodes
+                var processedNodes = new Dictionary<int, QuestionTable>();
+
+                List<QuestionTable> BuildSubTree(QuestionTreeTable currentNode, int startingQuestionTreeId)
+                {
+                    // Avoid re-processing the same node
+                    if (processedNodes.ContainsKey(currentNode.questionTreeId))
+                    {
+                        return new List<QuestionTable> { processedNodes[currentNode.questionTreeId] };
+                    }
+
+                    // Find the question associated with the current node
+                    var question = questions.FirstOrDefault(q => q.questionId == currentNode.questionId);
+                    if (question == null) return new List<QuestionTable>();
+
+                    // Set the startingQuestionTreeId for the current node
+                    currentNode.startingQuestionTreeId = startingQuestionTreeId;
+
+                    // Create a new instance of the question for the current node
+                    var newQuestion = new QuestionTable
+                    {
+                        questionId = question.questionId,
+                        catId = question.catId,
+                        subCatId = question.subCatId,
+                        questionName = question.questionName,
+                        quesType = question.quesType,
+                        isActive = question.isActive,
+                        isMatched = question.isMatched, // Carry forward matched/unmatched status
+                        treeNodeElement = currentNode,
+                        children = new List<OptionTable>()
+                    };
+
+                    // Cache the processed node
+                    processedNodes[currentNode.questionTreeId] = newQuestion;
+
+                    // Find all options associated with the current question
+                    var childOptions = options
+                        .Where(o => o.questionId == currentNode.questionId)
+                        .Select(o => new OptionTable
+                        {
+                            optionID = o.optionID,
+                            optionName = o.optionName,
+                            questionId = o.questionId,
+                            isActive = o.isActive,
+                            treeNodeElement = currentNode
+                        })
+                        .ToList();
+
+                    // For each option, find its child nodes
+                    foreach (var option in childOptions)
+                    {
+                        var childNodes = treeStructure
+                            .Where(t =>
+                                t.parentOptionId == option.optionID &&
+                                t.parentQuestionId == option.questionId &&
+                                t.fatherQuestionTreeId == currentNode.questionTreeId)
+                            .ToList();
+
+                        foreach (var childNode in childNodes)
+                        {
+                            // Recursively build the subtree for child nodes
+                            var childQuestions = BuildSubTree(childNode, startingQuestionTreeId);
+                            foreach (var childQuestion in childQuestions)
+                            {
+                                option.children.Add(childQuestion);
+                            }
+                        }
+                        newQuestion.children.Add(option); // Add the option
+                    }
+
+                    return new List<QuestionTable> { newQuestion };
+                }
+
+                // Build the tree starting from root nodes
+                var resultTree = new List<QuestionTable>();
+                foreach (var rootNode in rootNodes)
+                {
+                    resultTree.AddRange(BuildSubTree(rootNode, rootNode.questionTreeId));
+                }
+
+                return resultTree;
+            }
+        }
 
     }
 }

@@ -246,12 +246,18 @@ namespace VALUQuest.Pages
                 }
 
 
-                // Convert to JSON
-                return Newtonsoft.Json.JsonConvert.SerializeObject(treeData, Newtonsoft.Json.Formatting.None,
-                    new Newtonsoft.Json.JsonSerializerSettings
-                    {
-                        ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
-                    });
+                string jsonData = Newtonsoft.Json.JsonConvert.SerializeObject(treeData, Newtonsoft.Json.Formatting.None,
+                   new Newtonsoft.Json.JsonSerializerSettings
+                   {
+                       ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
+                   });
+
+                // Output JSON to debug
+                System.Diagnostics.Debug.WriteLine("Tree Data JSON: " + jsonData);
+
+                return jsonData;
+
+               
             }
             catch (Exception ex)
             {

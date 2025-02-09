@@ -6,7 +6,7 @@
     <div class="row">
         <div class="col-12">
             <div class="page-title-box">
-                <h4 class="page-title">Ramificazione Domande (PROVA)</h4>
+                <h4 class="page-title">Ramificazione Domande</h4>
             </div>
         </div>
     </div>

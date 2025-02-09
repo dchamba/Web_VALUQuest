@@ -135,12 +135,16 @@
     <Content Include="Pages\Questionnaire.aspx" />
     <Content Include="Pages\QuestionsTree.aspx" />
     <Content Include="Pages\QuestionsTreeNew.aspx" />
+    <Content Include="Pages\QuesTree3.aspx" />
     <Content Include="Pages\QuesTree1.aspx" />
     <Content Include="Pages\QuesTree.aspx" />
+    <Content Include="Pages\QuesTree2.aspx" />
+    <Content Include="Pages\Ramification.aspx" />
     <Content Include="Pages\SubCategory.aspx" />
     <Content Include="Pages\Category.aspx" />
     <Content Include="Pages\Config.aspx" />
     <Content Include="Pages\Question.aspx" />
+    <Content Include="Pages\SurveyMode.aspx" />
     <Content Include="Pages\SurveyType.aspx" />
     <Content Include="Pages\ViewExpectedQuesForSurvey.aspx" />
     <Content Include="Pages\ViewSurvey.aspx" />
@@ -554,6 +558,13 @@
     <Compile Include="Pages\QuestionsTreeNew.aspx.designer.cs">
       <DependentUpon>QuestionsTreeNew.aspx</DependentUpon>
     </Compile>
+    <Compile Include="Pages\QuesTree3.aspx.cs">
+      <DependentUpon>QuesTree3.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Pages\QuesTree3.aspx.designer.cs">
+      <DependentUpon>QuesTree3.aspx</DependentUpon>
+    </Compile>
     <Compile Include="Pages\QuesTree1.aspx.cs">
       <DependentUpon>QuesTree1.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -567,6 +578,20 @@
     </Compile>
     <Compile Include="Pages\QuesTree.aspx.designer.cs">
       <DependentUpon>QuesTree.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\QuesTree2.aspx.cs">
+      <DependentUpon>QuesTree2.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Pages\QuesTree2.aspx.designer.cs">
+      <DependentUpon>QuesTree2.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\Ramification.aspx.cs">
+      <DependentUpon>Ramification.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Pages\Ramification.aspx.designer.cs">
+      <DependentUpon>Ramification.aspx</DependentUpon>
     </Compile>
     <Compile Include="Pages\SubCategory.aspx.cs">
       <DependentUpon>SubCategory.aspx</DependentUpon>
@@ -595,6 +620,13 @@
     </Compile>
     <Compile Include="Pages\Question.aspx.designer.cs">
       <DependentUpon>Question.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\SurveyMode.aspx.cs">
+      <DependentUpon>SurveyMode.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Pages\SurveyMode.aspx.designer.cs">
+      <DependentUpon>SurveyMode.aspx</DependentUpon>
     </Compile>
     <Compile Include="Pages\SurveyType.aspx.cs">
       <DependentUpon>SurveyType.aspx</DependentUpon>
