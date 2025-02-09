@@ -212,6 +212,12 @@ namespace VALUQuest.Utility
             return false;
         }
 
+        public static string getCurrentDatabaseName() {
+            String connectionString = ConfigurationManager.ConnectionStrings["valu"].ConnectionString;
+            SqlConnectionStringBuilder builder = new SqlConnectionStringBuilder(connectionString);
+            string databaseName = builder.InitialCatalog;
+            return databaseName;
+        }
 
     }
 }
