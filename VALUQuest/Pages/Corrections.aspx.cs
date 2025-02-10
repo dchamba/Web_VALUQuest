@@ -22,7 +22,7 @@ namespace VALUQuest.Pages
         private static string connectionString;
         public Corrections()
         {
-            connectionString = ConfigurationManager.ConnectionStrings["valu"].ConnectionString;
+            connectionString = DatabaseHelper.getCurrentConnectionString();
         }
         protected void Page_Load(object sender, EventArgs e)
         {

@@ -67,7 +67,7 @@ namespace VALUQuest.Pages
             {
                 Utility.DatabaseHelper db = new Utility.DatabaseHelper();
                
-                string query = @" UPDATE [tcp_org_pk_questionnaire].[tbl_surveyQuesType]
+                string query = @" UPDATE ["+ DatabaseHelper.getCurrentDatabaseName() + @"].[tbl_surveyQuesType]
                                 SET isActive=-1;
 
                                 UPDATE [tcp_org_pk_questionnaire].[tbl_surveyQuesType]

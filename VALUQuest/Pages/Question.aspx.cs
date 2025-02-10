@@ -90,7 +90,7 @@ namespace VALUQuest.Pages
                     }
                     else if (Convert.ToInt32(quesType) == 2)
                     {
-                        string query = @"SELECT IDENT_CURRENT('[tcp_org_pk_questionnaire].[tbl_questions]') AS LatestID; ";
+                        string query = @"SELECT IDENT_CURRENT('["+ DatabaseHelper.getCurrentDatabaseName() + @"].[tbl_questions]') AS LatestID; ";
                         DataTable dt = db.ExecuteQuery(query);
 
                         status = Convert.ToInt32(dt.Rows[0].Field<Object>("LatestID"));

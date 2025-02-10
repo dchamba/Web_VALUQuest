@@ -48,8 +48,7 @@ namespace VALUQuest.Pages
             try
             {
                 Utility.DatabaseHelper db = new Utility.DatabaseHelper();
-                string query = $@"UPDATE [tcp_org_pk_questionnaire].[tbl_survey_mode]
-                          SET surveyMode = {surveyMode}";
+                string query = $@"UPDATE ["+ DatabaseHelper.getCurrentDatabaseName() +"].[tbl_survey_mode] SET surveyMode = {surveyMode}";
                 db.ExecuteQuery(query);
 
                 return "success";

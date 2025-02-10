@@ -21,7 +21,7 @@ namespace VALUQuest.Pages
         static DataTabletoJSON js;
         public CorrectionsList()
         {
-            connectionString = ConfigurationManager.ConnectionStrings["valu"].ConnectionString;
+            connectionString = DatabaseHelper.getCurrentConnectionString();
             js = new DataTabletoJSON();
         }
         protected void Page_Load(object sender, EventArgs e)
@@ -120,9 +120,15 @@ namespace VALUQuest.Pages
         {
             bool result = false;  // Default result to false
             string query = @"
-                        UPDATE [tcp_org_pk_questionnaire].[tcp_org_pk_questionnaire].[tbl_corrections_m]
+                        UPDATE ["+ DatabaseHelper.getCurrentDatabaseName() + @"].[tbl_corrections_m]
                         SET [isActive] = @IsActive
                         WHERE [correctionId] = @CorrectionId";
+            //string query = @"
+            //            UPDATE [tcp_org_pk_questionnaire].[tcp_org_pk_questionnaire].[tbl_corrections_m]
+            //            SET [isActive] = @IsActive
+            //            WHERE [correctionId] = @CorrectionId";
+
+                        
             try
             {
                 Utility.DatabaseHelper db = new Utility.DatabaseHelper();

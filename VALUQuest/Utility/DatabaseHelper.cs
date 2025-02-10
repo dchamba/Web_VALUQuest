@@ -5,6 +5,7 @@ using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
 using System.Web;
+using Microsoft.Ajax.Utilities;
 
 namespace VALUQuest.Utility
 {
@@ -14,7 +15,7 @@ namespace VALUQuest.Utility
         public DatabaseHelper()
         {
             // Read connection string from web.config
-            connectionString = ConfigurationManager.ConnectionStrings["valu"].ConnectionString;
+            connectionString = DatabaseHelper.getCurrentConnectionString();
         }
 
         public int ExecuteNonQuery(string query, params SqlParameter[] parameters)
@@ -212,12 +213,47 @@ namespace VALUQuest.Utility
             return false;
         }
 
-        public static string getCurrentDatabaseName() {
-            String connectionString = ConfigurationManager.ConnectionStrings["valu"].ConnectionString;
-            SqlConnectionStringBuilder builder = new SqlConnectionStringBuilder(connectionString);
-            string databaseName = builder.InitialCatalog;
-            return databaseName;
+        public static string getConfigValue(String key, String nomeConnectionString) {
+            String resultValue = null;
+            if(nomeConnectionString.IsNullOrWhiteSpace()) { nomeConnectionString = "valu"; }
+
+            string connectionString = ConfigurationManager.ConnectionStrings[nomeConnectionString].ConnectionString;
+                using (SqlConnection connection = new SqlConnection(connectionString))
+            { 
+                string query = "SELECT valore FROM config WHERE chiave = '"+ key +"'";
+
+                using (SqlCommand command = new SqlCommand(query, connection))
+                {
+                    try
+                    {
+                        connection.Open();
+                        object result = command.ExecuteScalar();
+                        if (result != null)
+                        {
+                            resultValue = result.ToString();
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        Console.WriteLine("Errore nel recupero del database: " + ex.Message);
+                    }
+                }
+            }
+            return resultValue;
         }
 
+        public static string getCurrentDatabaseName()
+        {
+            string connectionString = getConfigValue("currentConnectionString", null);
+            SqlConnectionStringBuilder builder = new SqlConnectionStringBuilder(connectionString);
+            return builder.InitialCatalog;    
+        }
+
+        public static string getCurrentConnectionString()
+        {
+            string connectionString = getConfigValue("currentConnectionString", null);
+            connectionString = ConfigurationManager.ConnectionStrings[connectionString].ConnectionString;
+            return connectionString;    
+        }
     }
 }
