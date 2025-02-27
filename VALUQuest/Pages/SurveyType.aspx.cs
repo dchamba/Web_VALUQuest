@@ -70,7 +70,7 @@ namespace VALUQuest.Pages
                 string query = @" UPDATE ["+ DatabaseHelper.getCurrentDatabaseName() + @"].[tbl_surveyQuesType]
                                 SET isActive=-1;
 
-                                UPDATE [tcp_org_pk_questionnaire].[tbl_surveyQuesType]
+                                UPDATE [""+ DatabaseHelper.getCurrentDatabaseName() + @""].[tbl_surveyQuesType]
                                 SET isActive=1,
                                     modifiedBy = '" + HttpContext.Current.Session["userName"] + @"',
                                     modifiedDate = '" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + @"'

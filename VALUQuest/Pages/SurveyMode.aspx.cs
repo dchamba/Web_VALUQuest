@@ -48,7 +48,9 @@ namespace VALUQuest.Pages
             try
             {
                 Utility.DatabaseHelper db = new Utility.DatabaseHelper();
-                string query = $@"UPDATE ["+ DatabaseHelper.getCurrentDatabaseName() +"].[tbl_survey_mode] SET surveyMode = {surveyMode}";
+                //string query = "UPDATE [" + DatabaseHelper.getCurrentDatabaseName() + "].[tbl_survey_mode] SET surveyMode = '" + surveyMode + "'";
+                string databaseName = DatabaseHelper.getCurrentDatabaseName();
+                string query = "UPDATE [" + databaseName + "].[tbl_survey_mode] SET surveyMode = '"+ surveyMode + "'";
                 db.ExecuteQuery(query);
 
                 return "success";
@@ -61,6 +63,33 @@ namespace VALUQuest.Pages
         }
 
 
+        [WebMethod]
+        public static string GetSurveyVersion()
+        {
+            String currentSurveryVersion = DatabaseHelper.getCurrentVersionWorking();
+            return currentSurveryVersion;
+        }
+
+        [WebMethod]
+        public static string UpdateSurveyVersion(int surveyVersion)
+        {
+            try
+            {
+                Utility.DatabaseHelper db = new Utility.DatabaseHelper();
+                string databaseName = DatabaseHelper.getDefaultValueDatabaseName();
+                String versioneValu = "valu";
+                if (surveyVersion == 1) versioneValu = "valuWork";
+                string query = "UPDATE [" + databaseName + "].[config] SET value = '" + versioneValu + "' WHERE name = 'currentConnectionString'";
+                db.ExecuteQuery(query);
+
+                return "success";
+            }
+            catch (Exception ex)
+            {
+                // Log the exception
+                return "error";
+            }
+        }
 
     }
 }

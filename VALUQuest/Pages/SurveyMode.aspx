@@ -71,7 +71,7 @@
             <div class="card">
                 <div class="card-body">
                     <div class="row mb-3">
-                        <div class="col-md-12">
+                        <div class="col-md-10">
                             <label class="form-label">Stato attuale della modalità di sondaggio:</label>
                             <div class="alert alert-primary" role="alert">
                                 <strong>
@@ -85,18 +85,44 @@
                             </div>
                         </div>
                    
+                        <div class="col-md-2 d-flex justify-content-center align-items-center">
+                            <label class="switch">
+                                <input type="checkbox" id="surveyToggle" onchange="toggleSurveyMode(this)">
+                                <span class="slider round"></span>
+                            </label>
+                        </div>
                     </div>
 
-<div class="row mb-3">
-    <div class="col-md-3">
-        <label class="switch">
-            <input type="checkbox" id="surveyToggle" onchange="toggleSurveyMode(this)">
-            <span class="slider round"></span>
-        </label>
+                </div>
+            </div>
+        </div>
     </div>
-</div>
-
-
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-body">
+                    <div class="row mb-3">
+                        <div class="col-md-10">
+                            <label class="form-label">Versione attuale del sondaggio:</label>
+                            <div class="alert alert-primary" role="alert">
+                                <strong>
+                                    <h3>
+                                        <label id="lblSurveyVersion"></label>
+                                    </h3>
+                                     <h6>
+                                        <label style="color:red" id="lblSurveyVersionDateTime"></label>
+                                    </h6>
+                                </strong>
+                            </div>
+                        </div>
+                   
+                        <div class="col-md-2 d-flex justify-content-center align-items-center">
+                            <label class="switch">
+                                <input type="checkbox" id="surveyVersionToggle" onchange="toggleSurveyVersion(this)">
+                                <span class="slider round"></span>
+                            </label>
+                        </div>
+                    </div>
 
                 </div>
             </div>
@@ -108,7 +134,9 @@
     $(document).ready(function () {
         // Load the current survey mode status on page load
         loadSurveyStatus();
+        loadSurveyVersion();
     });
+
 
     function loadSurveyStatus() {
         $.ajax({
@@ -131,7 +159,7 @@
                 console.error(xhr.responseText);
             }
         });
-    }
+        }
 
     function toggleSurveyMode(element) {
         const surveyMode = element.checked ? 1 : 0;
@@ -155,7 +183,51 @@
             }
         });
     }
-</script>
+
+    function loadSurveyVersion() {
+        $.ajax({
+            type: "POST",
+            url: "/Pages/SurveyMode.aspx/GetSurveyVersion",
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            success: function (response) {
+                var data = JSON.parse(response.d); // Parse the JSON response
+
+                $("#lblSurveyVersion").text(data[0]);
+
+                const surveyToggle = document.getElementById("surveyVersionToggle");
+
+                surveyToggle.checked = !data.includes("Stadard"); // Checked if ON
+            },
+            error: function (xhr, status, error) {
+                console.error(xhr.responseText);
+            }
+        });
+    }
+
+    function toggleSurveyVersion(element) {
+        const surveyVersion = element.checked ? 1 : 0;
+
+        // Send AJAX request to update the server
+        $.ajax({
+            type: "POST",
+            url: "/Pages/SurveyMode.aspx/UpdateSurveyVersion",
+            data: JSON.stringify({ surveyVersion: surveyVersion }),
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            success: function (response) {
+                if (response.d === "success") {
+                    loadSurveyVersion(); // Reload the survey status
+                } else {
+                    console.error("Error updating survey version");
+                }
+            },
+            error: function (xhr, textStatus, errorThrown) {
+                console.error("Error updating survey mode:", xhr.responseText);
+            }
+        });
+    }
+    </script>
 
 
 

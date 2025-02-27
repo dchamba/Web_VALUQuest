@@ -215,12 +215,42 @@ namespace VALUQuest.Utility
 
         public static string getConfigValue(String key, String nomeConnectionString) {
             String resultValue = null;
-            if(nomeConnectionString.IsNullOrWhiteSpace()) { nomeConnectionString = "valu"; }
+            if(String.IsNullOrEmpty(nomeConnectionString)) { nomeConnectionString = "valu"; }
 
             string connectionString = ConfigurationManager.ConnectionStrings[nomeConnectionString].ConnectionString;
                 using (SqlConnection connection = new SqlConnection(connectionString))
             { 
-                string query = "SELECT valore FROM config WHERE chiave = '"+ key +"'";
+                string query = "SELECT value FROM config WHERE name = '"+ key +"'";
+
+                using (SqlCommand command = new SqlCommand(query, connection))
+                {
+                    try
+                    {
+                        connection.Open();
+                        object result = command.ExecuteScalar();
+                        if (result != null)
+                        {
+                            resultValue = result.ToString();
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        Console.WriteLine("Errore nel recupero del database: " + ex.Message);
+                    }
+                }
+            }
+            return resultValue;
+        }
+
+        public static string getConfigNote(String key, String nomeConnectionString)
+        {
+            String resultValue = null;
+            if (String.IsNullOrEmpty(nomeConnectionString)) { nomeConnectionString = "valu"; }
+
+            string connectionString = ConfigurationManager.ConnectionStrings[nomeConnectionString].ConnectionString;
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                string query = "SELECT note FROM config WHERE name = '" + key + "'";
 
                 using (SqlCommand command = new SqlCommand(query, connection))
                 {
@@ -244,16 +274,30 @@ namespace VALUQuest.Utility
 
         public static string getCurrentDatabaseName()
         {
-            string connectionString = getConfigValue("currentConnectionString", null);
+            string connectionString = getCurrentConnectionString();
             SqlConnectionStringBuilder builder = new SqlConnectionStringBuilder(connectionString);
-            return builder.InitialCatalog;    
+            return builder.InitialCatalog;
+        }
+
+        public static string getDefaultValueDatabaseName()
+        {
+            return ConfigurationManager.ConnectionStrings["defaultDatabaseName"].ConnectionString;
         }
 
         public static string getCurrentConnectionString()
         {
             string connectionString = getConfigValue("currentConnectionString", null);
             connectionString = ConfigurationManager.ConnectionStrings[connectionString].ConnectionString;
-            return connectionString;    
+            return connectionString;
         }
+
+        public static string getCurrentVersionWorking()
+        {
+            string result = getConfigValue("currentConnectionString", null);
+            result = getConfigNote(result, null);
+            return result;
+        }
+
+        
     }
 }

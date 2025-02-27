@@ -1,0 +1,8 @@
+﻿.violet-gradient-text {
+    font-weight: bold;
+    background: rgb(150,124,232);
+    background: linear-gradient(90deg, rgba(150,124,232,1) 14%, rgba(35,35,152,1) 49%, rgba(99,193,222,1) 93%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    display: inline-block;
+}

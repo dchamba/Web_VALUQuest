@@ -26,6 +26,10 @@
     <!-- Icons css -->
     <link href="/Template/modern/assets/css/icons.min.css" rel="stylesheet" type="text/css" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    
+    <!-- Valu css -->
+    <link href="/Template/modern/assets/css/valuCss.css" rel="stylesheet" type="text/css" id="valu-style" />
+    
     <style>
         #overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent black */ display: none; /* Initially hidden */ justify-content: center; align-items: center; z-index: 10000; }
 
@@ -84,6 +88,17 @@
                     </button>
 
                 </div>
+
+                <ul class="topbar-menu d-flex align-items-center gap-3">
+                    <li class="dropdown">
+                        <a class="nav-link dropdown-toggle arrow-none nav-user px-2" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="false" aria-expanded="false">
+                            <span class="d-lg-flex align-items-center gap-1 d-none">
+                                <h5 class="my-0">Questionario attuale:</h5>
+                                <h5 id="testVersioneAttuale" runat="server" class="my-0 violet-gradient-text"> Work</h5>
+                            </span>
+                        </a>
+                    </li>
+                </ul>
 
                 <ul class="topbar-menu d-flex align-items-center gap-3">
                     <li class="dropdown">

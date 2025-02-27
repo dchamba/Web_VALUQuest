@@ -153,6 +153,7 @@
     <Content Include="Template\assets\js\ui\component.chat.html" />
     <Content Include="Template\modern\assets\css\app-modern.min.css" />
     <Content Include="Template\modern\assets\css\icons.min.css" />
+    <Content Include="Template\modern\assets\css\valuCss.css" />
     <Content Include="Template\modern\assets\fontsunicons8adf.html" />
     <Content Include="Template\modern\assets\fonts\Nunito-Bold.svg" />
     <Content Include="Template\modern\assets\fonts\Nunito-Light.svg" />

@@ -123,10 +123,6 @@ namespace VALUQuest.Pages
                         UPDATE ["+ DatabaseHelper.getCurrentDatabaseName() + @"].[tbl_corrections_m]
                         SET [isActive] = @IsActive
                         WHERE [correctionId] = @CorrectionId";
-            //string query = @"
-            //            UPDATE [tcp_org_pk_questionnaire].[tcp_org_pk_questionnaire].[tbl_corrections_m]
-            //            SET [isActive] = @IsActive
-            //            WHERE [correctionId] = @CorrectionId";
 
                         
             try
