@@ -681,6 +681,7 @@
     </Compile>
     <Compile Include="Utility\DatabaseHelper.cs" />
     <Compile Include="Utility\DataTabletoJSON.cs" />
+    <Compile Include="Utility\Models\SurveyVersion.cs" />
     <Compile Include="ViewSwitcher.ascx.cs">
       <DependentUpon>ViewSwitcher.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>

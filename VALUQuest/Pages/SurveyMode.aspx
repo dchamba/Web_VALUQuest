@@ -70,7 +70,7 @@
         <div class="col-12">
             <div class="card">
                 <div class="card-body">
-                    <div class="row mb-3">
+                    <div class="row mb-1">
                         <div class="col-md-10">
                             <label class="form-label">Stato attuale della modalità di sondaggio:</label>
                             <div class="alert alert-primary" role="alert">
@@ -101,13 +101,13 @@
         <div class="col-12">
             <div class="card">
                 <div class="card-body">
-                    <div class="row mb-3">
-                        <div class="col-md-10">
+                    <div class="row mb-1">
+                        <div class="col-md-6">
                             <label class="form-label">Versione attuale del sondaggio:</label>
                             <div class="alert alert-primary" role="alert">
                                 <strong>
                                     <h3>
-                                        <label id="lblSurveyVersion"></label>
+                                        <label id="lblSurveyVersion">Versione selezionata :</label>
                                     </h3>
                                      <h6>
                                         <label style="color:red" id="lblSurveyVersionDateTime"></label>
@@ -116,11 +116,9 @@
                             </div>
                         </div>
                    
-                        <div class="col-md-2 d-flex justify-content-center align-items-center">
-                            <label class="switch">
-                                <input type="checkbox" id="surveyVersionToggle" onchange="toggleSurveyVersion(this)">
-                                <span class="slider round"></span>
-                            </label>
+                        <div class="col-md-6 d-flex justify-content-center align-items-center">
+                            <select id="surveyVersionToggle" class="form-select"
+                                style="font-size: 16px; font-weight: bold; color: #2a2a2a; background-color: #f0f0f0; padding: 5px; border: 2px solid #007bff; border-radius: 5px;"></select>
                         </div>
                     </div>
 
@@ -134,7 +132,7 @@
     $(document).ready(function () {
         // Load the current survey mode status on page load
         loadSurveyStatus();
-        loadSurveyVersion();
+        loadSurveyVersions();
     });
 
 
@@ -184,51 +182,64 @@
         });
     }
 
-    function loadSurveyVersion() {
-        $.ajax({
-            type: "POST",
-            url: "/Pages/SurveyMode.aspx/GetSurveyVersion",
-            contentType: "application/json; charset=utf-8",
-            dataType: "json",
-            success: function (response) {
-                var data = JSON.parse(response.d); // Parse the JSON response
+        // Funzione per caricare le versioni del sondaggio
+        function loadSurveyVersions() {
+            $.ajax({
+                type: "POST",
+                url: "/Pages/SurveyMode.aspx/GetSurveyVersions", // Chiama la funzione nel file .cs
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                success: function (response) {
+                    var data = JSON.parse(response.d); // Parsing JSON
+                    var select = $("#surveyVersionToggle");
+                    select.empty(); // Pulisce la combobox prima di caricare nuove opzioni
 
-                $("#lblSurveyVersion").text(data[0]);
+                    let defaultSelected = false;
 
-                const surveyToggle = document.getElementById("surveyVersionToggle");
+                    data.forEach(function (item) {
+                        if (item.deleted == 0) {
+                            let option = new Option(item.description, item.idSurvey_Version);
 
-                surveyToggle.checked = !data.includes("Stadard"); // Checked if ON
-            },
-            error: function (xhr, status, error) {
-                console.error(xhr.responseText);
-            }
-        });
-    }
+                            // Se l'elemento ha isDefault = 1, lo seleziona di default
+                            if (item.isDefault == 1 && !defaultSelected) {
+                                option.selected = true;
+                                defaultSelected = true;
+                            }
 
-    function toggleSurveyVersion(element) {
-        const surveyVersion = element.checked ? 1 : 0;
-
-        // Send AJAX request to update the server
-        $.ajax({
-            type: "POST",
-            url: "/Pages/SurveyMode.aspx/UpdateSurveyVersion",
-            data: JSON.stringify({ surveyVersion: surveyVersion }),
-            contentType: "application/json; charset=utf-8",
-            dataType: "json",
-            success: function (response) {
-                if (response.d === "success") {
-                    loadSurveyVersion(); // Reload the survey status
-                } else {
-                    console.error("Error updating survey version");
+                            select.append(option);
+                        }
+                    });
+                },
+                error: function (xhr, status, error) {
+                    console.error("Errore nel caricamento delle versioni:", xhr.responseText);
                 }
-            },
-            error: function (xhr, textStatus, errorThrown) {
-                console.error("Error updating survey mode:", xhr.responseText);
-            }
+            });
+        }
+
+        // Funzione per aggiornare la versione selezionata
+        $("#surveyVersionToggle").change(function () {
+            let selectedVersionId = $(this).val();
+
+            $.ajax({
+                type: "POST",
+                url: "/Pages/SurveyMode.aspx/UpdateSurveyVersion", // Funzione .cs per aggiornare
+                data: JSON.stringify({ surveyVersionId: selectedVersionId }),
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                success: function (response) {
+                    location.reload();
+
+                    if (response.d === "success") {
+                        console.log("Versione del sondaggio aggiornata con successo.");
+                    } else {
+                        console.error("Errore nell'aggiornamento della versione.");
+                    }
+                },
+                error: function (xhr, textStatus, errorThrown) {
+                    console.error("Errore nella richiesta:", xhr.responseText);
+                }
+            });
         });
-    }
     </script>
-
-
 
 </asp:Content>

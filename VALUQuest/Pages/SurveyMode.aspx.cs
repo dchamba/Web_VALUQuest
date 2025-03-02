@@ -7,6 +7,7 @@ using System.Web;
 using System.Web.Services;
 using System.Web.UI;
 using System.Web.UI.WebControls;
+using Newtonsoft.Json;
 using VALUQuest.Utility;
 
 namespace VALUQuest.Pages
@@ -62,6 +63,20 @@ namespace VALUQuest.Pages
             }
         }
 
+        // ✅ Funzione per caricare le versioni disponibili del sondaggio
+        [WebMethod]
+        public static string GetSurveyVersions()
+        {
+            try
+            {
+                return JsonConvert.SerializeObject(Utility.DatabaseHelper.getAllSurveyVersions());
+            }
+            catch (Exception ex)
+            {
+                return "error";
+            }
+        }
+
 
         [WebMethod]
         public static string GetSurveyVersion()
@@ -70,6 +85,7 @@ namespace VALUQuest.Pages
             return currentSurveryVersion;
         }
 
+        /*
         [WebMethod]
         public static string UpdateSurveyVersion(int surveyVersion)
         {
@@ -87,6 +103,30 @@ namespace VALUQuest.Pages
             catch (Exception ex)
             {
                 // Log the exception
+                return "error";
+            }
+        }
+        */
+
+        [WebMethod]
+        public static string UpdateSurveyVersion(int surveyVersionId)
+        {
+            try
+            {
+                Utility.DatabaseHelper db = new Utility.DatabaseHelper();
+                string query = @"UPDATE ["+ Utility.DatabaseHelper.getMasterDatabaseName() + "].[" + Utility.DatabaseHelper.getMasterDatabaseName() + "].[tbl_survey_version] " + 
+                        "SET isDefault = CASE WHEN idSurvey_Version = @surveyVersionId THEN 1 ELSE 0 END";
+
+                List<SqlParameter> parameters = new List<SqlParameter>
+                {
+                    new SqlParameter("@surveyVersionId", surveyVersionId)
+                };
+
+                db.ExecuteQuery(query, parameters.ToArray());
+                return "success";
+            }
+            catch (Exception ex)
+            {
                 return "error";
             }
         }

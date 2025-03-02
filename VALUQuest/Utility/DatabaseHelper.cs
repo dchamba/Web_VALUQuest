@@ -6,6 +6,7 @@ using System.Data.SqlClient;
 using System.Linq;
 using System.Web;
 using Microsoft.Ajax.Utilities;
+using VALUQuest.Utility.Models;
 
 namespace VALUQuest.Utility
 {
@@ -274,30 +275,75 @@ namespace VALUQuest.Utility
 
         public static string getCurrentDatabaseName()
         {
-            string connectionString = getCurrentConnectionString();
-            SqlConnectionStringBuilder builder = new SqlConnectionStringBuilder(connectionString);
-            return builder.InitialCatalog;
+            string currentDatabaseName = getAllSurveyVersions().First(v => !v.deleted && v.isDefault).databaseName;
+            return currentDatabaseName;
         }
-
-        public static string getDefaultValueDatabaseName()
+        public static string getMasterDatabaseName()
         {
-            return ConfigurationManager.ConnectionStrings["defaultDatabaseName"].ConnectionString;
+            string masterDatabaseName = getAllSurveyVersions().First().databaseName;
+            return masterDatabaseName;
         }
 
+        public static string getMasterConnectionString()
+        {
+            string webAppConnectionStringName = getAllSurveyVersions().First().webAppConnectionStringName;
+            return webAppConnectionStringName;
+        }
         public static string getCurrentConnectionString()
         {
-            string connectionString = getConfigValue("currentConnectionString", null);
+            string connectionString = getAllSurveyVersions().First(v => !v.deleted && v.isDefault).webAppConnectionStringName;
             connectionString = ConfigurationManager.ConnectionStrings[connectionString].ConnectionString;
             return connectionString;
         }
-
         public static string getCurrentVersionWorking()
         {
-            string result = getConfigValue("currentConnectionString", null);
-            result = getConfigNote(result, null);
-            return result;
+            string desrizioneVersioneDefault = getAllSurveyVersions().First(v => !v.deleted && v.isDefault).description;
+            return desrizioneVersioneDefault;
         }
+        public static List<SurveyVersion> getAllSurveyVersions()
+        {
+            try
+            {
+                string query = "SELECT * FROM tcp_org_pk_questionnaire.tbl_survey_version " +
+                                " ORDER BY idSurvey_Version ";
 
-        
+                string connectionString = ConfigurationManager.ConnectionStrings["valu"].ConnectionString;
+
+                using (SqlConnection connection = new SqlConnection(connectionString))
+                {
+                    connection.Open();
+                    using (SqlCommand command = new SqlCommand(query, connection))
+                    {
+                        using (SqlDataAdapter adapter = new SqlDataAdapter(command))
+                        {
+                            DataTable dataTable = new DataTable();
+                            adapter.Fill(dataTable);
+
+                            List<SurveyVersion> surveyVersions = new List<SurveyVersion>();
+
+                            foreach (DataRow row in dataTable.Rows)
+                            {
+                                surveyVersions.Add(new SurveyVersion
+                                {
+                                    idSurvey_Version = Convert.ToInt32(row["idSurvey_Version"]),
+                                    code = row["code"].ToString(),
+                                    description = row["description"].ToString(),
+                                    webAppConnectionStringName = row["webAppConnectionStringName"].ToString(),
+                                    databaseName = row["databaseName"].ToString(),
+                                    mobileAppConnectionName = row["mobileAppConnectionName"].ToString(),
+                                    deleted = Convert.ToBoolean(row["deleted"]),
+                                    isDefault = Convert.ToBoolean(row["isDefault"])
+                                });
+                            }
+                            return surveyVersions;
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw (ex);
+            }
+        }
     }
 }
