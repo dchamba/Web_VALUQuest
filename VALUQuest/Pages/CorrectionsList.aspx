@@ -80,6 +80,29 @@
                 }
             });
         }
+
+        function deleteCorrection(correctionId) {
+            if (!confirm("Sei sicuro di voler eliminare questa correzione?")) return;
+
+            $.ajax({
+                type: "POST",
+                url: "CorrectionsList.aspx/DeleteCorrection",  // Remove `/Pages/`
+                data: JSON.stringify({ correctionId: correctionId, deletedBy: 'Sistema' }),
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                success: function (response) {
+                    alert(response.d ? "Correzione eliminata correttamente." : "Impossibile eliminare la correzione.");
+                    loadDataQuestions();
+                    //initializeDataTable(); // Refresh table
+                },
+                error: function (xhr) {
+                    alert("Errore: " + xhr.responseText);
+                }
+            });
+        }
+
+
+
         function initializeDataTable(data) {
             const groupedData = {};
             // Group data by correctionId
@@ -113,24 +136,12 @@
                             </label>
                             </td>
                             <td class="text-center" style="white-space:nowrap">
-                                <button title="Show Details" class="toggle-details btn btn-info btn-sm" type="button"><i class="fa-solid fa-eye"></i></button>
-                                <button title="Edit" class="btn btn-danger btn-sm" onclick="editCorrection(${masterRow.correctionId})" type="button"><i class="fa-solid fa-edit"></i></button>
+                                <button title="Show Details" class="toggle-details btn btn-secondary btn-sm" type="button"><i class="fa-solid fa-eye"></i></button>
+                                <button title="Edit" class="btn btn-info btn-sm" onclick="editCorrection(${masterRow.correctionId})" type="button"><i class="fa-solid fa-edit"></i></button>
+                                <button title="Delete" class="btn btn-danger btn-sm" onclick="deleteCorrection(${masterRow.correctionId})" type="button"><i class="fa-solid fa-trash"></i></button>
                             </td>
                         </tr>`;
                 tableBody.append(masterRowHtml);
-
-                // Append details header row
-                //const detailsHeaderHtml = `
-                //        <tr class="child-row" data-parent-id="${masterRow.correctionId}" style="display:none;white-space:nowrap">
-                //            <th>Condition Type</th>
-                //            <th>Operator</th>
-                //            <th>Condition Value 1</th>
-                //            <th>Condition Value 2</th>
-                //            <th>Conjunction</th>
-                //            <th>Block Info</th>
-                //        </tr>`;
-                //tableBody.append(detailsHeaderHtml);
-                // Append details rows
                 group.details.forEach(detail => {
                     const detailRowHtml = `
                         <tr class="child-row" data-parent-id="${masterRow.correctionId}" style="display:none;background-color: rgb(213 241 253)">

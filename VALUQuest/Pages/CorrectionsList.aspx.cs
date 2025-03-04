@@ -1,15 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.Configuration;
 using System.Data;
 using System.Data.SqlClient;
-using System.Linq;
-using System.Web;
-using System.Web.Script.Serialization;
 using System.Web.Script.Services;
 using System.Web.Services;
-using System.Web.UI;
 using System.Web.UI.WebControls;
 using VALUQuest.Utility;
 
@@ -102,7 +97,7 @@ namespace VALUQuest.Pages
                     correctionName = row["correctionName"],
                     valueToAdd = row["valueToAdd"],
                     message = row["message"],
-                    createdDate=row["createdDate"],
+                    createdDate = row["createdDate"],
                     isActive = row["isActive"],
                     isDelete = row["isDelete"],
                     notes = row["notes"],
@@ -123,8 +118,6 @@ namespace VALUQuest.Pages
                         UPDATE ["+ DatabaseHelper.getCurrentDatabaseName() + @"].[tbl_corrections_m]
                         SET [isActive] = @IsActive
                         WHERE [correctionId] = @CorrectionId";
-
-                        
             try
             {
                 Utility.DatabaseHelper db = new Utility.DatabaseHelper();
@@ -148,6 +141,39 @@ namespace VALUQuest.Pages
             return result;
         }
 
+
+        [WebMethod]
+        public static bool DeleteCorrection(int correctionId, string deletedBy)
+        {
+            bool result = false; // Default to false
+            string query = @"UPDATE tbl_corrections_m
+                          SET isDelete = 1, 
+                              isActive = 0, 
+                              deletedBy = @DeletedBy, 
+                              deletedDateTime = SYSDATETIME()
+                          WHERE correctionId = @CorrectionId";
+            try
+            {
+                Utility.DatabaseHelper db = new Utility.DatabaseHelper();
+                List<SqlParameter> parameters = new List<SqlParameter>
+            {
+                new SqlParameter("@CorrectionId", SqlDbType.Int) { Value = correctionId },
+                new SqlParameter("@DeletedBy", SqlDbType.VarChar, 100) { Value = deletedBy ?? "System" }
+            };
+
+                int rowsAffected = db.ExecuteNonQuery(query, parameters.ToArray());
+                if (rowsAffected > 0)
+                {
+                    result = true;
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error deleting correction: {ex.Message}");
+            }
+
+            return result;
+        }
         public class CorrectionWithConditions
         {
             public int CorrectionId { get; set; }
@@ -166,6 +192,7 @@ namespace VALUQuest.Pages
             public string Conjunction { get; set; }
             public string BlockName { get; set; }
         }
+
 
     }
 }
