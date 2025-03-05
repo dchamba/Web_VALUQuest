@@ -22,7 +22,7 @@
     <div class="row">
         <div class="col-12">
             <div class="page-title-box">
-                <h4 class="page-title">Corrections List</h4>
+                <h4 class="page-title">Correzioni</h4>
             </div>
         </div>
         <div class="col-12">
@@ -34,13 +34,13 @@
                     <table id="correctionsTable" class="display table table-borderless table-sm">
                         <thead style="white-space:nowrap">
                             <tr>
-                                <th class="d-none">Correction ID</th>
-                                <th>Correction Name</th>
-                                <th>Value to Add</th>
-                                <th>Message</th>
-                                <th>Created Date</th>
-                                <th>Is Active</th>
-                                <th>Action </th>
+                                <th>ID</th>
+                                <th>Nome correzione</th>
+                                <th>Valore impatto media</th>
+                                <th>Messaggio</th>
+                                <th>Data creazione</th>
+                                <th>Attivo</th>
+                                <th>Azioni</th>
                             </tr>
                         </thead>
                         <tbody></tbody>
@@ -124,7 +124,7 @@
                 // Append the master row
                 const masterRowHtml = `
                         <tr class="master-row" data-id="${masterRow.correctionId}">
-                            <td class="d-none">${masterRow.correctionId}</td>
+                            <td>${masterRow.correctionId}</td>
                             <td>${masterRow.correctionName}</td>
                             <td class="text-center">${masterRow.valueToAdd}</td>
                             <td>${masterRow.message}</td>
