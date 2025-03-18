@@ -32,7 +32,9 @@ namespace VALUQuest.Pages
                 questionId = row.Field<int>("questionId"),
                 catId = row.Field<int>("catId"),
                 subCatId = row.Field<int?>("subCatId") ?? 0,
-                questionName = row.Field<string>("questionName"),
+                //questionName = String.Concat(row.Field<string>("questionName")),
+                questionName = row.Field<string>("questionName").PadRight(150).Replace(" ", "&nbsp;") + " (" + row.Field<string>("questionNameWithTypeAndBlockCategory") + ")",
+                //questionDetails = row.Field<string>("questionNameWithTypeAndBlockCategory"),
                 quesType = row.Field<int>("quesType"),
                 isActive = row.Field<int>("isActive"),
             }).ToList();
@@ -100,6 +102,7 @@ namespace VALUQuest.Pages
                         catId = q.catId,
                         subCatId = q.subCatId,
                         questionName = q.questionName,
+                        questionDetails = q.questionDetails,
                         quesType = q.quesType,
                         isActive = q.isActive,
                         isMatched = false,
@@ -180,6 +183,7 @@ namespace VALUQuest.Pages
             public int catId { get; set; }
             public int subCatId { get; set; }
             public string questionName { get; set; }
+            public string questionDetails { get; set; }
             public int quesType { get; set; }
             public int isActive { get; set; }
 
