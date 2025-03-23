@@ -136,6 +136,7 @@
                                     <table id="tblCorrectionApplied" class="table table-sm table-centered mb-0">
                                         <thead>
                                             <tr>
+                                                <th style="display:none">Id Correzione Applicata</th>
                                                 <th>Id Correzione</th>
                                                 <th>Nome</th>
                                                 <th>Media G. prima</th>
@@ -390,6 +391,7 @@
                                 rowsToMerge[rowsToMerge.length - 1][4].attr('rowspan', correctionRowspan + 1);
                                 rowsToMerge[rowsToMerge.length - 1][5].attr('rowspan', correctionRowspan + 1);
                                 rowsToMerge[rowsToMerge.length - 1][6].attr('rowspan', correctionRowspan + 1);
+                                rowsToMerge[rowsToMerge.length - 1][7].attr('rowspan', correctionRowspan + 1);
                             }
 
                             // Reset and prepare for the new group
@@ -397,7 +399,8 @@
                             correctionRowspan = 0;
 
                             // Create the main group cells for camID
-                            var camIDCell = $('<td>').text(item.camID);
+                            var camIDCell = $('<td>').text(item.camID).css({'display':'none'});
+                            var correctionIDCell = $('<td>').text(item.correctionMasterId);
                             var correctionNameCell = $('<td>').text(item.correctionName);
                             var globalValueBeforeCell = $('<td>').text(item.globalValue_before);
                             var globalValueAddCell = $('<td>').text(item.globalValue_add).css({ 'font-weight': 'bold', 'color': 'red', 'font-size': '1.5em' }); // Adjust the size here
@@ -407,6 +410,7 @@
 
                             // Append these cells for the first row of the group
                             row.append(camIDCell);
+                            row.append(correctionIDCell);
                             row.append(correctionNameCell);
                             row.append(globalValueBeforeCell);
                             row.append(globalValueAddCell);
@@ -415,7 +419,7 @@
                             row.append(notesCell);
 
                             // Add the first row to the list of rows to merge
-                            rowsToMerge.push([camIDCell, correctionNameCell, globalValueBeforeCell, globalValueAddCell, globalValueAfterCell, messageCell, notesCell]);
+                            rowsToMerge.push([camIDCell, correctionIDCell, correctionNameCell, globalValueBeforeCell, globalValueAddCell, globalValueAfterCell, messageCell, notesCell]);
                         }
 
                         // Add the remaining columns for each cadID (details row) excluding the cadID column
@@ -441,6 +445,7 @@
                         rowsToMerge[rowsToMerge.length - 1][4].attr('rowspan', correctionRowspan + 1);
                         rowsToMerge[rowsToMerge.length - 1][5].attr('rowspan', correctionRowspan + 1);
                         rowsToMerge[rowsToMerge.length - 1][6].attr('rowspan', correctionRowspan + 1);
+                        rowsToMerge[rowsToMerge.length - 1][7].attr('rowspan', correctionRowspan + 1);
                     }
                 },
                 error: function (xhr, status, error) {

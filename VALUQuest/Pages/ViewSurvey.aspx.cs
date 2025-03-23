@@ -140,9 +140,8 @@ namespace VALUQuest.Pages
                     conjunction = row["conjunction"],
                     isApplied = row["isApplied"],
                     camID = row["camID"],
-                    cadID = row["cadID"]
-
-
+                    cadID = row["cadID"],
+                    correctionMasterId = row["correctionMasterId"]
                 });
             }
 
