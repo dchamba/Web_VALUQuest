@@ -48,44 +48,7 @@ namespace VALUQuest.Pages
         [WebMethod]
         public static object getCorrectionsById(int _corretionId)
         {
-            Utility.DatabaseHelper db = new Utility.DatabaseHelper();
-            string query = "exec sp_get_Corrections @correctionId";
-
-            SqlParameter[] parameters = new SqlParameter[]
-            {
-        new SqlParameter("@correctionId", _corretionId)
-            };
-
-            DataTable correctionData = db.ExecuteQuery(query, parameters);
-            if (correctionData.Rows.Count > 0)
-            {
-                var masterData = new
-                {
-                    correctionId = correctionData.Rows[0]["correctionId"],
-                    correctionName = correctionData.Rows[0]["correctionName"],
-                    valueToAdd = correctionData.Rows[0]["valueToAdd"],
-                    message = correctionData.Rows[0]["message"],
-                    notes = correctionData.Rows[0]["notes"]
-                };
-
-                var conditions = correctionData.AsEnumerable().Select(row => new
-                {
-                    conditionId = row["conditionId"],
-                    conditionType = row["conditionType"],
-                    block = row["BlockInfo"],
-                    blockId = row["BlockId"],
-                    operators = row["operator"],
-                    conditionValue1 = row["conditionValue1"],
-                    conditionValue2 = row["conditionValue2"],
-                    conjunction = row["conjunction"],
-                    conditionActive = row["conditionActive"]
-                }).ToList();
-
-                return new { masterData, conditions };
-            }
-
-            // If no data is found, return null or an empty response
-            return new { masterData = (object)null, conditions = new List<object>() };
+            return RepositoryCorrection.getCorrectionsById(_corretionId);
         }
 
         //code for edit -- end

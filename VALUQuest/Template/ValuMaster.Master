@@ -249,6 +249,9 @@
                                 <li>
                                     <a href="/Pages/Corrections">Dettaglio correzione</a>
                                 </li>
+                                <li>
+                                    <a href="/Pages/CorrectionsPriorityLists">Liste priorità correzz.</a>
+                                </li>
 
                             </ul>
                         </div>

@@ -128,6 +128,7 @@
     <Content Include="Pages\Block.aspx" />
     <Content Include="Pages\Corrections.aspx" />
     <Content Include="Pages\CorrectionsList.aspx" />
+    <Content Include="Pages\CorrectionsPriorityLists.aspx" />
     <Content Include="Pages\DynamicQuestion.aspx" />
     <Content Include="Pages\FixedQuestion.aspx" />
     <Content Include="Pages\OptionRef.aspx" />
@@ -510,6 +511,13 @@
     <Compile Include="Pages\CorrectionsList.aspx.designer.cs">
       <DependentUpon>CorrectionsList.aspx</DependentUpon>
     </Compile>
+    <Compile Include="Pages\CorrectionsPriorityLists.aspx.cs">
+      <DependentUpon>CorrectionsPriorityLists.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Pages\CorrectionsPriorityLists.aspx.designer.cs">
+      <DependentUpon>CorrectionsPriorityLists.aspx</DependentUpon>
+    </Compile>
     <Compile Include="Pages\DynamicQuestion.aspx.cs">
       <DependentUpon>DynamicQuestion.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -682,6 +690,7 @@
     <Compile Include="Utility\DatabaseHelper.cs" />
     <Compile Include="Utility\DataTabletoJSON.cs" />
     <Compile Include="Utility\Models\SurveyVersion.cs" />
+    <Compile Include="Utility\RepositoryCorrection.cs" />
     <Compile Include="ViewSwitcher.ascx.cs">
       <DependentUpon>ViewSwitcher.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
