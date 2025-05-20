@@ -84,7 +84,7 @@ namespace VALUQuest.Pages
                         else
                         {
                             // ✅ 3. Inserisci nuova lista
-                            listId = InsertPriorityList(model.ListName, conn, tran);
+                            listId = InsertPriorityList(model.ListName, true, conn, tran);
                         }
 
                         // ✅ 4. Inserisci righe e correzioni nuove
@@ -184,11 +184,13 @@ namespace VALUQuest.Pages
                         listId = model.ListId.Value;
 
                         // 1. Aggiorna nome lista
-                        string updateSql = "UPDATE tbl_priority_lists_master SET description = @desc WHERE priorityListMasterId = @id";
+                        string updateSql = "UPDATE tbl_priority_lists_master SET description = @desc, isActive = @active WHERE priorityListMasterId = @id";
+
                         using (SqlCommand cmd = new SqlCommand(updateSql, conn, tran))
                         {
                             cmd.Parameters.AddWithValue("@desc", model.ListName);
                             cmd.Parameters.AddWithValue("@id", listId);
+                            cmd.Parameters.AddWithValue("@active", model.IsActive);
                             cmd.ExecuteNonQuery();
                         }
 
@@ -213,7 +215,7 @@ namespace VALUQuest.Pages
                     else
                     {
                         // 3. Inserisci nuova lista
-                        listId = InsertPriorityList(model.ListName, conn, tran);
+                        listId = InsertPriorityList(model.ListName, true, conn, tran);
                     }
 
                     // 4. Inserisci righe nuove
@@ -238,19 +240,21 @@ namespace VALUQuest.Pages
 
         }
 
-        private static int InsertPriorityList(string description, SqlConnection conn, SqlTransaction tran)
+        private static int InsertPriorityList(string description, bool isActive, SqlConnection conn, SqlTransaction tran)
         {
-            string sql = @"INSERT INTO [" + DatabaseHelper.getCurrentDatabaseName() + @"].[tbl_priority_lists_master] 
-                           (description, createdAt, isActive, isDeleted)
-                           OUTPUT INSERTED.priorityListMasterId
-                           VALUES (@desc, GETDATE(), 1, 0)";
+            string sql = @"INSERT INTO tbl_priority_lists_master 
+                   (description, createdAt, isActive, isDeleted)
+                   OUTPUT INSERTED.priorityListMasterId
+                   VALUES (@desc, GETDATE(), @active, 0)";
 
             using (SqlCommand cmd = new SqlCommand(sql, conn, tran))
             {
                 cmd.Parameters.AddWithValue("@desc", description);
+                cmd.Parameters.AddWithValue("@active", isActive);
                 return (int)cmd.ExecuteScalar();
             }
         }
+
 
         private static int InsertRow(int listId, int orderInList, SqlConnection conn, SqlTransaction tran)
         {
@@ -341,12 +345,17 @@ namespace VALUQuest.Pages
                     foreach (var (rowId, order) in rowsTemp)
                     {
                         var corrections = new List<CorrectionDTO>();
-
                         string sqlCorr = $@"
-                        SELECT correctionId, position, connectorToNext 
-                        FROM [{dbName}].[tbl_priority_lists_row_correction]
-                        WHERE priorityListRowId = @rowId AND isDeleted = 0
-                        ORDER BY position";
+                                        SELECT 
+                                            r.correctionId, 
+                                            c.correctionName, 
+                                            c.valueToAdd, 
+                                            r.position, 
+                                            r.connectorToNext
+                                        FROM [{dbName}].[tbl_priority_lists_row_correction] r
+                                        JOIN [{dbName}].[tbl_corrections_m] c ON r.correctionId = c.correctionId
+                                        WHERE r.priorityListRowId = @rowId AND r.isDeleted = 0
+                                        ORDER BY r.position";
 
                         using (SqlCommand cmdCorr = new SqlCommand(sqlCorr, conn))
                         {
@@ -359,7 +368,9 @@ namespace VALUQuest.Pages
                                     {
                                         CorrectionId = (int)rdrCorr["correctionId"],
                                         Position = (int)rdrCorr["position"],
-                                        ConnectorToNext = rdrCorr["connectorToNext"]?.ToString()
+                                        ConnectorToNext = rdrCorr["connectorToNext"]?.ToString(),
+                                        CorrectionName = rdrCorr["correctionName"].ToString(),
+                                        ValueToAdd = rdrCorr["valueToAdd"] != DBNull.Value ? Convert.ToDecimal(rdrCorr["valueToAdd"]) : 0
                                     });
                                 }
                             }
@@ -396,7 +407,8 @@ namespace VALUQuest.Pages
             public int CorrectionId { get; set; }
             public int Position { get; set; }
             public string ConnectorToNext { get; set; }
+            public string CorrectionName { get; set; }
+            public decimal ValueToAdd { get; set; } // Assicurati che questa proprietà esista
         }
-        
     }
 }

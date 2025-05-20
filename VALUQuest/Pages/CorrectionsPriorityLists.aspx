@@ -5,34 +5,48 @@
     <!-- <link href="https://unpkg.com/@hyper-ui/core@1.2.3/dist/hyper.min.css" rel="stylesheet" /> -->
     <script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.0/Sortable.min.js"></script>
 
+
     <style>
         :root {
             --ct-font-sans-serif: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
         }
-
         html, body {
+            height: 100%;
+            margin: 0;
+            padding: 0;
             font-family: var(--ct-font-sans-serif);
         }
 
         .container {
             display: flex;
             flex-direction: row;
-            height: 75vh;
-            gap: 1rem;
-            padding: 1rem;
+            height: 100%; /* prende tutta la finestra */
+            width: 100%;  /* elimina spazi laterali */
+            gap: 0;        /* nessun gap tra sinistra e destra */
             box-sizing: border-box;
+            overflow: hidden;
         }
 
         .left, .right {
-            flex: 1;
-            border: 1px solid #ccc;
-            border-radius: 8px;
-            padding: 1rem;
-            background: white;
+            width: 50%;
             display: flex;
             flex-direction: column;
-            overflow-y: auto;
+            border-right: 1px solid #ddd;
+            overflow: auto;
+            padding: 0.75rem;
+            background: white;
         }
+
+        .left {
+            border-right: 1px solid #ccc;
+        }
+
+        #listsContainer, #allItems {
+            flex-grow: 1;
+            overflow-y: auto;
+            min-height: 0; /* essenziale per scroll corretto */
+        }
+
 
         .list-title {
             font-weight: bold;
@@ -123,15 +137,19 @@
         .priority-list.collapsed .priority-rows {
             display: none;
         }
+        .priority-list {
+            background-color: #fff;
+            border-left: 4px solid transparent;
+        }
+
         .priority-list.active {
-            border-color: #2e8b57; /* verde */
-            background-color: #e8fce8;
+            border-left-color: #198754;
         }
 
         .priority-list.inactive {
-            border-color: #b22222; /* rosso */
-            background-color: #fde8e8;
+            border-left-color: #dc3545;
         }
+
         .priority-list.draft {
             border: 2px solid #3399ff;
             background-color: #e6f4ff;
@@ -140,22 +158,62 @@
             background-color: #e6f4ff !important;
             transition: background-color 1s, border 1s;
         }
+        .form-switch {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.4rem;
+            font-size: 0.9rem;
+            font-weight: 500;
+        }
+        .form-switch input[type="checkbox"] {
+            display: none;
+        }
+        .form-switch i {
+            width: 40px;
+            height: 22px;
+            background: #ccc;
+            border-radius: 12px;
+            position: relative;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+        .form-switch i::after {
+            content: '';
+            position: absolute;
+            width: 18px;
+            height: 18px;
+            top: 2px;
+            left: 2px;
+            border-radius: 50%;
+            background: #fff;
+            transition: transform 0.3s;
+        }
+        .form-switch input:checked + i {
+            background: #28a745;
+        }
+        .form-switch input:checked + i::after {
+            transform: translateX(18px);
+        }
 
     </style>
 
     <form id="form1" runat="server">
         <div class="container">
-            <div class="left">
-                <button type="button" class="create-btn hyper-btn hyper-btn-secondary" onclick="createList()">+ Nuova Lista</button>
-                <div id="listsContainer"></div>
+            <div class="left d-flex flex-column position-relative">
+            <div class="position-sticky top-0 bg-white pb-2 z-1">
+                <button type="button" class="btn btn-success btn-sm w-100" onclick="createList()">
+                <i class="fas fa-plus me-1"></i> Nuova lista
+                </button>
+            </div>
+            <div id="listsContainer" class="flex-grow-1 overflow-auto mt-2"></div>
             </div>
 
-            <div class="right">
-                <div class="list-title">Tutte le Correzioni</div>
-                <div id="allItems" class="priority-row">
-                </div>
+            <div class="right d-flex flex-column">
+            <div class="list-title mb-2">Lista Correzioni</div>
+            <div id="allItems" class="priority-row flex-grow-1 overflow-auto"></div>
             </div>
         </div>
+
         <asp:HiddenField ID="hiddenJsonData" runat="server" />
     </form>
 
@@ -220,7 +278,6 @@
                 })
                 .catch(err => console.error("Errore caricamento liste:", err));
         }
-
         function createListFromDB(list) {
             const listId = `priority-${list.ListId}`;
             const wrapper = document.createElement('div');
@@ -228,89 +285,97 @@
             wrapper.className = `priority-list ${statusClass}`;
             wrapper.setAttribute('data-listid', list.ListId);
 
-            const collapsed = true; // <-- puoi cambiare in false se vuoi il contrario
-
-            if (collapsed) {
-                setTimeout(() => {
-                    const rowContainer = wrapper.querySelector('.priority-rows');
-                    const arrow = wrapper.querySelector('.arrow');
-                    if (rowContainer && arrow) {
-                        rowContainer.style.display = 'none';
-                        arrow.textContent = '＋';
-                        arrow.title = 'Expand';
-                    }
-                }, 0);
-            }
-
             wrapper.innerHTML = `
-                <div class="list-title" onclick="toggleList(this)" style="cursor: pointer;" title="Collapse">
-                    <button type="button" class="arrow hyper-btn hyper-btn-sm" style="width: 28px; height: 28px; padding: 0; margin-right: 5px;">−</button>
-                    <span class="editable-title" ondblclick="toggleTitleEdit(this)">${list.ListName}</span>
-                    <input type="text" class="title-input" style="display:none;" onblur="confirmTitleEdit(this)" />
-                    <button class="remove-list" onclick="event.stopPropagation(); confirmDeleteList(this)">X</button>
-                </div>
-                <div class="priority-rows" id="${listId}" style="display: flex;"></div>
-                <div style="margin-top: 0.5rem; display: flex; gap: 0.5rem;">
-                    <button type="button" class="add-row-btn hyper-btn hyper-btn-sm" onclick="addRow('${listId}')">+ Nuovo elemento</button>
-                    <button type="button" class="hyper-btn hyper-btn-primary hyper-btn-sm" onclick="saveSingleList(this)">Salva lista</button>
-                    <button type="button" class="hyper-btn hyper-btn-sm toggle-status-btn" onclick="toggleListStatus(this)">${list.IsActive ? 'Disattiva' : 'Attiva'}</button>
-                </div>
-            `;
+                  <div class="list-title d-flex align-items-center justify-content-between mb-2" onclick="toggleList(this)" style="cursor: pointer;" title="Collapse">
+                    <div class="d-flex align-items-center gap-2">
+                      <button type="button" class="arrow btn btn-outline-primary btn-sm d-flex align-items-center justify-content-center"
+                            style="width: 28px; height: 28px; font-weight: bold; padding: 0; margin-right: 5px;"> ＋</button>
+                            <span class="editable-title fw-semibold" ondblclick="toggleTitleEdit(this)">${list.ListName}</span>
+                      <input type="text" class="title-input form-control form-control-sm" style="display:none; width: auto; max-width: 300px;" onblur="confirmTitleEdit(this)" />
+                    </div>
+                    <button class="remove-list btn btn-sm btn-danger ms-2" onclick="event.stopPropagation(); confirmDeleteList(this)">
+                      <i class="fas fa-times"></i>
+                    </button>
+                  </div>
+
+                  <div class="priority-rows" id="${listId}" style="display: none;"></div>
+
+                  <div class="d-flex justify-content-between align-items-center mt-3">
+                    <div class="d-flex gap-2">
+                      <button type="button" class="btn btn-outline-primary btn-sm" onclick="addRow('${listId}')">
+                        <i class="fas fa-plus me-1"></i> Nuovo elemento
+                      </button>
+                      <button type="button" class="btn btn-primary btn-sm" onclick="saveSingleList(this)">
+                        <i class="fas fa-save me-1"></i> Salva lista
+                      </button>
+                    </div>
+
+                    <div class="form-check form-switch ms-auto">
+                    <label class="form-switch ms-3">
+                        <input type="checkbox" class="list-status-toggle" onchange="updateListStatus(this)">
+                        <i></i> <span class="status-label">Attiva</span>
+                    </label>
+                    </div>
+                  </div>`;
+
+
 
             document.getElementById('listsContainer').appendChild(wrapper);
 
-            // Collassa solo liste caricate da DB
-            const rowContainer = wrapper.querySelector('.priority-rows');
-            const arrow = wrapper.querySelector('.arrow');
-            if (rowContainer && arrow) {
-                rowContainer.style.display = 'none';
-                arrow.textContent = '＋';
-                arrow.title = 'Expand';
-            }
+            // ✅ Imposta attivo/disattivo visivamente nel toggle
+            setTimeout(() => {
+                const toggle = wrapper.querySelector('.list-status-toggle');
+                const label = wrapper.querySelector('.status-label');
+                if (toggle && label) {
+                    toggle.checked = list.IsActive === true || list.IsActive === 1 || list.IsActive === "1";
+                    updateListStatus(toggle); // aggiorna classe e testo
+                }
+            }, 0);
 
+            // ✅ Inserisci le righe e correzioni
+            const rowContainer = wrapper.querySelector('.priority-rows');
 
             list.Rows.forEach(row => {
-                const rowContainer = document.createElement('div');
-                rowContainer.className = 'priority-row';
-                document.getElementById(listId).appendChild(rowContainer);
+                const rowDiv = document.createElement('div');
+                rowDiv.className = 'priority-row';
 
-                row.Corrections.forEach((corr, idx) => {
+                row.Corrections.forEach((corr, index) => {
                     const line = document.createElement('div');
                     line.className = 'row-line';
 
-                    const original = document.querySelector(`#allItems .item[data-id="${corr.CorrectionId}"]`);
-                    if (original) {
-                        const clone = original.cloneNode(true);
-                        clone.querySelectorAll('.delete-btn').forEach(btn => btn.remove());
+                    const itemDiv = document.createElement('div');
+                    itemDiv.className = 'item';
+                    itemDiv.setAttribute('data-id', corr.CorrectionId);
+                    const valueToAdd = corr.ValueToAdd ?? 0;
+                    itemDiv.textContent = `${corr.CorrectionId} - ${corr.CorrectionName} (${valueToAdd > 0 ? '+' : ''}${valueToAdd})`;
 
-                        const delBtn = document.createElement('span');
-                        delBtn.textContent = 'X';
-                        delBtn.className = 'delete-btn';
-                        delBtn.onclick = () => {
-                            line.remove();
-                            updateRow(rowContainer);
-                        };
-                        clone.appendChild(delBtn);
 
-                        line.appendChild(clone);
-                    }
+                    const delBtn = document.createElement('span');
+                    delBtn.textContent = 'X';
+                    delBtn.className = 'delete-btn';
+                    delBtn.onclick = () => {
+                        line.remove();
+                        updateRow(rowDiv);
+                    };
 
-                    if (corr.ConnectorToNext && idx < row.Corrections.length - 1) {
+                    itemDiv.appendChild(delBtn);
+                    line.appendChild(itemDiv);
+
+                    if (index < row.Corrections.length - 1) {
                         const connector = document.createElement('select');
                         connector.className = 'connector-select';
                         connector.innerHTML = `
-                    <option value="AND">AND</option>
-                    <option value="OR">OR</option>
+                    <option value="AND" ${corr.ConnectorToNext === 'AND' ? 'selected' : ''}>AND</option>
+                    <option value="OR" ${corr.ConnectorToNext === 'OR' ? 'selected' : ''}>OR</option>
                 `;
-                        connector.value = corr.ConnectorToNext;
                         line.appendChild(connector);
                     }
 
-                    rowContainer.appendChild(line);
+                    rowDiv.appendChild(line);
                 });
 
-                // ✅ Rendila modificabile: abilita Sortable per questa riga
-                new Sortable(rowContainer, {
+                rowContainer.appendChild(rowDiv);
+                new Sortable(rowDiv, {
                     group: 'shared',
                     animation: 150,
                     sort: true,
@@ -324,22 +389,22 @@
                         delBtn.className = 'delete-btn';
                         delBtn.onclick = () => {
                             line.remove();
-                            updateRow(rowContainer);
+                            updateRow(rowDiv);
                         };
                         clone.appendChild(delBtn);
 
                         const line = document.createElement('div');
                         line.className = 'row-line';
                         line.appendChild(clone);
-                        rowContainer.appendChild(line);
+                        rowDiv.appendChild(line);
 
-                        updateRow(rowContainer);
+                        updateRow(rowDiv);
                     },
-                    onUpdate: () => updateRow(rowContainer),
-                    onRemove: () => updateRow(rowContainer)
+                    onUpdate: () => updateRow(rowDiv),
+                    onRemove: () => updateRow(rowDiv)
                 });
 
-                updateRow(rowContainer);
+                updateRow(rowDiv); // aggiorna i connettori
             });
         }
 
@@ -351,18 +416,23 @@
             wrapper.scrollIntoView({ behavior: 'smooth', block: 'center' });
 
             wrapper.innerHTML = `
-        <div class="list-title" onclick="toggleList(this)" style="cursor: pointer;" title="Collapse">
-            <button type="button" class="arrow hyper-btn hyper-btn-sm" style="width: 28px; height: 28px; padding: 0; margin-right: 5px;">−</button>
-            <span class="editable-title" ondblclick="toggleTitleEdit(this)">PRIORITY LIST ${listCounter}</span>
-            <input type="text" class="title-input" style="display:none;" onblur="confirmTitleEdit(this)" />
-            <button class="remove-list" onclick="event.stopPropagation(); confirmDeleteList(this)">X</button>
-        </div>
-        <div class="priority-rows" id="${listId}" style="display: flex;"></div>
-        <div style="margin-top: 0.5rem; display: flex; gap: 0.5rem;">
-            <button type="button" class="add-row-btn hyper-btn hyper-btn-sm" onclick="addRow('${listId}')">+ Nuovo elemento</button>
-            <button type="button" class="hyper-btn hyper-btn-primary hyper-btn-sm" onclick="saveSingleList(this)">Salva lista</button>
-            <button type="button" class="hyper-btn hyper-btn-sm toggle-status-btn" onclick="toggleListStatus(this)">Disattiva</button>
-        </div>`;
+                <div class="list-title" onclick="toggleList(this)" style="cursor: pointer;" title="Collapse">
+                    <button type="button" class="arrow hyper-btn hyper-btn-sm" style="width: 28px; height: 28px; padding: 0; margin-right: 5px;">−</button>
+                    <span class="editable-title" ondblclick="toggleTitleEdit(this)">PRIORITY LIST ${listCounter}</span>
+                    <input type="text" class="title-input" style="display:none;" onblur="confirmTitleEdit(this)" />
+                    <button class="remove-list" onclick="event.stopPropagation(); confirmDeleteList(this)">X</button>
+                </div>
+                <div class="priority-rows" id="${listId}" style="display: flex;"></div>
+                <div style="margin-top: 0.5rem; display: flex; justify-content: space-between; align-items: center;">
+                    <div style="display: flex; gap: 0.5rem;">
+                        <button type="button" class="add-row-btn hyper-btn hyper-btn-sm" onclick="addRow('${listId}')">+ Nuovo elemento</button>
+                        <button type="button" class="hyper-btn hyper-btn-primary hyper-btn-sm" onclick="saveSingleList(this)">Salva lista</button>
+                    </div>
+                    <label class="form-switch">
+                        <input type="checkbox" class="list-status-toggle" onchange="updateListStatus(this)">
+                        <i></i> <span class="status-label">Attiva</span>
+                    </label>
+                </div>`;
 
             document.getElementById('listsContainer').appendChild(wrapper);
             addRow(listId);
@@ -444,7 +514,6 @@
             }
         }
 
-
         function addRow(listId) {
             const row = document.createElement('div');
             row.className = 'priority-row';
@@ -519,9 +588,13 @@
             const listIdAttr = listContainer.getAttribute('data-listid');
             const listId = listIdAttr ? parseInt(listIdAttr) : null;
 
+            const toggle = listContainer.querySelector('.list-status-toggle');
+            const isActive = toggle?.checked ?? true;
+
             const listData = {
                 ListId: listId,
                 ListName: title,
+                IsActive: isActive,
                 Rows: []
             };
 
@@ -566,6 +639,25 @@
                     alert("Errore comunicazione: " + error);
                 });
         }
+
+        function updateListStatus(input) {
+
+            event?.stopPropagation();  // ✅ blocca bubbling verso list-title
+
+            const list = input.closest('.priority-list');
+            const label = input.closest('label').querySelector('.status-label');
+
+            if (input.checked) {
+                list.classList.remove('inactive');
+                list.classList.add('active');
+                label.textContent = 'Attiva';
+            } else {
+                list.classList.remove('active');
+                list.classList.add('inactive');
+                label.textContent = 'Disattiva';
+            }
+        }
+
 
         window.onload = async () => {
             await loadCorrections();     // carica correzioni e aspetta
