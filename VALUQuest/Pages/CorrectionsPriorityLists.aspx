@@ -14,31 +14,30 @@
             height: 100%;
             margin: 0;
             padding: 0;
+            overflow: hidden;
             font-family: var(--ct-font-sans-serif);
         }
 
         .container {
-            display: flex;
-            flex-direction: row;
-            height: 100%; /* prende tutta la finestra */
-            width: 100%;  /* elimina spazi laterali */
-            gap: 0;        /* nessun gap tra sinistra e destra */
-            box-sizing: border-box;
-            overflow: hidden;
+          display: flex;
+          flex-direction: row;
+            height: 100vh; /* tutta altezza viewport */
+          width: 100%;
+          gap: 0;
+          box-sizing: border-box;
+          overflow: hidden; /* importantissimo: niente scroll qui */
         }
 
         .left, .right {
-            width: 50%;
-            display: flex;
-            flex-direction: column;
-            border-right: 1px solid #ddd;
-            overflow: auto;
-            padding: 0.75rem;
-            background: white;
-        }
-
-        .left {
-            border-right: 1px solid #ccc;
+          width: 50%;
+          display: flex;
+          flex-direction: column;
+          border-right: 1px solid #ccc;
+          overflow-y: auto;  /* scroll verticale */
+          overflow-x: hidden; /* evita scroll orizzontale */
+          padding: 0.75rem;
+          background: white;
+            height: 100vh; /* altezza totale viewport */
         }
 
         #listsContainer, #allItems {
@@ -245,7 +244,8 @@
 
                         const valueFormatted = `${corr.valueToAdd > 0 ? '+' : ''}${corr.valueToAdd}`;
                         const valueColor = corr.valueToAdd > 0 ? 'green' : (corr.valueToAdd < 0 ? 'red' : 'black');
-                        div.innerHTML = `${corr.correctionName} <span style="color:${valueColor}; font-weight:bold;">(${valueFormatted})</span>`;
+                        //div.innerHTML = `${corr.correctionName} <span style="color:${valueColor}; font-weight:bold;">(${valueFormatted})</span>`;
+                        div.innerHTML = formatCorrectionDisplay(corr.correctionId, corr.correctionName, corr.valueToAdd);
 
                         container.appendChild(div);
                     });
@@ -347,8 +347,8 @@
                     itemDiv.className = 'item';
                     itemDiv.setAttribute('data-id', corr.CorrectionId);
                     const valueToAdd = corr.ValueToAdd ?? 0;
-                    itemDiv.textContent = `${corr.CorrectionId} - ${corr.CorrectionName} (${valueToAdd > 0 ? '+' : ''}${valueToAdd})`;
-
+                    //itemDiv.textContent = `${corr.CorrectionId} - ${corr.CorrectionName} (${valueToAdd > 0 ? '+' : ''}${valueToAdd})`;
+                    itemDiv.innerHTML = formatCorrectionDisplay(corr.CorrectionId, corr.CorrectionName, valueToAdd);
 
                     const delBtn = document.createElement('span');
                     delBtn.textContent = 'X';
@@ -365,9 +365,9 @@
                         const connector = document.createElement('select');
                         connector.className = 'connector-select';
                         connector.innerHTML = `
-                    <option value="AND" ${corr.ConnectorToNext === 'AND' ? 'selected' : ''}>AND</option>
-                    <option value="OR" ${corr.ConnectorToNext === 'OR' ? 'selected' : ''}>OR</option>
-                `;
+                                <option value="AND" ${corr.ConnectorToNext === 'AND' ? 'selected' : ''}>AND</option>
+                                <option value="OR" ${corr.ConnectorToNext === 'OR' ? 'selected' : ''}>OR</option>
+                            `;
                         line.appendChild(connector);
                     }
 
@@ -391,6 +391,15 @@
                             line.remove();
                             updateRow(rowDiv);
                         };
+
+                        const corrId = clone.getAttribute('data-id');
+                        const name = clone.textContent.trim();
+                        const valueMatch = name.match(/\(([-+0-9.,]+)\)/);
+                        const value = valueMatch ? parseFloat(valueMatch[1]) : 0;
+                        const label = name.replace(/\s*\([-+0-9.,]+\)$/, '').replace(/^\d+\s*-\s*/, '');
+
+                        clone.innerHTML = formatCorrectionDisplay(corrId, label, value);
+
                         clone.appendChild(delBtn);
 
                         const line = document.createElement('div');
@@ -416,23 +425,42 @@
             wrapper.scrollIntoView({ behavior: 'smooth', block: 'center' });
 
             wrapper.innerHTML = `
-                <div class="list-title" onclick="toggleList(this)" style="cursor: pointer;" title="Collapse">
-                    <button type="button" class="arrow hyper-btn hyper-btn-sm" style="width: 28px; height: 28px; padding: 0; margin-right: 5px;">−</button>
-                    <span class="editable-title" ondblclick="toggleTitleEdit(this)">PRIORITY LIST ${listCounter}</span>
-                    <input type="text" class="title-input" style="display:none;" onblur="confirmTitleEdit(this)" />
-                    <button class="remove-list" onclick="event.stopPropagation(); confirmDeleteList(this)">X</button>
-                </div>
-                <div class="priority-rows" id="${listId}" style="display: flex;"></div>
-                <div style="margin-top: 0.5rem; display: flex; justify-content: space-between; align-items: center;">
-                    <div style="display: flex; gap: 0.5rem;">
-                        <button type="button" class="add-row-btn hyper-btn hyper-btn-sm" onclick="addRow('${listId}')">+ Nuovo elemento</button>
-                        <button type="button" class="hyper-btn hyper-btn-primary hyper-btn-sm" onclick="saveSingleList(this)">Salva lista</button>
+                  <div class="list-title d-flex align-items-center justify-content-between mb-2" onclick="toggleList(this)" style="cursor: pointer;" title="Collapse">
+                    <div class="d-flex align-items-center gap-2">
+                      <button type="button" class="arrow btn btn-outline-primary btn-sm d-flex align-items-center justify-content-center"
+                              style="width: 28px; height: 28px; font-weight: bold; padding: 0; margin-right: 5px;">−</button>
+                      <span class="editable-title fw-semibold" ondblclick="toggleTitleEdit(this)">PRIORITY LIST ${listCounter}</span>
+                      <input type="text" class="title-input form-control form-control-sm"
+                             style="display:none; width: auto; max-width: 300px;" onblur="confirmTitleEdit(this)" />
                     </div>
-                    <label class="form-switch">
-                        <input type="checkbox" class="list-status-toggle" onchange="updateListStatus(this)">
+                    <button class="remove-list btn btn-sm btn-danger ms-2" onclick="event.stopPropagation(); confirmDeleteList(this)">
+                      <i class="fas fa-times"></i>
+                    </button>
+                  </div>
+
+                  <div class="priority-rows" id="${listId}" style="display: flex;"></div>
+
+                  <div class="d-flex justify-content-between align-items-center mt-3">
+                    <div class="d-flex gap-2">
+                      <button type="button" class="btn btn-outline-primary btn-sm" onclick="addRow('${listId}')">
+                        <i class="fas fa-plus me-1"></i> Nuovo elemento
+                      </button>
+                      <button type="button" class="btn btn-primary btn-sm" onclick="saveSingleList(this)">
+                        <i class="fas fa-save me-1"></i> Salva lista
+                      </button>
+                    </div>
+
+                    <div class="form-check form-switch ms-auto">
+                      <label class="form-switch ms-3">
+                        <input type="checkbox" class="list-status-toggle" onchange="updateListStatus(this)" checked>
                         <i></i> <span class="status-label">Attiva</span>
-                    </label>
-                </div>`;
+                      </label>
+                    </div>
+                  </div>
+                `;
+
+            wrapper.setAttribute('data-listid', '');
+            wrapper.classList.add('priority-list', 'active', 'new-list-highlight');
 
             document.getElementById('listsContainer').appendChild(wrapper);
             addRow(listId);
@@ -535,6 +563,12 @@
                         line.remove();
                         updateRow(row);
                     };
+
+                    const corrId = clone.getAttribute('data-id');
+                    const corrName = clone.textContent.trim().split('(')[0].replace(/^[0-9]+\s*-\s*/, ''); // rimuove eventuale id già presente
+                    const value = clone.querySelector('span')?.textContent || '';
+                    clone.textContent = `${corrId} - ${corrName} ${value}`;
+
                     clone.appendChild(delBtn);
 
                     const line = document.createElement('div');
@@ -656,6 +690,12 @@
                 list.classList.add('inactive');
                 label.textContent = 'Disattiva';
             }
+        }
+
+        function formatCorrectionDisplay(corrId, name, value) {
+            const color = value > 0 ? 'green' : (value < 0 ? 'red' : 'black');
+            const prefix = value > 0 ? '+' : '';
+            return `<strong>${corrId}</strong> - ${name} <span style="color:${color}; font-weight:bold;">(${prefix}${value})</span>`;
         }
 
 
