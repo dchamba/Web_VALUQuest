@@ -58,7 +58,7 @@
     <div class="row">
         <div class="col-12">
             <div class="page-title-box">
-                <h4 class="page-title" id="pageTitle" runat="server">Add Correction</h4>
+                <h4 class="page-title" id="pageTitle" runat="server">Aggiungi correzione</h4>
             </div>
         </div>
 

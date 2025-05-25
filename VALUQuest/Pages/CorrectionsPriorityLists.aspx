@@ -7,39 +7,6 @@
 
 
     <style>
-        :root {
-            --ct-font-sans-serif: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-        }
-        html, body {
-            height: 100%;
-            margin: 0;
-            padding: 0;
-            overflow: hidden;
-            font-family: var(--ct-font-sans-serif);
-        }
-
-        .container {
-          display: flex;
-          flex-direction: row;
-            height: 100vh; /* tutta altezza viewport */
-          width: 100%;
-          gap: 0;
-          box-sizing: border-box;
-          overflow: hidden; /* importantissimo: niente scroll qui */
-        }
-
-        .left, .right {
-          width: 50%;
-          display: flex;
-          flex-direction: column;
-          border-right: 1px solid #ccc;
-          overflow-y: auto;  /* scroll verticale */
-          overflow-x: hidden; /* evita scroll orizzontale */
-          padding: 0.75rem;
-          background: white;
-            height: 100vh; /* altezza totale viewport */
-        }
-
         #listsContainer, #allItems {
             flex-grow: 1;
             overflow-y: auto;
@@ -193,26 +160,58 @@
         .form-switch input:checked + i::after {
             transform: translateX(18px);
         }
-
+        
+        .card-body {
+            max-height: 80vh; /* Imposta una altezza massima per la card (in base alla necessità) */
+            overflow-y: auto; /* Aggiungi la barra di scorrimento verticale */
+            padding-right: 10px; /* Per evitare che la scrollbar nasconda il contenuto */
+            overflow-x: hidden; /* evita scroll orizzontale */
+        }
     </style>
-
+    
+		
     <form id="form1" runat="server">
-        <div class="container">
-            <div class="left d-flex flex-column position-relative">
-            <div class="position-sticky top-0 bg-white pb-2 z-1">
-                <button type="button" class="btn btn-success btn-sm w-100" onclick="createList()">
-                <i class="fas fa-plus me-1"></i> Nuova lista
-                </button>
-            </div>
-            <div id="listsContainer" class="flex-grow-1 overflow-auto mt-2"></div>
+        <div class="row">
+            <div class="col-12">
+                <div class="page-title-box">
+                    <h4 class="page-title" id="pageTitle" runat="server">Liste priorità correzioni</h4>
+                </div>
+            </div>   
+
+             
+            <div class="row">
+                <div class="col-md-6">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="row mb-3">
+                            <div class="col-md-12">
+                                <div class="position-sticky top-0 bg-white pb-2 z-1">
+                                    <button type="button" class="btn btn-success btn-sm w-100" onclick="createList()">
+                                    <i class="fas fa-plus me-1"></i> Nuova lista
+                                    </button>
+                                </div>
+                                <div id="listsContainer" class="flex-grow-1 overflow-auto mt-2"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
 
-            <div class="right d-flex flex-column">
-            <div class="list-title mb-2">Lista Correzioni</div>
-            <div id="allItems" class="priority-row flex-grow-1 overflow-auto"></div>
+                <div class="col-md-6">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="row mb-3">
+                            <div class="col-md-12">
+                                <div class="list-title mb-2">Lista Correzioni</div>
+                                <div id="allItems" class="priority-row flex-grow-1 overflow-auto"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
             </div>
         </div>
-
         <asp:HiddenField ID="hiddenJsonData" runat="server" />
     </form>
 
