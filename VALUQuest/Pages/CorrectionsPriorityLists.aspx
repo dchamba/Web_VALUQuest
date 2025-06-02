@@ -185,7 +185,7 @@
                     <div class="card-body">
                         <div class="row mb-3">
                             <div class="col-md-12">
-                                <div class="position-sticky top-0 bg-white pb-2 z-1">
+                                <div class="top-0 bg-white pb-2 z-1">
                                     <button type="button" class="btn btn-success btn-sm w-100" onclick="createList()">
                                     <i class="fas fa-plus me-1"></i> Nuova lista
                                     </button>
