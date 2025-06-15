@@ -403,7 +403,11 @@
                             var correctionIDCell = $('<td>').text(item.correctionMasterId);
                             var correctionNameCell = $('<td>').text(item.correctionName);
                             var globalValueBeforeCell = $('<td>').text(item.globalValue_before);
-                            var globalValueAddCell = $('<td>').text(item.globalValue_add).css({ 'font-weight': 'bold', 'color': 'red', 'font-size': '1.5em' }); // Adjust the size here
+                            //var globalValueAddCell = $('<td>').text(item.globalValue_add).css({ 'font-weight': 'bold', 'color': 'red', 'font-size': '1.5em' }); // Adjust the size here
+                            var globalValueAddCell = $('<td>')
+                                .text(item.correctionApplicationType === 'N' ? 'N. A.' : item.globalValue_add)
+                                .css({ 'font-weight': 'bold', 'color': 'red', 'font-size': '1.5em' });
+
                             var globalValueAfterCell = $('<td>').text(item.globalValue_after);
                             var messageCell = $('<td>').text(item.message);
                             var notesCell = $('<td>').text(item.notes);

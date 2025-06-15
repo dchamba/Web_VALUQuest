@@ -127,6 +127,7 @@ namespace VALUQuest.Pages
                 data.Add(new
                 {
                     correctionName = row["correctionName"],
+                    correctionApplicationType = row["correctionApplicationType"],
                     globalValue_before = row["globalValue_before"],
                     globalValue_add = row["globalValue_add"],
                     globalValue_after = row["globalValue_after"],
