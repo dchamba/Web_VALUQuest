@@ -405,8 +405,16 @@
                             var globalValueBeforeCell = $('<td>').text(item.globalValue_before);
                             //var globalValueAddCell = $('<td>').text(item.globalValue_add).css({ 'font-weight': 'bold', 'color': 'red', 'font-size': '1.5em' }); // Adjust the size here
                             var globalValueAddCell = $('<td>')
-                                .text(item.correctionApplicationType === 'N' ? 'N. A.' : item.globalValue_add)
-                                .css({ 'font-weight': 'bold', 'color': 'red', 'font-size': '1.5em' });
+                                .text(item.correctionApplicationType === 'N' ? 'N. A.' :
+                                        item.correctionApplicationType === 'F' ? item.globalValue_add + ' (F)' :
+                                        item.globalValue_add)
+                                .css({
+                                    'font-weight': 'bold',
+                                    'color': item.correctionApplicationType === 'N' ? 'Orange' :
+                                        item.correctionApplicationType === 'F' ? 'RoyalBlue' :
+                                            'red', // Default color if neither 'N' nor 'F'
+                                    'font-size': '1.5em'
+                                });
 
                             var globalValueAfterCell = $('<td>').text(item.globalValue_after);
                             var messageCell = $('<td>').text(item.message);
