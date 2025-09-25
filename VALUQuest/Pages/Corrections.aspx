@@ -206,7 +206,7 @@
         </div>
     </div>
     <script type="text/javascript">
-
+		/*
         function validateNumber(input) {
             // Allow numbers, a single decimal point, and a minus sign
             input.value = input.value.replace(/[^0-9.-]/g, ''); // Remove anything that's not a digit, dot, or minus sign
@@ -226,6 +226,36 @@
                 input.value = input.value.replace(/-+$/, ''); // Remove additional minus signs
             }
         }
+		*/
+		
+		// fix CHAMBA 25/09/25 perchè su server nuovo aruba non prende valori decimali con .
+		function validateNumber(input) {
+			// 1. Per comodità, sostituisce automaticamente il punto con la virgola.
+			//    Questo è utile per chi usa il tastierino numerico.
+			input.value = input.value.replace(/\./g, ',');
+
+			// 2. Rimuove qualsiasi carattere che non sia un numero, una virgola o il segno meno.
+			input.value = input.value.replace(/[^0-9,-]/g, '');
+
+			// 3. Assicura che ci sia una sola virgola decimale.
+			var commaCount = (input.value.match(/,/g) || []).length;
+			if (commaCount > 1) {
+				var firstIndex = input.value.indexOf(',');
+				// Mantiene la prima virgola e rimuove tutte le successive.
+				input.value = input.value.substr(0, firstIndex + 1) + input.value.substr(firstIndex + 1).replace(/,/g, '');
+			}
+
+			// 4. Assicura che il segno meno, se presente, sia solo all'inizio.
+			var minusCount = (input.value.match(/-/g) || []).length;
+			if (minusCount > 0 && input.value.charAt(0) !== '-') {
+				// Se c'è un meno ma non è il primo carattere, lo rimuove.
+				input.value = input.value.replace(/-/g, '');
+			}
+			if (minusCount > 1) {
+				// Se c'è più di un meno, mantiene solo il primo.
+				input.value = '-' + input.value.replace(/-/g, '');
+			}
+		}
 
         // The same JavaScript code you provided earlier
         $(document).ready(function () {
