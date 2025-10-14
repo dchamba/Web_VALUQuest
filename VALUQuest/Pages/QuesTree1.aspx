@@ -803,7 +803,7 @@
                 $.each(questions, function (index, question) {
                     optgroup.append($('<option>', {
                         value: question.questionId,
-                        text: question.questionName
+                        text: question.questionId + ' - ' + question.questionName 
                     }));
                 });
 
