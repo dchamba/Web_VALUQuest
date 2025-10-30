@@ -793,12 +793,13 @@
                 var cellA = $(a).children('td').eq(column).text().trim();
                 var cellB = $(b).children('td').eq(column).text().trim();
 
-                // Check if the cells contain numeric values
-                var isNumeric = !isNaN(cellA) && !isNaN(cellB);
+                var numericA = parseFloat(normalizeDecimal(cellA));
+                var numericB = parseFloat(normalizeDecimal(cellB));
+                var isNumeric = !isNaN(numericA) && !isNaN(numericB);
 
                 if (isNumeric) {
-                    cellA = parseFloat(cellA);
-                    cellB = parseFloat(cellB);
+                    cellA = numericA;
+                    cellB = numericB;
                 }
 
                 // Perform comparison
@@ -895,13 +896,13 @@
             var catId = $('#ddlCategory').val();
             var questionName = $('#txtQuestion').val();
             var quesType = $('#quesType').val();
-            var minValue = $('#txtMinValue').val();
-            var maxValue = $('#txtMaxValue').val();
+            var minValue = normalizeDecimal($('#txtMinValue').val());
+            var maxValue = normalizeDecimal($('#txtMaxValue').val());
             var unit = $('#txtUnit').val();
 
             // Always retrieve BMI values from input fields
-            var bmiMinValue = $('#isBMI_minValue').val(); // Retrieve BMI Min Value
-            var bmiMaxValue = $('#isBMI_maxValue').val(); // Retrieve BMI Max Value
+            var bmiMinValue = normalizeDecimal($('#isBMI_minValue').val()); // Retrieve BMI Min Value
+            var bmiMaxValue = normalizeDecimal($('#isBMI_maxValue').val()); // Retrieve BMI Max Value
 
             // Check if the BMI checkbox is checked
             var isBMI = $('#chkIsBMI').is(':checked');
@@ -987,6 +988,9 @@
                     optionValue = $(this).find('td:nth-child(4) input').val();
                     optionMsg = $(this).find('td:nth-child(5) input').val();
                 }
+
+                optionValue = normalizeDecimal(optionValue);
+
                 // Push the AJAX call promise to the array
                 ajaxPromises.push(new Promise(function (resolve, reject) {
                     $.ajax({
@@ -1140,14 +1144,14 @@
             var catId = $('#ddlCategory').val();
             var questionName = $('#txtQuestion').val();
             var quesType = $('#quesType').val();
-            var minValue = $('#txtMinValue').val();
-            var maxValue = $('#txtMaxValue').val();
+            var minValue = normalizeDecimal($('#txtMinValue').val());
+            var maxValue = normalizeDecimal($('#txtMaxValue').val());
             var unit = $('#txtUnit').val();
 
             // Get BMI-related values
             var isBMI = $('#chkIsBMI').is(':checked') ? 1 : 0; // Check if 'Is BMI' checkbox is checked
-            var bmiMinValue = $('#isBMI_minValue').val(); // Get the BMI Min Value
-            var bmiMaxValue = $('#isBMI_maxValue').val(); // Get the BMI Max Value
+            var bmiMinValue = normalizeDecimal($('#isBMI_minValue').val()); // Get the BMI Min Value
+            var bmiMaxValue = normalizeDecimal($('#isBMI_maxValue').val()); // Get the BMI Max Value
 
             setTimeout(function () {
                 // Send AJAX POST request to update the record
@@ -1382,31 +1386,46 @@
             $('#bmiValueRow').hide();             // Assuming `#bmiValueRow` is the row containing the min and max BMI fields
         }
 
-        function isValidDecimalInput(input) {
-            return /^\d*\.?\d*$/.test(input);
+        function normalizeDecimal(value) {
+            if (typeof value !== 'string') {
+                return value;
+            }
+
+            var trimmed = value.trim();
+            if (trimmed === '') {
+                return trimmed;
+            }
+
+            return trimmed.replace(/,/g, '.');
         }
 
-        // Attach event listeners to the input fields
-        document.getElementById("txtMinValue").addEventListener("input", function () {
-            var value = this.value.trim();
-            if (!isValidDecimalInput(value)) {
-                this.value = value.slice(0, -1); // Remove the last character if it's non-numeric
+        function isValidDecimalInput(input) {
+            if (input === '') {
+                return true;
             }
-        });
 
-        document.getElementById("txtMaxValue").addEventListener("input", function () {
-            var value = this.value.trim();
-            if (!isValidDecimalInput(value)) {
-                this.value = value.slice(0, -1); // Remove the last character if it's non-numeric
-            }
-        });
+            return /^\d+(?:[.,]\d*)?$/.test(input);
+        }
 
-        document.getElementById("txtScore").addEventListener("input", function () {
-            var value = this.value.trim();
-            if (!isValidDecimalInput(value)) {
-                this.value = value.slice(0, -1); // Remove the last character if it's non-numeric
+        function enforceDecimalInput(elementId) {
+            var element = document.getElementById(elementId);
+            if (!element) {
+                return;
             }
-        });
+
+            element.addEventListener("input", function () {
+                var value = this.value.trim();
+                if (!isValidDecimalInput(value)) {
+                    this.value = value.slice(0, -1);
+                }
+            });
+        }
+
+        enforceDecimalInput("txtMinValue");
+        enforceDecimalInput("txtMaxValue");
+        enforceDecimalInput("txtScore");
+        enforceDecimalInput("isBMI_minValue");
+        enforceDecimalInput("isBMI_maxValue");
 
         document.getElementById("downloadButton").addEventListener("click", function () {
 
