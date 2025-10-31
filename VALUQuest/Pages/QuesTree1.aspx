@@ -711,7 +711,7 @@
                     $.each(data, function (index, item) {
                         $ddlQuestions.append($('<option>', {
                             value: item.questionId,
-                            text: item.questionName
+                            text: item.questionId + ' - ' + item.questionName
                         }));
                     });
                 },
