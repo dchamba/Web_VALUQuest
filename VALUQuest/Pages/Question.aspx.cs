@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
+using System.Globalization;
 using System.Linq;
 using System.Web;
 using System.Web.Services;
@@ -14,6 +15,23 @@ namespace VALUQuest.Pages
     public partial class Question : System.Web.UI.Page
     {
         static DataTabletoJSON js = new DataTabletoJSON();
+
+        private static string NormalizeDecimalValue(string value)
+        {
+            if (string.IsNullOrWhiteSpace(value))
+            {
+                return value;
+            }
+
+            decimal parsed;
+            if (decimal.TryParse(value, NumberStyles.Any, CultureInfo.GetCultureInfo("it-IT"), out parsed) ||
+                decimal.TryParse(value, NumberStyles.Any, CultureInfo.InvariantCulture, out parsed))
+            {
+                return parsed.ToString(CultureInfo.InvariantCulture);
+            }
+
+            return value.Replace(',', '.');
+        }
 
         protected void Page_Load(object sender, EventArgs e)
         {
@@ -57,15 +75,15 @@ namespace VALUQuest.Pages
                 SqlParameter pCatId = new SqlParameter("@catId", catId);
                 SqlParameter pQuestionName = new SqlParameter("@questionName", questionName);
                 SqlParameter pQuesType = new SqlParameter("@quesType", quesType);
-                SqlParameter pMinValue = new SqlParameter("@minValue", minValue);
-                SqlParameter pMaxValue = new SqlParameter("@maxValue", maxValue);
+                SqlParameter pMinValue = new SqlParameter("@minValue", NormalizeDecimalValue(minValue));
+                SqlParameter pMaxValue = new SqlParameter("@maxValue", NormalizeDecimalValue(maxValue));
                 SqlParameter pUnit = new SqlParameter("@unit", unit);
                 SqlParameter pCreatedBy = new SqlParameter("@createdBy", HttpContext.Current.Session["userName"]);
 
                 // New parameters for BMI values
                 SqlParameter pIsBMI = new SqlParameter("@isBMI", isBMI);
-                SqlParameter pBmiMinValue = new SqlParameter("@bmiMinValue", bmiMinValue);
-                SqlParameter pBmiMaxValue = new SqlParameter("@bmiMaxValue", bmiMaxValue);
+                SqlParameter pBmiMinValue = new SqlParameter("@bmiMinValue", NormalizeDecimalValue(bmiMinValue));
+                SqlParameter pBmiMaxValue = new SqlParameter("@bmiMaxValue", NormalizeDecimalValue(bmiMaxValue));
 
                 int status = 0;
 
@@ -117,7 +135,7 @@ namespace VALUQuest.Pages
             Utility.DatabaseHelper db = new Utility.DatabaseHelper();
             SqlParameter pOptionId = new SqlParameter("@optionId", optionId);
             SqlParameter pOptionName = new SqlParameter("@optionName", optionName);
-            SqlParameter pOptionValue = new SqlParameter("@optionValue", optionValue);
+            SqlParameter pOptionValue = new SqlParameter("@optionValue", NormalizeDecimalValue(optionValue));
             SqlParameter pQuestionId = new SqlParameter("@questionId", questionId);
             SqlParameter pOptionMsg = new SqlParameter("@optionMsg", optionMsg);
             SqlParameter pCreatedBy = new SqlParameter("@createdBy", HttpContext.Current.Session["userName"]);
@@ -254,8 +272,8 @@ namespace VALUQuest.Pages
                 SqlParameter pCatId = new SqlParameter("@catId", catId);
                 SqlParameter pQuestionName = new SqlParameter("@questionName", questionName);
                 SqlParameter pQuesType = new SqlParameter("@quesType", quesType);
-                SqlParameter pMinValue = new SqlParameter("@minValue", minValue);
-                SqlParameter pMaxValue = new SqlParameter("@maxValue", maxValue);
+                SqlParameter pMinValue = new SqlParameter("@minValue", NormalizeDecimalValue(minValue));
+                SqlParameter pMaxValue = new SqlParameter("@maxValue", NormalizeDecimalValue(maxValue));
                 SqlParameter pUnit = new SqlParameter("@unit", unit);
                 SqlParameter pModifiedBy = new SqlParameter("@modifiedBy", HttpContext.Current.Session["userName"]);
                 SqlParameter pModifiedDate = new SqlParameter("@modifiedDate", DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"));
@@ -263,8 +281,8 @@ namespace VALUQuest.Pages
                 // Added new parameters for BMI columns
                 SqlParameter pIsBMI = new SqlParameter("@isBMI", isBMI);
 
-                SqlParameter pBMIMinValue = new SqlParameter("@bmiminValue", bmiMinValue);
-                SqlParameter pBMIMaxValue = new SqlParameter("@bmimaxValue", bmiMaxValue);
+                SqlParameter pBMIMinValue = new SqlParameter("@bmiminValue", NormalizeDecimalValue(bmiMinValue));
+                SqlParameter pBMIMaxValue = new SqlParameter("@bmimaxValue", NormalizeDecimalValue(bmiMaxValue));
                 int status = 0;
 
                 int rowsAffected = db.ExecuteStoredProcedure("sp_UpdateQuestionData",
