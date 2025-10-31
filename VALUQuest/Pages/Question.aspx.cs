@@ -24,8 +24,8 @@ namespace VALUQuest.Pages
             }
 
             decimal parsed;
-            if (decimal.TryParse(value, NumberStyles.Any, CultureInfo.GetCultureInfo("it-IT"), out parsed) ||
-                decimal.TryParse(value, NumberStyles.Any, CultureInfo.InvariantCulture, out parsed))
+            if (decimal.TryParse(value, NumberStyles.AllowDecimalPoint, CultureInfo.GetCultureInfo("it-IT"), out parsed) ||
+                decimal.TryParse(value, NumberStyles.AllowDecimalPoint, CultureInfo.InvariantCulture, out parsed))
             {
                 return parsed.ToString(CultureInfo.InvariantCulture);
             }
